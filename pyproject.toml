@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "schedule-lab"
-version = "0.1.0"
+version = "0.1.1"
 description = "Constraint-safe agentic scheduling laboratory for JSP, FSP, FJSP, HFSP and carrier operations"
 requires-python = ">=3.11"
 dependencies = [
