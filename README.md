@@ -1,5 +1,7 @@
 # Schedule Lab
 
+**简体中文** | [English](README_EN.md)
+
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
 [![Version](https://img.shields.io/badge/version-0.1.1-blue)](CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/tests-25%2F25%20passing-brightgreen)](tests/test_schedule_lab.py)
@@ -10,22 +12,22 @@
 
 Schedule Lab 从已有可行调度出发，由 Agent 诊断瓶颈、选择局部优化策略，再由启发式算法、CP-SAT、验证器和领域 Oracle 构造并认证候选。项目重点是可行性、可复现性和可审计性，而不是让大模型直接生成未经验证的调度结果。
 
-## Table of Contents
+## 目录 (Table of Contents)
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Current Results](#current-results)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Usage](#usage)
-- [MCP Server](#mcp-server)
-- [Repository Structure](#repository-structure)
-- [Documentation](#documentation)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+- [项目简介](#项目简介-overview)
+- [核心功能](#核心功能-key-features)
+- [当前结果](#当前结果-current-results)
+- [系统架构](#系统架构-architecture)
+- [安装](#安装-installation)
+- [使用方法](#使用方法-usage)
+- [MCP 服务](#mcp-服务-mcp-server)
+- [项目结构](#项目结构-repository-structure)
+- [项目文档](#项目文档-documentation)
+- [路线图](#路线图-roadmap)
+- [贡献与更新](#贡献与更新-contributing)
+- [许可](#许可-license)
 
-## Overview
+## 项目简介 (Overview)
 
 ```text
 Feasible incumbent
@@ -47,7 +49,7 @@ Feasible incumbent
 - 使用固定 seed、稳定排序、单 worker 和候选哈希保证复现；
 - 轨迹联合优化作为可选 Tool，不影响通用调度主流程。
 
-## Key Features
+## 核心功能 (Key Features)
 
 | Category | Capabilities | Status |
 |---|---|---|
@@ -63,52 +65,52 @@ Feasible incumbent
 | Joint trajectories | 路线目录、固定路线时空模型、Oracle Cut | Experimental |
 | Agentic RL | 搜索策略控制与图 Encoder | Planned |
 
-## Current Results
+## 当前结果 (Current Results)
 
-### Carrier scheduling
+### 舰载机调度
 
-| Stage | True makespan | Validation |
+| 阶段 | 真实 makespan | 验证状态 |
 |---|---:|---|
-| Greedy baseline | 675.5 s | Reproducible baseline |
-| Controlled policy search | 637.5 s | Generic + domain validated |
-| Deterministic ALNS iteration 1 | 636.2 s | Validated |
-| Deterministic ALNS iteration 2 | 630.5 s | Validated |
-| **Current incumbent** | **627.8 s** | **Validated** |
+| Greedy 基线 | 675.5 s | 已保存、可复现 |
+| 受控策略搜索 | 637.5 s | 通用验证与领域验证通过 |
+| 确定性 ALNS 第 1 轮 | 636.2 s | 已验证 |
+| 确定性 ALNS 第 2 轮 | 630.5 s | 已验证 |
+| **当前 incumbent** | **627.8 s** | **已验证** |
 
-The current incumbent improves the 675.5-second baseline by **47.7 seconds / 7.06%**.
+当前 incumbent 相比 675.5 秒基线缩短 **47.7 秒 / 7.06%**。
 
 ![Current 627.8-second carrier schedule](outputs/carrier_alns_best_iter3_gap6_closed_630_5.png)
 
-Key artifacts:
+关键产物：
 
-- [Current 627.8-second schedule](outputs/carrier_alns_best_iter3_gap6_closed_630_5.json)
-- [Original 675.5-second baseline](outputs/carrier_greedy_baseline_675_5.json)
-- [637.5 vs 627.8 comparison video](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.mp4)
-- [Comparison audit manifest](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.manifest.json)
+- [当前 627.8 秒调度方案](outputs/carrier_alns_best_iter3_gap6_closed_630_5.json)
+- [原始 675.5 秒基线](outputs/carrier_greedy_baseline_675_5.json)
+- [637.5 vs 627.8 对比视频](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.mp4)
+- [对比视频审计 manifest](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.manifest.json)
 
-> The `630_5` filename is retained for historical traceability because 630.5 seconds was the input incumbent of that iteration. The schedule stored in the file has a recomputed true makespan of 627.8 seconds.
+> 文件名中的 `630_5` 为历史审计标记，表示该轮优化的输入 incumbent 是 630.5 秒。文件内调度按最晚工序结束时间重新计算后的真实 makespan 为 627.8 秒。
 
-### Multi-family regression
+### 多问题族回归
 
-| Family | LPT incumbent | Improved schedule | Result |
+| 问题族 | LPT incumbent | 改进结果 | 结论 |
 |---|---:|---:|---|
-| JSP | 14 | **11** | Improved |
-| FSP | 22 | **19** | Improved |
-| FJSP | 11 | **7** | Improved |
-| HFSP | 17 | 17 | No improvement in the current bounded neighborhood |
+| JSP | 14 | **11** | 已改善 |
+| FSP | 22 | **19** | 已改善 |
+| FJSP | 11 | **7** | 已改善 |
+| HFSP | 17 | 17 | 当前有界邻域未改善 |
 
-See [the complete adaptive benchmark](outputs/adaptive_multifamily_improvement_benchmark.json).
+完整结果见[自适应多问题族回归](outputs/adaptive_multifamily_improvement_benchmark.json)。
 
-### Rejected experimental candidates
+### 被拒绝的实验候选
 
-| Experiment | Abstract result | Domain result | Decision |
+| 实验 | 抽象结果 | 领域结果 | 结论 |
 |---|---:|---:|---|
-| Fixed-route space-time CP-SAT | 619.5 s | 803.9 s and 40 binding changes | Rejected |
-| Bounded route-binding master | 634.6 s | Not sent to the expensive Oracle | Rejected before Oracle |
+| 固定路线时空 CP-SAT | 619.5 s | 803.9 s，出现 40 个绑定变化 | 拒绝 |
+| 有界路线绑定主问题 | 634.6 s | 未送入昂贵领域 Oracle | 在 Oracle 前拒绝 |
 
-Abstract solver objectives are not reported as formal improvements unless all required validators and domain replay gates pass.
+抽象求解器得到的目标值，只有通过全部通用验证和领域回放后，才能作为正式优化结果。
 
-## Architecture
+## 系统架构 (Architecture)
 
 ```text
 Problem Adapter
@@ -132,26 +134,26 @@ Problem Adapter
       Reproduce → Compare → Accept / Reject
 ```
 
-### Responsibility boundaries
+### 职责边界
 
-| Component | Responsibility |
+| 组件 | 职责 |
 |---|---|
-| Agent | Diagnose bottlenecks, select strategy, neighborhood and budget |
-| Heuristics / VNS / ALNS | Generate structured proposals |
-| CP-SAT / exact methods | Construct legal assignments inside the released region |
-| Generic validator | Check precedence, resources, eligibility, bindings and frozen decisions |
-| Domain Oracle | Check trajectories, collisions, state-dependent reachability and real timing |
-| Human reviewer | Confirm objectives, risk thresholds and formal release decisions |
+| Agent | 诊断瓶颈，选择策略、邻域和预算 |
+| 启发式 / VNS / ALNS | 生成结构化候选提案 |
+| CP-SAT / 精确方法 | 在释放区域内构造合法调度 |
+| 通用验证器 | 检查前序、资源、资格、绑定和冻结决策 |
+| 领域 Oracle | 检查轨迹、碰撞、状态依赖可达性和真实时间 |
+| 人工审核 | 确认目标、风险阈值和正式发布决策 |
 
-## Installation
+## 安装 (Installation)
 
-### Requirements
+### 环境要求
 
 - Python 3.11 or later
 - macOS, Linux or Windows
-- Access to this private repository
+- 本私有仓库的访问权限
 
-### Setup
+### 安装步骤
 
 ```bash
 git clone https://github.com/wgy577/schedule-lab.git
@@ -161,29 +163,29 @@ python3 -m venv .venv
 .venv/bin/pip install .
 ```
 
-Carrier-specific commands additionally require the local legacy project, trained network weights and MAT trajectory resources. Generic JSP/FSP/FJSP/HFSP workflows do not require those assets.
+舰载机专用命令还需要本地 legacy 项目、训练网络权重和 MAT 轨迹资源。通用 JSP/FSP/FJSP/HFSP 工作流不依赖这些资产。
 
-## Usage
+## 使用方法 (Usage)
 
-### Run the test suite
+### 运行测试
 
 ```bash
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-### Run the scheduling benchmark
+### 运行调度回归
 
 ```bash
 .venv/bin/schedule-lab benchmark
 ```
 
-### Run the adaptive multi-family benchmark
+### 运行自适应多问题族回归
 
 ```bash
 .venv/bin/schedule-lab adaptive-improvement-benchmark --baseline-rule lpt
 ```
 
-### Analyze an incumbent
+### 分析并改进 incumbent
 
 ```bash
 .venv/bin/schedule-lab improvement-workflow \
@@ -193,31 +195,31 @@ Carrier-specific commands additionally require the local legacy project, trained
   --output outputs/improvement_workflow.json
 ```
 
-### Audit the carrier schedule
+### 审计舰载机调度
 
 ```bash
 .venv/bin/schedule-lab carrier-audit
 ```
 
-The audit command is read-only and does not replace the current schedule.
+该审计命令为只读操作，不会覆盖当前方案。
 
-### Render the comparison video
+### 生成对比视频
 
 ```bash
 python3 workflows/video/render_schedule_comparison.py
 ```
 
-The video workflow uses one shared time scale. The shorter schedule remains on its final frame while the longer schedule finishes; the two sides are never independently normalized to the same duration.
+视频工作流使用统一时间尺度。较短方案完成后停留在最终帧并等待较长方案结束，两侧不会被分别压缩到相同时长。
 
-## MCP Server
+## MCP 服务 (MCP Server)
 
-Start the server:
+启动服务：
 
 ```bash
 .venv/bin/schedule-lab-mcp
 ```
 
-Available tools include:
+主要工具包括：
 
 - `scheduling_capabilities`
 - `analyze_schedule`
@@ -230,13 +232,14 @@ Available tools include:
 - `audit_current_carrier`
 - `search_current_carrier`
 
-The MCP layer exposes scheduling capabilities to an Agent. It does not replace the solver, validator or domain Oracle.
+MCP 层用于向 Agent 提供调度能力，不替代求解器、验证器或领域 Oracle。
 
-## Repository Structure
+## 项目结构 (Repository Structure)
 
 ```text
 schedule-lab/
 ├── README.md
+├── README_EN.md
 ├── CHANGELOG.md
 ├── EXPERIMENTS.md
 ├── SCHEDULE_LAB_PLAN.md
@@ -256,20 +259,20 @@ schedule-lab/
 └── outputs/
 ```
 
-## Documentation
+## 项目文档 (Documentation)
 
-| Document | Purpose |
+| 文档 | 用途 |
 |---|---|
-| [Technical plan and roadmap](SCHEDULE_LAB_PLAN.md) | Current capabilities, architecture, risks and phased development plan |
-| [Experiment log](EXPERIMENTS.md) | Accepted, rejected, provisional and planned experiments |
-| [Changelog](CHANGELOG.md) | Versioned repository updates |
-| [Optimization Skill](skills/improve-schedules-with-oracles/SKILL.md) | Reusable Agent workflow and validation rules |
-| [Method selection](skills/improve-schedules-with-oracles/references/method-selection.md) | Problem-family and method routing guidance |
-| [Advanced portfolio](skills/improve-schedules-with-oracles/references/advanced-optimization-portfolio.md) | Decomposition, path relinking, Oracle Cuts and robust optimization |
-| [Joint schedule-trajectory design](skills/improve-schedules-with-oracles/references/agentic-rl-and-joint-trajectories.md) | Optional trajectory Tool and Agentic RL boundaries |
-| [Comparison video contract](workflows/video/COMPARISON_VIDEO_TEMPLATE.md) | Shared-clock rendering and audit requirements |
+| [技术计划与路线图](SCHEDULE_LAB_PLAN.md) | 当前能力、架构、风险和分阶段开发计划 |
+| [实验记录](EXPERIMENTS.md) | 已接受、已拒绝、临时和计划中的实验 |
+| [更新日志](CHANGELOG.md) | 版本化仓库更新 |
+| [调度优化 Skill](skills/improve-schedules-with-oracles/SKILL.md) | 可复用 Agent 工作流和验证规则 |
+| [方法选择](skills/improve-schedules-with-oracles/references/method-selection.md) | 问题族与优化方法路由 |
+| [高级方法组合](skills/improve-schedules-with-oracles/references/advanced-optimization-portfolio.md) | 分解、路径重连、Oracle Cut 和鲁棒优化 |
+| [调度—轨迹联合设计](skills/improve-schedules-with-oracles/references/agentic-rl-and-joint-trajectories.md) | 可选轨迹 Tool 和 Agentic RL 边界 |
+| [对比视频规范](workflows/video/COMPARISON_VIDEO_TEMPLATE.md) | 共享时间轴渲染和审计要求 |
 
-## Roadmap
+## 路线图 (Roadmap)
 
 - [x] Unified JSP/FSP/FJSP/HFSP problem representation
 - [x] Deterministic validation and metric audit
@@ -284,29 +287,29 @@ schedule-lab/
 - [ ] Add robustness scenarios and lexicographic multi-objective acceptance
 - [ ] Evaluate Agentic RL and graph encoders after sufficient validated evidence exists
 
-Detailed milestones and acceptance criteria are maintained in [SCHEDULE_LAB_PLAN.md](SCHEDULE_LAB_PLAN.md#8-后续技术计划).
+详细里程碑和验收标准见 [SCHEDULE_LAB_PLAN.md](SCHEDULE_LAB_PLAN.md#8-后续技术计划)。
 
-## Contributing
+## 贡献与更新 (Contributing)
 
-This repository is updated around validated experiments rather than unverified solver output.
+本仓库以“已验证实验”为更新单位，不以未经验证的求解器输出作为正式结果。
 
-Before submitting a change:
+提交改动前：
 
-1. Preserve and hash the current incumbent.
-2. Record the experiment in [EXPERIMENTS.md](EXPERIMENTS.md).
-3. Keep every decision outside the declared neighborhood frozen.
-4. Run generic validation and the required domain Oracle.
-5. Reproduce accepted candidates and compare normalized hashes.
-6. Update [CHANGELOG.md](CHANGELOG.md) under `Unreleased`.
-7. Run the full test suite.
+1. 保留当前 incumbent 并记录规范化哈希；
+2. 在 [EXPERIMENTS.md](EXPERIMENTS.md) 登记实验；
+3. 保持声明邻域以外的所有决策冻结；
+4. 运行通用验证和所需领域 Oracle；
+5. 对接受候选进行复跑并比较规范化哈希；
+6. 更新 [CHANGELOG.md](CHANGELOG.md) 的 `Unreleased` 部分；
+7. 运行完整测试集。
 
-Experiment labels:
+实验状态：
 
-- `ACCEPTED`: all required validation gates pass and the objective strictly improves;
-- `REJECTED`: infeasible, worse, unstable or unreproducible;
-- `PROVISIONAL`: valid only in an abstraction and awaiting domain validation;
-- `PLANNED`: specified but not yet executed.
+- `ACCEPTED`：全部验证通过且目标严格改善；
+- `REJECTED`：不可行、恶化、不稳定或无法复现；
+- `PROVISIONAL`：仅在抽象模型中成立，仍等待领域验证；
+- `PLANNED`：已定义但尚未执行。
 
-## License
+## 许可 (License)
 
-This is a private research repository. No public license is currently granted. Do not redistribute source code, models, trajectory assets or experimental artifacts without permission from the repository owner.
+本仓库为私有研究项目，目前未授予公开使用许可。未经仓库所有者允许，不得重新分发源代码、模型、轨迹资产或实验产物。
