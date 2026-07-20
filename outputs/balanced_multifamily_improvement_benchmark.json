@@ -1,0 +1,1013 @@
+{
+  "jsp": {
+    "controller": "cost-aware-fast-incumbent-improvement-v1",
+    "problemId": "example-jsp",
+    "family": "JSP",
+    "speedProfile": "balanced",
+    "shortlist": [
+      "shifting-bottleneck-decomposition",
+      "critical-block-vns",
+      "local-branching-fix-and-optimize",
+      "critical-path-decision-diagram"
+    ],
+    "budget": {
+      "maxStructuralMethods": 4,
+      "maxBottlenecks": 3,
+      "radii": [
+        2,
+        3
+      ],
+      "maxCandidates": 8,
+      "deterministicRepairTime": 0.75,
+      "maxReleasedFraction": 0.4,
+      "maxOracleCandidates": 2,
+      "earlyStop": "first material strict validated improvement",
+      "effectiveReleasedFractionCap": 1.0,
+      "solverWorkers": 1,
+      "seed": 0
+    },
+    "incumbent": {
+      "hash": "03ae2483e674930e7bb04750d0144648cb2cebe6abc10e85d747b1e08b724088",
+      "makespan": 14,
+      "metrics": {
+        "problem_id": "example-jsp",
+        "kind": "JSP",
+        "time_scale": 1,
+        "makespan": 14,
+        "makespan_display": 14.0,
+        "total_flow_time": 30,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 5,
+            "idle": 9,
+            "utilization": 0.35714285714285715
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 3,
+            "busy": 10,
+            "idle": 4,
+            "utilization": 0.7142857142857143
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 3,
+            "busy": 6,
+            "idle": 8,
+            "utilization": 0.42857142857142855
+          }
+        },
+        "change_cost": {
+          "start_shift": 0,
+          "mode_changes": 0
+        }
+      }
+    },
+    "result": {
+      "hash": "5e538451f4b734994433b965613a0261fa8376a1225e036c2b7aff3089527023",
+      "makespan": 11,
+      "metrics": {
+        "problem_id": "example-jsp",
+        "kind": "JSP",
+        "time_scale": 1,
+        "makespan": 11,
+        "makespan_display": 11.0,
+        "total_flow_time": 27,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 5,
+            "idle": 6,
+            "utilization": 0.45454545454545453
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 3,
+            "busy": 10,
+            "idle": 1,
+            "utilization": 0.9090909090909091
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 3,
+            "busy": 6,
+            "idle": 5,
+            "utilization": 0.5454545454545454
+          }
+        },
+        "change_cost": {
+          "start_shift": 15,
+          "mode_changes": 0
+        }
+      },
+      "accepted": true,
+      "improvement": 3,
+      "fallbackUsed": false,
+      "schedule": {
+        "problem_id": "example-jsp",
+        "assignments": [
+          {
+            "operation_id": "J1.O1",
+            "mode_id": "J1.O1@M1",
+            "start": 2,
+            "end": 5
+          },
+          {
+            "operation_id": "J1.O2",
+            "mode_id": "J1.O2@M2",
+            "start": 5,
+            "end": 7
+          },
+          {
+            "operation_id": "J1.O3",
+            "mode_id": "J1.O3@M3",
+            "start": 7,
+            "end": 9
+          },
+          {
+            "operation_id": "J2.O1",
+            "mode_id": "J2.O1@M1",
+            "start": 0,
+            "end": 2
+          },
+          {
+            "operation_id": "J2.O2",
+            "mode_id": "J2.O2@M3",
+            "start": 3,
+            "end": 4
+          },
+          {
+            "operation_id": "J2.O3",
+            "mode_id": "J2.O3@M2",
+            "start": 7,
+            "end": 11
+          },
+          {
+            "operation_id": "J3.O1",
+            "mode_id": "J3.O1@M2",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "operation_id": "J3.O2",
+            "mode_id": "J3.O2@M3",
+            "start": 4,
+            "end": 7
+          }
+        ],
+        "metadata": {
+          "solver": "ortools-cp-sat",
+          "status": "OPTIMAL",
+          "seed": 0,
+          "domain_validated": true
+        }
+      }
+    },
+    "experiments": [
+      {
+        "index": 0,
+        "strategyId": "critical-block-vns",
+        "signature": "17613308b9ab9bc4c9874042ad85346a6e86a13dd609512d59872071f78834a7",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.75,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 14,
+        "candidateHash": "9df8e3b29905a9cbe47f82e7114ee22b294b5a37681cd828a29f2215aabab22a"
+      },
+      {
+        "index": 1,
+        "strategyId": "critical-block-vns",
+        "signature": "47b075948e0f36c0a7e8e2b29f92005347979c964922b845cf12d190f288e988",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.75,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 14,
+        "candidateHash": "9df8e3b29905a9cbe47f82e7114ee22b294b5a37681cd828a29f2215aabab22a"
+      },
+      {
+        "index": 2,
+        "strategyId": "critical-block-vns",
+        "signature": "8901c87c8a471c812c8f8dace77017cfe986beced4521d525afc26f25da0b2e6",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.75,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": true,
+        "reason": "strict generic improvement",
+        "candidateMakespan": 11,
+        "candidateHash": "5e538451f4b734994433b965613a0261fa8376a1225e036c2b7aff3089527023"
+      }
+    ],
+    "oracleHandoff": [],
+    "acceptance": "strict generic improvement"
+  },
+  "fsp": {
+    "controller": "cost-aware-fast-incumbent-improvement-v1",
+    "problemId": "example-fsp",
+    "family": "FSP",
+    "speedProfile": "balanced",
+    "shortlist": [
+      "constructive-heuristic-proposals",
+      "shifting-bottleneck-decomposition",
+      "critical-block-vns",
+      "local-branching-fix-and-optimize"
+    ],
+    "budget": {
+      "maxStructuralMethods": 4,
+      "maxBottlenecks": 3,
+      "radii": [
+        2,
+        3
+      ],
+      "maxCandidates": 8,
+      "deterministicRepairTime": 0.75,
+      "maxReleasedFraction": 0.4,
+      "maxOracleCandidates": 2,
+      "earlyStop": "first material strict validated improvement",
+      "effectiveReleasedFractionCap": 1.0,
+      "solverWorkers": 1,
+      "seed": 0
+    },
+    "incumbent": {
+      "hash": "91bb70bdbf53cfd77c352ddba4dcd3e39b0ced2776d569a39240178719b53e7b",
+      "makespan": 22,
+      "metrics": {
+        "problem_id": "example-fsp",
+        "kind": "FSP",
+        "time_scale": 1,
+        "makespan": 22,
+        "makespan_display": 22.0,
+        "total_flow_time": 60,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 12,
+            "idle": 10,
+            "utilization": 0.5454545454545454
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 14,
+            "idle": 8,
+            "utilization": 0.6363636363636364
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 10,
+            "idle": 12,
+            "utilization": 0.45454545454545453
+          }
+        },
+        "change_cost": {
+          "start_shift": 0,
+          "mode_changes": 0
+        }
+      }
+    },
+    "result": {
+      "hash": "ff4267fba1808a1a8da0353c91adba2945de7592dc7bd908b8ee26203b417938",
+      "makespan": 19,
+      "metrics": {
+        "problem_id": "example-fsp",
+        "kind": "FSP",
+        "time_scale": 1,
+        "makespan": 19,
+        "makespan_display": 19.0,
+        "total_flow_time": 59,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 12,
+            "idle": 7,
+            "utilization": 0.631578947368421
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 14,
+            "idle": 5,
+            "utilization": 0.7368421052631579
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 10,
+            "idle": 9,
+            "utilization": 0.5263157894736842
+          }
+        },
+        "change_cost": {
+          "start_shift": 21,
+          "mode_changes": 0
+        }
+      },
+      "accepted": true,
+      "improvement": 3,
+      "fallbackUsed": false,
+      "schedule": {
+        "problem_id": "example-fsp",
+        "assignments": [
+          {
+            "operation_id": "J1.O1",
+            "mode_id": "J1.O1@M1",
+            "start": 4,
+            "end": 7
+          },
+          {
+            "operation_id": "J1.O2",
+            "mode_id": "J1.O2@M2",
+            "start": 7,
+            "end": 9
+          },
+          {
+            "operation_id": "J1.O3",
+            "mode_id": "J1.O3@M3",
+            "start": 9,
+            "end": 13
+          },
+          {
+            "operation_id": "J2.O1",
+            "mode_id": "J2.O1@M1",
+            "start": 7,
+            "end": 9
+          },
+          {
+            "operation_id": "J2.O2",
+            "mode_id": "J2.O2@M2",
+            "start": 9,
+            "end": 13
+          },
+          {
+            "operation_id": "J2.O3",
+            "mode_id": "J2.O3@M3",
+            "start": 15,
+            "end": 18
+          },
+          {
+            "operation_id": "J3.O1",
+            "mode_id": "J3.O1@M1",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "operation_id": "J3.O2",
+            "mode_id": "J3.O2@M2",
+            "start": 4,
+            "end": 7
+          },
+          {
+            "operation_id": "J3.O3",
+            "mode_id": "J3.O3@M3",
+            "start": 7,
+            "end": 9
+          },
+          {
+            "operation_id": "J4.O1",
+            "mode_id": "J4.O1@M1",
+            "start": 9,
+            "end": 12
+          },
+          {
+            "operation_id": "J4.O2",
+            "mode_id": "J4.O2@M2",
+            "start": 13,
+            "end": 18
+          },
+          {
+            "operation_id": "J4.O3",
+            "mode_id": "J4.O3@M3",
+            "start": 18,
+            "end": 19
+          }
+        ],
+        "metadata": {
+          "solver": "ortools-cp-sat",
+          "status": "OPTIMAL",
+          "seed": 0,
+          "domain_validated": true
+        }
+      }
+    },
+    "experiments": [
+      {
+        "index": 0,
+        "strategyId": "shifting-bottleneck-decomposition",
+        "signature": "e04c74a3d0319034d014f88cfb475c7ca51ee313b61cb75562ac0ce2e34b2963",
+        "bottleneckKind": "sink_stage_gap",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 22,
+        "candidateHash": "8773a7e76687a13cb41bd2e930023774cf440dc9eca7a647e12e941508a1ede2"
+      },
+      {
+        "index": 1,
+        "strategyId": "shifting-bottleneck-decomposition",
+        "signature": "33ac73c5c7ed1734e8218473fcb92befe891888bb8554dcdb2b27853157dcce1",
+        "bottleneckKind": "sink_stage_gap",
+        "releasedCount": 8,
+        "releasedFraction": 0.6666666666666666,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": true,
+        "reason": "strict generic improvement",
+        "candidateMakespan": 19,
+        "candidateHash": "ff4267fba1808a1a8da0353c91adba2945de7592dc7bd908b8ee26203b417938"
+      }
+    ],
+    "oracleHandoff": [],
+    "acceptance": "strict generic improvement"
+  },
+  "fjsp": {
+    "controller": "cost-aware-fast-incumbent-improvement-v1",
+    "problemId": "example-fjsp",
+    "family": "FJSP",
+    "speedProfile": "balanced",
+    "shortlist": [
+      "dual-price-guided-release",
+      "assignment-sequence-alternation",
+      "local-branching-fix-and-optimize",
+      "causal-closure-fix-and-optimize"
+    ],
+    "budget": {
+      "maxStructuralMethods": 4,
+      "maxBottlenecks": 3,
+      "radii": [
+        2,
+        3
+      ],
+      "maxCandidates": 8,
+      "deterministicRepairTime": 0.75,
+      "maxReleasedFraction": 0.4,
+      "maxOracleCandidates": 2,
+      "earlyStop": "first material strict validated improvement",
+      "effectiveReleasedFractionCap": 1.0,
+      "solverWorkers": 1,
+      "seed": 0
+    },
+    "incumbent": {
+      "hash": "eb9460fc190d81e034190c0f83d9d7ebfd183134b611476dd16a0b49461e7d85",
+      "makespan": 11,
+      "metrics": {
+        "problem_id": "example-fjsp",
+        "kind": "FJSP",
+        "time_scale": 1,
+        "makespan": 11,
+        "makespan_display": 11.0,
+        "total_flow_time": 28,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 1,
+            "busy": 3,
+            "idle": 8,
+            "utilization": 0.2727272727272727
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 8,
+            "idle": 3,
+            "utilization": 0.7272727272727273
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 3,
+            "busy": 10,
+            "idle": 1,
+            "utilization": 0.9090909090909091
+          }
+        },
+        "change_cost": {
+          "start_shift": 0,
+          "mode_changes": 0
+        }
+      }
+    },
+    "result": {
+      "hash": "fe6409e7794e75e6e7d0c79770256e614522627b328280df84e0bd4e52f49fb1",
+      "makespan": 7,
+      "metrics": {
+        "problem_id": "example-fjsp",
+        "kind": "FJSP",
+        "time_scale": 1,
+        "makespan": 7,
+        "makespan_display": 7.0,
+        "total_flow_time": 21,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "M1": {
+            "name": "M1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 5,
+            "idle": 2,
+            "utilization": 0.7142857142857143
+          },
+          "M2": {
+            "name": "M2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 1,
+            "utilization": 0.8571428571428571
+          },
+          "M3": {
+            "name": "M3",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 1,
+            "utilization": 0.8571428571428571
+          }
+        },
+        "change_cost": {
+          "start_shift": 6,
+          "mode_changes": 3
+        }
+      },
+      "accepted": true,
+      "improvement": 4,
+      "fallbackUsed": false,
+      "schedule": {
+        "problem_id": "example-fjsp",
+        "assignments": [
+          {
+            "operation_id": "J1.O1",
+            "mode_id": "J1.O1@M2",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "operation_id": "J1.O2",
+            "mode_id": "J1.O2@M2",
+            "start": 5,
+            "end": 7
+          },
+          {
+            "operation_id": "J2.O1",
+            "mode_id": "J2.O1@M1",
+            "start": 2,
+            "end": 4
+          },
+          {
+            "operation_id": "J2.O2",
+            "mode_id": "J2.O2@M3",
+            "start": 5,
+            "end": 7
+          },
+          {
+            "operation_id": "J3.O1",
+            "mode_id": "J3.O1@M3",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "operation_id": "J3.O2",
+            "mode_id": "J3.O2@M1",
+            "start": 4,
+            "end": 7
+          }
+        ],
+        "metadata": {
+          "solver": "ortools-cp-sat",
+          "status": "OPTIMAL",
+          "seed": 0,
+          "domain_validated": true
+        }
+      }
+    },
+    "experiments": [
+      {
+        "index": 0,
+        "strategyId": "assignment-sequence-alternation",
+        "signature": "040c0694a83ce9f3eefd21f12c232edf1bd8fe7dd0c49f4b48c03051d1117a33",
+        "bottleneckKind": "flexible_resource_imbalance",
+        "releasedCount": 4,
+        "releasedFraction": 0.6666666666666666,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 11,
+        "candidateHash": "9727b9b1c340bc4a8fb20dc51e2e56919f904be3365f2e067d51b2e26f110f7b"
+      },
+      {
+        "index": 1,
+        "strategyId": "assignment-sequence-alternation",
+        "signature": "4d8148a603db2e9e006cec041ee42498462086236aa94c0618506a9c0d5e725d",
+        "bottleneckKind": "flexible_resource_imbalance",
+        "releasedCount": 4,
+        "releasedFraction": 0.6666666666666666,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 11,
+        "candidateHash": "9727b9b1c340bc4a8fb20dc51e2e56919f904be3365f2e067d51b2e26f110f7b"
+      },
+      {
+        "index": 2,
+        "strategyId": "assignment-sequence-alternation",
+        "signature": "eaac9c85aa57dc3e661b37ec50544339f56f90f3d44fa9e5f54a8c41d5c11de5",
+        "bottleneckKind": "flexible_resource_imbalance",
+        "releasedCount": 4,
+        "releasedFraction": 0.6666666666666666,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": true,
+        "reason": "strict generic improvement",
+        "candidateMakespan": 7,
+        "candidateHash": "fe6409e7794e75e6e7d0c79770256e614522627b328280df84e0bd4e52f49fb1"
+      }
+    ],
+    "oracleHandoff": [],
+    "acceptance": "strict generic improvement"
+  },
+  "hfsp": {
+    "controller": "cost-aware-fast-incumbent-improvement-v1",
+    "problemId": "example-hfsp",
+    "family": "HFSP",
+    "speedProfile": "balanced",
+    "shortlist": [
+      "shifting-bottleneck-decomposition",
+      "critical-block-vns",
+      "assignment-sequence-alternation",
+      "causal-closure-fix-and-optimize"
+    ],
+    "budget": {
+      "maxStructuralMethods": 4,
+      "maxBottlenecks": 3,
+      "radii": [
+        2,
+        3
+      ],
+      "maxCandidates": 8,
+      "deterministicRepairTime": 0.75,
+      "maxReleasedFraction": 0.4,
+      "maxOracleCandidates": 2,
+      "earlyStop": "first material strict validated improvement",
+      "effectiveReleasedFractionCap": 1.0,
+      "solverWorkers": 1,
+      "seed": 0
+    },
+    "incumbent": {
+      "hash": "fea296dcdc994f9780ce7355556febc639f0ccdff283891c7d17a261ea464b34",
+      "makespan": 17,
+      "metrics": {
+        "problem_id": "example-hfsp",
+        "kind": "HFSP",
+        "time_scale": 1,
+        "makespan": 17,
+        "makespan_display": 17.0,
+        "total_flow_time": 54,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "S1M1": {
+            "name": "Stage 1 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 11,
+            "utilization": 0.35294117647058826
+          },
+          "S1M2": {
+            "name": "Stage 1 / Machine 2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 11,
+            "utilization": 0.35294117647058826
+          },
+          "S2M1": {
+            "name": "Stage 2 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 9,
+            "idle": 8,
+            "utilization": 0.5294117647058824
+          },
+          "S2M2": {
+            "name": "Stage 2 / Machine 2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 5,
+            "idle": 12,
+            "utilization": 0.29411764705882354
+          },
+          "S3M1": {
+            "name": "Stage 3 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 11,
+            "idle": 6,
+            "utilization": 0.6470588235294118
+          }
+        },
+        "change_cost": {
+          "start_shift": 0,
+          "mode_changes": 0
+        }
+      }
+    },
+    "result": {
+      "hash": "fea296dcdc994f9780ce7355556febc639f0ccdff283891c7d17a261ea464b34",
+      "makespan": 17,
+      "metrics": {
+        "problem_id": "example-hfsp",
+        "kind": "HFSP",
+        "time_scale": 1,
+        "makespan": 17,
+        "makespan_display": 17.0,
+        "total_flow_time": 54,
+        "total_tardiness": 0,
+        "resource_metrics": {
+          "S1M1": {
+            "name": "Stage 1 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 11,
+            "utilization": 0.35294117647058826
+          },
+          "S1M2": {
+            "name": "Stage 1 / Machine 2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 6,
+            "idle": 11,
+            "utilization": 0.35294117647058826
+          },
+          "S2M1": {
+            "name": "Stage 2 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 9,
+            "idle": 8,
+            "utilization": 0.5294117647058824
+          },
+          "S2M2": {
+            "name": "Stage 2 / Machine 2",
+            "capacity": 1,
+            "tags": [],
+            "operations": 2,
+            "busy": 5,
+            "idle": 12,
+            "utilization": 0.29411764705882354
+          },
+          "S3M1": {
+            "name": "Stage 3 / Machine 1",
+            "capacity": 1,
+            "tags": [],
+            "operations": 4,
+            "busy": 11,
+            "idle": 6,
+            "utilization": 0.6470588235294118
+          }
+        },
+        "change_cost": {
+          "start_shift": 0,
+          "mode_changes": 0
+        }
+      },
+      "accepted": false,
+      "improvement": 0,
+      "fallbackUsed": true,
+      "schedule": {
+        "problem_id": "example-hfsp",
+        "assignments": [
+          {
+            "operation_id": "J1.O1",
+            "mode_id": "J1.O1@S1M2",
+            "start": 0,
+            "end": 3
+          },
+          {
+            "operation_id": "J1.O2",
+            "mode_id": "J1.O2@S2M1",
+            "start": 3,
+            "end": 7
+          },
+          {
+            "operation_id": "J1.O3",
+            "mode_id": "J1.O3@S3M1",
+            "start": 10,
+            "end": 12
+          },
+          {
+            "operation_id": "J2.O1",
+            "mode_id": "J2.O1@S1M1",
+            "start": 4,
+            "end": 6
+          },
+          {
+            "operation_id": "J2.O2",
+            "mode_id": "J2.O2@S2M1",
+            "start": 7,
+            "end": 12
+          },
+          {
+            "operation_id": "J2.O3",
+            "mode_id": "J2.O3@S3M1",
+            "start": 12,
+            "end": 15
+          },
+          {
+            "operation_id": "J3.O1",
+            "mode_id": "J3.O1@S1M1",
+            "start": 0,
+            "end": 4
+          },
+          {
+            "operation_id": "J3.O2",
+            "mode_id": "J3.O2@S2M2",
+            "start": 4,
+            "end": 6
+          },
+          {
+            "operation_id": "J3.O3",
+            "mode_id": "J3.O3@S3M1",
+            "start": 6,
+            "end": 10
+          },
+          {
+            "operation_id": "J4.O1",
+            "mode_id": "J4.O1@S1M2",
+            "start": 3,
+            "end": 6
+          },
+          {
+            "operation_id": "J4.O2",
+            "mode_id": "J4.O2@S2M2",
+            "start": 6,
+            "end": 9
+          },
+          {
+            "operation_id": "J4.O3",
+            "mode_id": "J4.O3@S3M1",
+            "start": 15,
+            "end": 17
+          }
+        ],
+        "metadata": {
+          "solver": "dispatching",
+          "rule": "lpt",
+          "domain_validated": true
+        }
+      }
+    },
+    "experiments": [
+      {
+        "index": 0,
+        "strategyId": "critical-block-vns",
+        "signature": "00870ee0eb90704435b1a575db9c6bd656efe1107a77ff55cb955bba361a95f2",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      },
+      {
+        "index": 1,
+        "strategyId": "critical-block-vns",
+        "signature": "61eb66b5328be2851afcc73144cccaa40f1d60f6b1010d0cba154cbb584d7a1d",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      },
+      {
+        "index": 2,
+        "strategyId": "critical-block-vns",
+        "signature": "f47308f91e26c3fe170b0a304be8e04853e4d0fc9bc60a21a6e43c40b9df511a",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      },
+      {
+        "index": 3,
+        "strategyId": "critical-block-vns",
+        "signature": "76c7315aa131742eafa7aa1456234e99fa07c052c63bfada5624b13ff32017e3",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      },
+      {
+        "index": 4,
+        "strategyId": "critical-block-vns",
+        "signature": "cdcf6e649f77aa6a7165fa65b3a1b4e7d049cec4ddf3ff92311492de27e755c5",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      },
+      {
+        "index": 5,
+        "strategyId": "critical-block-vns",
+        "signature": "e89c0a5c9e07ed20f59ca4b15d40181742c58c5881e3d4146f8700386b99ab96",
+        "bottleneckKind": "critical_resource_block",
+        "releasedCount": 6,
+        "releasedFraction": 0.5,
+        "status": "OPTIMAL",
+        "provisional": false,
+        "accepted": false,
+        "reason": "not a strict validated improvement",
+        "candidateMakespan": 17,
+        "candidateHash": "469535f6459a542c4b3acb589f615684d85d972ff866cd446b3bba29e2608667"
+      }
+    ],
+    "oracleHandoff": [],
+    "acceptance": "retain exact incumbent; no validated shortlist improvement"
+  }
+}

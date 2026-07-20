@@ -1,0 +1,2096 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "scope": "exact deterministic proposal on the same incumbent",
+    "effect": "skip repeated domain-Oracle evaluation",
+    "generalization": "none",
+    "acceptedCandidatesBecomeCuts": false
+  },
+  "sources": [
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_gap4_closed_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_gap3_closed_636_2.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_630_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_gaps5_8_630_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_gap6_closed_630_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o3_627_8.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+    "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_lbbd_cut1_gap4_expand10.json"
+  ],
+  "statistics": {
+    "observations": 80,
+    "acceptedObservations": 3,
+    "uniqueCuts": 77,
+    "propagationCuts": 59
+  },
+  "cuts": [
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "04a96546a865fc51bd523c23a090dbf79b4190ea8b4cc911964cd72165ddf6da",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "5fa3e6e97aac4022af3c18c1b4a9b77f3c4468e06d09f3421594d68db7165bf5",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "trueMakespan": 627.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "a8e1d9dcc246abd74153cebeff8c012fe3ba2cfe657d45e78e285997fe129f2a",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 6
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "05ea381be4c3e5633ce061d51c64fa1f09ee52d49ea7c925430a9223962a6a31",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        8,
+        9,
+        10,
+        11
+      ],
+      "scheduleHash": "23ec46afa2cfd3b86420b93fbed3b8ede41acc3132a5ecf2e2a9067873518436",
+      "trueMakespan": 698.7000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "7ad5f26e4a314c3ab10a6ec7f2acc3978d60e1434dfc323dc6d2e6ee424ffad3",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "0bb6e4e859ae7670fec1617720beb52937a659218c64c542d74b6be7fc32993c",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "5afdc6a8a75ee511c59b8b68b237b21ade6bfcaa46189c9ab8a5bfa33af43599",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "fe1951ee305933cd59b69761edc13bf6ab7a7cd7c1774f74476de5d17e4f69b3",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 11
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "11cde3046a611cf3be4b9e559f1490d40e8eb9e7ca97bc8729fbbb53418e98e6",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "9df08fff35cb24c6cdec5d1c3c155e681ef149879de58645d0432ef59c6ed7c3",
+      "trueMakespan": 827.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "af119e231b0dfebb705be35782b7c0cd611c5e1278623a78231bb2e835ed5536",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "184ad9684e7dc3d3b3d8bb20c36aa80a5f9554d40481a443160677fad0a15e72",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "edfb9169279515e736d5dc8695311ce857bbe7aa6707ead9b7044347effc2dfb",
+      "trueMakespan": 876.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "9af24f5e17cc15b8fbd54ab6e9990fbe2198b22110c1a9e957f24da29eb37525",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "27501ae0339f920bfd0ea91f4513a80b5e11ebde635ba56fadc85db86eb48413",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "0f06ec9301d9fe37673fe7865197070136edfe7be8519d369dfb4cba35f3c2c7",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        6,
+        8,
+        10,
+        12,
+        13,
+        16,
+        17,
+        18,
+        19
+      ],
+      "scheduleHash": "77ff04869b392cfa2176cc9de84a5a91e26b1d9667fbba24eea43385868a0e14",
+      "trueMakespan": 867.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "694dc8f7baa7a8d9635f16d2b759ae2f4ee4acd6483f39d675ac87cf48af49cc",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "2d6338648ff0ddebd3cb59badc61bc31054b6a07abc8f4d869c67bb2d84778db",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "d1eb4d08d5876aaaea1433d1be5b77e2aef3b723499e7738c683e16ba13e2e99",
+      "trueMakespan": 900.8999633789062,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "e2d2e6e92bca2be98f3a252eb1a17f66198b780af9a18678a50f566859f3c3a5",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3574360c99dbc5d4a9d24e8a402952f06216dc93ace7015221569da9449d2e39",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "0f06ec9301d9fe37673fe7865197070136edfe7be8519d369dfb4cba35f3c2c7",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "ba1fd32344a44dc37fd581325f2a749a2ffeaf2d0b295dd9012649a5d0d001fe",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "38d292659d5c6f91c9075afdd2267b9defdbf21b2c12081685d44934d975e935",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "66e07047aec34bd712b63dcd954b97c7e3599bec772b585f183635fb3b5d06f1",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "trueMakespan": 627.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "6d267806bcf5b481397554cc9aeccdc4f58959e52f4d16ed869b05176479dbb9",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3aaeba7eb7cd00ccf32a60b7c11162522b6ccc4cb7f1860b9ad3292e11031ded",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "66e07047aec34bd712b63dcd954b97c7e3599bec772b585f183635fb3b5d06f1",
+      "operator": "alns-adjacent-o3",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        9,
+        11,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "scheduleHash": "c61aa386ca626f5c1fdca3bb0bf084245a756ccdff9eba8bdbb8de90359060af",
+      "trueMakespan": 1001.0999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "6a24d7014ab1a27ca4ba28b34570b48005631bfe2d139512ffbc47451432be03",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o3_627_8.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3b2f290ad59ca4452f993954f90336e20c620429fd40d311d02680185e2e5124",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "c1529fe0b663461d072d5f0fcfb334ddf575c9f30ea677aa2f74e0670b3ed275",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        9,
+        16
+      ],
+      "scheduleHash": "13f44d8cbb248432ea654828e70ba47503d32c1b1c2ea0abea6aef4a892fe848",
+      "trueMakespan": 701.2999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "3d217177c440abe543c6f4b07aeacfc1fddd33515c86d3cdbf7e4c1bf3862edb",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3b5d87284b21295354d87e97225a0310b3f3921ffd47d48198d1d8a3f828d831",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "cb042bbe2e64eeb84ffff8db7f24cc4406842fae0d7b61ecc63360b8893b8ac6",
+      "trueMakespan": 787.300048828125,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "262913385a8c3251b7a5a41a22b2a69aeba7dcd925e06c38ffdf597502472137",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3c3ab14aa58b1a2bb4e01844230572f40a3b52afe355dd9550e438529977d301",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "2c31dc2e3f532bba6ca72799647153d0923d05a450218cde098bac660110b162",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "3ea095f7139d2ad714341b8c2cd535f0bdd91adee6b7ce5d1fa03b6d2670aee8",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        8,
+        9,
+        10,
+        11,
+        17
+      ],
+      "scheduleHash": "c1e10cc9741270c3c1203cd7a64cb5a624e185869974d61c98554503e1211d17",
+      "trueMakespan": 666.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "5a9b9909b8e44366e6b7da2931d6f791ee3639782f840648d5bd2937419c44c4",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "4045742094c2397ed4362b9cb371cd9d270ee05d6624a6efba10300326ccc6f3",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "fd02aa94d1de6bec2f53b8c5e5ac6d5b869f171e77afed9692ee6b78292bd68a",
+      "trueMakespan": 931.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "10c25b0c70eb815faa2c116045cdd0fa9e776605f650d9e2adc0690980cfc9e1",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "43f78eafce1fc1e42f7a6f7b6b8b24b8d1d10957417a7467bf78477eedd35e78",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        8,
+        9,
+        10
+      ],
+      "scheduleHash": "a259dd6c4768253215ad44f80c8791fa704339bec2dec0c56f3ad8ca2903a69f",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "00ea392eca25aba3838fb8c3a468f8c504ab89d0705c8d41ddd02bb4377d8c50",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "49fb9c186a1678d1969f7e12ed4058d847f545b7f35afb0b048500efc87242c3",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "44c79b7aeafa80768154e0d2170506be3a759bfc907d798f5ab99786cd4b0ee3",
+      "trueMakespan": 800.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "bf017361370eca583667c98a9e1492f40dcfd526e129d57ba02a282ffe7ac46b",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "49fb9c186a1678d1969f7e12ed4058d847f545b7f35afb0b048500efc87242c3",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        12
+      ],
+      "scheduleHash": "ee60feb08a3cbc2d8b889fe95e6572945d9df39f7881b474b1a96bd50f3ce7cb",
+      "trueMakespan": 838.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "f313356d0a25e3b753d2b9fbb24bbfba1ff8008562b8189f44621eb8b3ec4e99",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "4bdd41da57c29efaa315eaffa3f52d752b1d3151e23b9c939e150b4be45b2902",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11
+      ],
+      "scheduleHash": "a82064c02c63efd64e787309377439b5ae9f058ef71f92cc2a8b1f06f0e44742",
+      "trueMakespan": 794.8999633789062,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "142576f177d26de713c96fc985f14c30e91c6c5d3d8c95f03139b38fc9245b6e",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 6
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "4bdd41da57c29efaa315eaffa3f52d752b1d3151e23b9c939e150b4be45b2902",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "77936aed482bc449037ccfc8059db61d2c9c62ad154ebf19b214c20b3a538545",
+      "trueMakespan": 856.0999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "fc5737dfc93fc53891035841d8bd6c29a6b36dc394583f8c7b4fbe9fc898831f",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "4f2725142b2cae10e9caaa5c1924f7fad2f9df7a984a8911a26c9733bb9df162",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "0b75a846cb65c213358c92611436d21d7d47be47c695ff5ad0c4d400c4c8a482",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        9,
+        11,
+        13,
+        16,
+        17,
+        18
+      ],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "fba5d0bc4f842b12b9beecf6451a323613683e245664fe0898ea4dfe5000804c",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 8
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "4f7bd53b28060e1e40b049362cde9f2abcc186b6ddc63841c3a097a8bddfbe34",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "932b39cb21b562b61e95012bf23aff0e2a4db5499ebe6d6b4b26c20292c84c09",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        9,
+        11,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "50f460f923ffa5d822404d3f191f89cf861c5a03c79c822f2655d2eddca3f311",
+      "trueMakespan": 803.8999633789062,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "7c907107bee0bfc495946d35c7d6dc066bb24e92757e11984a4053027ca589f8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 10
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "5214161f9f24e01e1f73d0b47ad35a4c7ed4819fefeabba610b7fd7535eaaa83",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "f4cc535196c08267c10cc47d31f628f163b46ce12a0c512beb5855c45241662f",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "e9994f6aa3effefc8e7036f0356fb3b78e00dc40794e3df2a65a1bce88017a75",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "52ca44d140fa37367dad199426ce172d9048fa5ce647e409627f98f4006d203d",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "0b75a846cb65c213358c92611436d21d7d47be47c695ff5ad0c4d400c4c8a482",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "scheduleHash": "1cba4664e7e79fa98dc83f7ce20a9199efd4589f0bbf143c297cfb0dbfa71c74",
+      "trueMakespan": 830.6000366210938,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "8d889f596ed71f08a0e4d01421d6f99e8449fb95f6db9821ec697bf5e8bda4d1",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 7
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "56fe9d4af442c48ca64f00a1cfc6cf0f23afad2babcc884612e4123e00246e15",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "fb622eac82208af09aa3680dafa9dc373114cc26d0bf8d1a0ea846f506ee08ab",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        10,
+        11,
+        13,
+        16,
+        18
+      ],
+      "scheduleHash": "c16c354948bf0ac2cea0585c22b673c61e088cb91c4f73373b4a75324a94e088",
+      "trueMakespan": 629.5999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "c50986a0a2683d06cf9842fbf4d3c5c1746e806589848f816bf353f3c150bf90",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 7
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "5e7fe71d2edd4113e6846b9257d0021fe58f4f8909a0e5973dd79f52a61621d3",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "a61d3d63bd848db69ea54629ae709a0609407b4cf378d64163568817dcc43b26",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "4a8c9ee6cb9239ef109919c4a188313ea662836607d47dce91ca1a993cb8eca3",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 6
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "606c478eb8fa02a11ff14379cdf98b83a586d79d8c07f5dccc0cd2c1e205f831",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        8,
+        10,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "e6d72f7e69ee4900fb6182b5501533f634567747bc2fbe7e7aa120d738bce033",
+      "trueMakespan": 815.4000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "56ee5c9d7a6bf4b62b53049107cbb3e7bbbdc6726cee98b804f76ebafa9d515d",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "63eac4e576f2c696d1a40cbd082370ac57041f080950b459ed845226ef83267c",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "0d9d9e04bf586e75502d460f7a4ac96cb2e68b9c2a2c64fe2c7ebd6ef5879fb8",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "a54a4ada60c1d5d9f23ee1423caaae603d35bd93bb5c02fb9eed801b50832c98",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_gaps5_8_630_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "6445d6ac4f61fc3f2c108db164e5f895ea89f411cdeff2ce6fc87f5b43bda303",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "bb55cb4e7cf99d52cf235db05289659a200d37248977713321d30882249154af",
+      "trueMakespan": 852.7000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "83ea659c9cf8a83e07936ebcac025bac1ec2e1cb31af0b1dc8aac549146a7bef",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "71d7ca7ea33b3dfde9c6075d3a2e160ae0d1fe01efc21f64867224852528c8e9",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "871d5df0413c5617faae8b58c17418cb593cf5c26b6892c4d1cc34c40815930c",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        10,
+        11
+      ],
+      "scheduleHash": "05997c71eb2fcfa00f2a502a99e48cf9789283a2dd653fe8d2b01c0b6b3295d5",
+      "trueMakespan": 655.7000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "795c5f9d073e61aec5de54f36ddf07d217521f7736cb4906ab19bb7291dda7ca",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "71f6bffeeff8584c4bdc0d6d563cfce831a21af2590577396a8ef0318c140a95",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "76019494b58db48555044b889ab809b2d8c196a2a63d599b4891cd852c7ca816",
+      "trueMakespan": 775.0000610351562,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "b7649cfc67e348cf20fa1eeafc072c0634b6f1cb429363e4b3fe306e2d6c6967",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "71f6bffeeff8584c4bdc0d6d563cfce831a21af2590577396a8ef0318c140a95",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "c635f6dec0ed9c9c3f135ecd9dae63309aea9dcd8d8cc754a2932b45ebb73c7d",
+      "trueMakespan": 655.1000366210938,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "f20e24325e0b4f57336f1f8b56cda0d2e43ff12ba6969ea61ad6bf7a48d51220",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "74070237bbdaee275daac5a1a90b642ee5e4275b55da086f07f0724ea7e26602",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "5afdc6a8a75ee511c59b8b68b237b21ade6bfcaa46189c9ab8a5bfa33af43599",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "8ba3e796f7d40584a2253bb8be12b39f8eeba497fff79d8515a3911bee7a803f",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 9
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "7479609a0159c74dab46d0b3a87062e6b98f5961b56c55e89442a4b7f190e440",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "d96cb364e0b40421cd121cb41e385e9490a65060139b839e17d4cf84628630e0",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10
+      ],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "fa850d350bb6f0b23150eaf5edbd6b6415e0be5e8d232c087104d9f78851e802",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "7537beecf03156564e700be0b3a17d28109f7b4ae7e9f6c07be7b09cdf0fe554",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        8,
+        9,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "c4751ef59eb107db46512893769add3c488aba4fa2675d57c95b1fd743688414",
+      "trueMakespan": 715.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "d3ee9fac33b524cf0718c829c91b91aa33ef6ad9c2c2c805d1fdf018c6278726",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "7537beecf03156564e700be0b3a17d28109f7b4ae7e9f6c07be7b09cdf0fe554",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "ed254245efbc0adf31aa99f9f68ba67218a276f650fd0423514770e4bc6ade20",
+      "trueMakespan": 791.199951171875,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "ebb5d356d4fec5c339db335fb00758c9bbacabd38fd3326f8754a886eba5566b",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "7740f97e72fc01aefc2b832b0bbe6464ef695ebdbc7490c7e45ba711aa3bd4c4",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        8,
+        9,
+        10,
+        12
+      ],
+      "scheduleHash": "060561ad1d15372c715c006a51d7f9f382c8b2fa85c3f45b7751ace3cb0e53b7",
+      "trueMakespan": 820.4000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "f14d028389f42e7fec30e4015a3e45e3d035bb0ac47c59ca79556e805cc7c8af",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "7de4c9d3bf582070843608449a800c23f1bdb22faf0068eac295e517c6623076",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "e0a3b888ddb859f874921b2f7301f8970b6b66f8bd0815da9f30b7237f0f8bb3",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10
+      ],
+      "scheduleHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "trueMakespan": 627.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "17cf74da8d28a8ed62de72ea098c0e2a05a56c2b30fe9bfc87dcea52c38b6932",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_gaps5_8_630_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "82459889b7519e886f6c394f75fe96c2569fe000c570a6d0f5a6f32d081ca941",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "44764bd4ed3bb01e14efdc6f1bb02de18ce0845a0777274ea4585fc63f302d57",
+      "trueMakespan": 956.2999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "7f17e38b9e825fe938aba6c29b52bbda85f8cd09e6921d1d5a4da5fd5601ffa5",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "88edb6d5681901a81d594bb8d9b4d1325905c51db061a5026b7893daf8fbe638",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "932b39cb21b562b61e95012bf23aff0e2a4db5499ebe6d6b4b26c20292c84c09",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        8,
+        9,
+        10,
+        11,
+        13,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "51add632f1514b6a203a16f6bcb8cf5f2b94d058dcc868764e505e249a1db873",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 11
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "8a8b95e5e3a4b5383066413a0a84ff43acf6ee013b4fbbbb38a25ef42562a02b",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "990a9423ac4727541dd60193dd60a1e757484919a4293a90d68195bd50f864ba",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "998dd08371918207421a7a488149ecffb9466f07b759473120ebfeeb7c7af186",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "1fc48c22f89780511f8096d52a665e6c9377ea406bb782cd51d0adebce32c93c",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "80230eb50f021d8272beb4814298a533bc74dc4f166cb3c8cbd103af19dd52bf",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "9c86d9b7c104a325432ed2dff2e870cbc488b1cc266d0b2893fa895f14c5fa76",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        6,
+        17,
+        19
+      ],
+      "scheduleHash": "a5ba38a3d20fcd6e9aa5cd85caee735b58903dbff86e7e304c3e7b567bb9e001",
+      "trueMakespan": 843.7000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "686d8e22d1e96eecd52c1eb118d28bb1115fe49185c5313b46d4416717f5c83c",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_adjacent_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "9f6a8a357e52b22db32d9263f1ef5a3c2bd3565c58285c6191daca149c4557a7",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "c910f7aa1f64e6814f157b34edd09c84153145a69345f3308e7a584bb2554e6c",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        11
+      ],
+      "scheduleHash": "992665b652f259d22baf5db0e62b1a94ed8dc5c7297ce29d47629985cadf0dc7",
+      "trueMakespan": 649.9000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "1171f38f5d5592bc1147e8da698922778c18156771f75154a793a00f445a3924",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_630_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "a02553d64a2521914abd9fed4e5e01d2e4d15f8cb9877e08dc7366320efd8257",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "984fbe11f1aca241e883435319e31d96d10f76c596e558e6c1589fc44dcf45eb",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        9,
+        10,
+        11,
+        13,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "6c0fca3cae8b31a8ce74ea030fccc6b16804c37d0d40526d1b81ccb00bf0cf84",
+      "trueMakespan": 890.0999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "d86caaf5e3a3d0aeb092822e544b8ce725787084f377a8ecfcd00ce6ea64cccf",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "a19d59d8dfaa2dcf03499c0966aeafb5cdb1ae7c8866bfa3b89033d13393b1d2",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "c1529fe0b663461d072d5f0fcfb334ddf575c9f30ea677aa2f74e0670b3ed275",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "6feb82c6b3ae66e24a2a94df2cd6be579598ed49cef64bc01ca90e328b2d3e52",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "a41614516518a83e6037a1dddd87002636b2fcf01410336187ad80004ade90aa",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "8dbc6cf9a346530fff9e7516f7ae809b0220c1a33338dd832c0f644091511290",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10,
+        12
+      ],
+      "scheduleHash": "871e5ccb033465fea51f9b176e9aca26c7f53e85e3688775908cc931e6b83a86",
+      "trueMakespan": 663.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "a283ca8fe13035a511b503e397afedd2fbc56f50a573ccd18c16d321c11bef79",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_630_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "a58ae2654f16b3ea48372f2d5b58b78b6cdd998df58d551598839e96723216ec",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        3,
+        8,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "0d34721f9002feaafb85f77867c844c09cb741d0e1bb05cba7e44c0f41d954cf",
+      "trueMakespan": 644.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "f4007f04be152113cb871457ca5287833d6c27b170ca15ff941d14a7c1c6e325",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_sparse_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "a6332cf5fde48fc6152fa006673dde6b2064cdfcd0b10045171342ea21e7b3c8",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "d96cb364e0b40421cd121cb41e385e9490a65060139b839e17d4cf84628630e0",
+      "operator": "alns-adjacent-o3",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        10,
+        12
+      ],
+      "scheduleHash": "95231400f4afd2fef5e5a661441fb30507e854a074a8ba35170805d4be896ce3",
+      "trueMakespan": 693.1000366210938,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "da7bd8d735362b707c3b754d65367f50f762fa0da6d92ceb6911bc5f9442371d",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o3_627_8.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "af571b6a971d430c7e906d8fad938171629ade9a5515ea5bdae805b4de901f85",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "932b39cb21b562b61e95012bf23aff0e2a4db5499ebe6d6b4b26c20292c84c09",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "trueMakespan": 637.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "3505b9c4f64432e49aa516b6e2da673656ead070a35fd3aa5d71ae2dc07279b8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 9
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "b11c035d853348ec9efc31a140f766ad9b11aaeb3abb7f650a890b16addc5c19",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "36d276d8b5f665f3906df9bfd5353473e8d27a36240609bb20bd44f2ef66cc69",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "9c98f8fb77fdf31448b2395cd8d6baeea3fd46561678003213a2de3105ae802c",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_gaps5_8_630_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "b3e200175d15c6153317a0a01ea19e69d5543ba9de98bea42550dbb85c817601",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "cace2bfe2c10a3896db66cabd6923de839b89fb6263c018e328ff342c05823c8",
+      "trueMakespan": 831.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "050f2554d799e56c42e1ec9837885dc6b7a108fa18f081c51d699c685b5ed098",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "b3e200175d15c6153317a0a01ea19e69d5543ba9de98bea42550dbb85c817601",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "6b967717f624dc5f6655bc3efdcf431ba72fbd8a952a7ff5316de88cf3fafa0f",
+      "trueMakespan": 794.7000122070312,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "514fdc7f82caec55ee8e0959dc5c6f17e5a06e35a7283924f7daf447ef0a8a1f",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "b592108a1fb79b88edb618ee571f6e01aa793aa38876264a8b9f3d7114e988ac",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "1309c025ccb4f7ac8dcb7df120aa24f416cd1018a609e1165b539984c25a0934",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        11,
+        13,
+        16,
+        18
+      ],
+      "scheduleHash": "bc80ac343a8004a05971f0ab74a48c1932a4c01657325ea3a83073a108cdcb84",
+      "trueMakespan": 632.4000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "936cc71ac667c5284f2692fb991ac1bd20a89df73710e9fab51e5c298c415829",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_gaps5_8_630_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bb8cd6042358dac72d3da6b8e1126e192b917cefc5d00611fe8df4d64760c44f",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-boundary-pull",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        12,
+        17,
+        19
+      ],
+      "scheduleHash": "ace7d45d497582adec7e18b9d0c55e391b6237b4d6b6c6eecaacc9267b129daf",
+      "trueMakespan": 872.5999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "1d3513c26834b0c0874caee428c8536450e87e7370a5ed181c8c5af6b02696e1",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bd5837981571520da5ba71b2bf7fe423f835ca91fceb2c8703a8965237999769",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "871d5df0413c5617faae8b58c17418cb593cf5c26b6892c4d1cc34c40815930c",
+      "operator": "alns-adjacent-o3",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        3,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "2db8a76aa8a13ae1f4778df52281deedb1eb8cb380a15b99521eb22dc83dcbdc",
+      "trueMakespan": 638.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "68b19da36dadbd46b8329897b363fd3b1e420bc2eaa46f455438a3794a18efa3",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o3_627_8.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bdd1439e974bf6f9973a671581e0a507147d8dfe0c7c5dc17e901ad7bcf68b4f",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "5afdc6a8a75ee511c59b8b68b237b21ade6bfcaa46189c9ab8a5bfa33af43599",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10
+      ],
+      "scheduleHash": "d80d28aebec3aea1076213d028ffe692b6320fc1f861ca15c87762aec5386f88",
+      "trueMakespan": 654.9000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "bcab7bee674f2e0c5802768764a20b805615cddfc227ed539536b32049bda8e8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 10
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bf71e67ddad683ed46a56abf3c24f498827e7399a9a527f62086993022af55bd",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "eeb2cc4b9c0728101ecf8a7287838e01f54e2053afdee77fdcca9c17abb60d5b",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        9,
+        11,
+        13,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "ce7db7e551799e09e9536e9a583d9c860dc6dc4d5a758b7e28134984a5424c64",
+      "trueMakespan": 799.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "2f82041738bd1513b1b09709adfe820fa10dd562131ec2c76e11ad2457b2afd8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_630_5.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bfe5b4e01c2c24ae1b4c52e9f64faff9c5a36ded6306eeb117199208545a396b",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "a61d3d63bd848db69ea54629ae709a0609407b4cf378d64163568817dcc43b26",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        9,
+        11,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "2b352c2d7ac6bd760d46d5a66bda4cc05ab66287db57041b63f13d81873b698a",
+      "trueMakespan": 803.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "970f4ae841339d2da19115b2982db68dd31f8b2071aaddcf00ad91dc62c82eb7",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 7
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "bfeee90807d7372a93371290aef5f5fd40ee4e29298afda75c855941825019ac",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "984fbe11f1aca241e883435319e31d96d10f76c596e558e6c1589fc44dcf45eb",
+      "operator": "alns-adjacent-o3",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        9,
+        10,
+        11,
+        12,
+        13,
+        15,
+        16,
+        18
+      ],
+      "scheduleHash": "642ddea492df186139737094a6a0a728dedfec2dbccb6e4997e735ca58f5e838",
+      "trueMakespan": 948.2999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "160dfeead2745b28f3224aed31781480d2773794f57dfa3e408870966e239ead",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o3_627_8.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "c489be44b258044514ccbd8ef52ad86a89b21c69f719218a777e80e49d989a27",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "5a7c1c54fae73a3b0d404eb14afcb2013becb9cea5e1b5ff0aac94d6e86cb731",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "a76ff547c2720d5b59daa8f1116900bc163b4c5bf869abfe9516a174d7c70f9e",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_lbbd_cut1_gap4_expand10.json",
+          "candidateIndex": 0
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "c7194b96090c02a9ed2506ca541a2dfcf08a7a4f6a9fd4c309a161a408411c2e",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "2f64bfa51fe91953272f809c5c715400f5eb4e52d7119cb79cbe5e0753620725",
+      "trueMakespan": 831.2999877929688,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "71109aebc652c987cacaf20d3351699a8b40f46c7c655c3a373bb0c84ff856c2",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "c7194b96090c02a9ed2506ca541a2dfcf08a7a4f6a9fd4c309a161a408411c2e",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-wait-first",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "77936aed482bc449037ccfc8059db61d2c9c62ad154ebf19b214c20b3a538545",
+      "trueMakespan": 856.0999755859375,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "bd7fceba7f90123f2aff45065cf72ed94fabf813700609cee0995d1cdcd9a96e",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_sparse_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "c8e97717234251727d073af28f70f4a2f1ec9623593fe0a4d7e735a5413f02ae",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "0f06ec9301d9fe37673fe7865197070136edfe7be8519d369dfb4cba35f3c2c7",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        8,
+        10,
+        11,
+        13,
+        15,
+        17
+      ],
+      "scheduleHash": "d928db6a422d87a3a0a147b8e0f27df9735c5b1d165f19a9248bbe56ed885379",
+      "trueMakespan": 647.4000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "116763e75411fc504b2fc61df0bbaae559311752419db01caa74d34f22cb990f",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 2
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "cbe9ef11d54c24f841e0312260052430e52e03a96d65d90e02410f30d3363b72",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "108b5391100ca24376921f8ab3587fc33bc9304341ef1c96833113ade54615a9",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10
+      ],
+      "scheduleHash": "b26b0583aa0e756ce70a8c3f9a3496948c2860275fea7897f6290e9017d1eaf3",
+      "trueMakespan": 656.300048828125,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "56b02922704141c4ab562d6c6037f7b3856850f2f683d68b02ccf87cb1e784f8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "cf7ce42b47b45ae1aeedfa977eda98d88c534ba0956d510ac0b84df82da4655e",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "a61d3d63bd848db69ea54629ae709a0609407b4cf378d64163568817dcc43b26",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        11,
+        13
+      ],
+      "scheduleHash": "a19dca656493e0f57758dc3cc85275945868c6ce7c2a5eaccec5c00890f8c87c",
+      "trueMakespan": 665.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "9a398c61c65ef7ef8e46cefaa9309c3426227c02442a37ec9d33e12e27d7d636",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 8
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "d31a5ebf7565bac1e32122d9ded55f86eb50d24163b1af7e3ac4c7189f8cfc4f",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "f4cc535196c08267c10cc47d31f628f163b46ce12a0c512beb5855c45241662f",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        8,
+        10,
+        12
+      ],
+      "scheduleHash": "280438b42588604b658ca6e2b3454c7f00300a05c30dc82460441efc5fa5ec05",
+      "trueMakespan": 820.300048828125,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "122a92a76917c497eff89bc9453eec678c466780fa2e9f9e9a95a15c4098213a",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "dd000c113645f3cc381dd291f22ff001df9588f70a8efd6517f6ba3e50a9137d",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "c1529fe0b663461d072d5f0fcfb334ddf575c9f30ea677aa2f74e0670b3ed275",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        8,
+        10,
+        12,
+        13,
+        16
+      ],
+      "scheduleHash": "327639d9909fb78d1425a2f160ffa2159cb118d48034fae1cbbdcc9a03e09503",
+      "trueMakespan": 764.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "54cabf1a281917a922a525cc18a7ac094400de623d4f07897c2b7beec9d439f8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "dd124b1e788dcbd08b54f83b85fc3a1a16190175de251d3f81fdd5de3a634f08",
+      "incumbentHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "neighborhoodSignature": "ad1db5b8b7e789a1056106c7b719df2dd7ae3bc89aac86a7345de8de18f38f75",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "81a12f5711a8752463d11bce1785403b19aa3bcbf1e02ee88a0d8baa745afa66",
+      "trueMakespan": 630.5,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "ad77c420aec321ffddb54f1c570c6fe1881516e145bc2110763066405fa8d503",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter3_bayes_o4_630_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "dfb71ac5545ab3c6ebd94c81a128a55d3eb054cfdfb895792d0ea26c6dfc9e60",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "1fc48c22f89780511f8096d52a665e6c9377ea406bb782cd51d0adebce32c93c",
+      "operator": "alns-adjacent-o5",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        10,
+        12
+      ],
+      "scheduleHash": "433dc57307074489bc6da8a336c9b26374c02f445d5a234eb3e1890ea9e2daca",
+      "trueMakespan": 654.9000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "4366bac4c9bb133ae52dbde17a268461d7283f7fbaf9ecc73c0b322cdf2e40b8",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "dfe48abf5275fc3750a111fed179eda4b873928b8515f87fc3f33642154ec317",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "0b75a846cb65c213358c92611436d21d7d47be47c695ff5ad0c4d400c4c8a482",
+      "operator": "alns-adjacent-o6",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "trueMakespan": 636.2000122070312,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "9bb092f9a3598eafc04f89182003c0f0a09eff415e86349e66b614465ea29529",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 6
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "e0ea2fd70226b71747376b917770184ec0f4564f0056177223854243a596126f",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "cp-sat-fixed-mode",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        0,
+        2,
+        3,
+        6,
+        8,
+        9,
+        10,
+        12,
+        14,
+        17,
+        19
+      ],
+      "scheduleHash": "f4dd298d19d5d3b2c4b481c576035caee3b014c1becb12e95e9b1a56b76b186e",
+      "trueMakespan": 722.9000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "48000054ba89d80c66798a71e9a500a3e2491dd1cfd0ac0ca44dc0c712f43996",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 3
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "e85c8ad5e9fc3181806712345ef29c8d7651a6b287be26576b97408adf4ae0a0",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "bdf5597356447e2361295d65b5a02e5f2d13d66dd0c435dc458006b4a753aee7",
+      "operator": "cp-sat-fixed-mode",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        3,
+        6,
+        9,
+        10,
+        11,
+        12
+      ],
+      "scheduleHash": "f6f22f0f73c8bc709a2559895b1d98e762d20b7c1ab586bca92b2f1ccc4176b9",
+      "trueMakespan": 752.4000244140625,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "366e605c485d4f3bb64b15d4fb062ecf3a2862c9ed0ebd0c2a19284f4bc1ab31",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_637_5.json",
+          "candidateIndex": 7
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "e9a02021abc2cac40c3195ef65d2d51640e012450e2543d354c2293f34e2d65b",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "ae637c4f8ce6385a6dc8343eb21490ddf402b2a8b79bc89c7939cc8fde92a187",
+      "operator": "alns-sink-order",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        2,
+        8,
+        10,
+        12
+      ],
+      "scheduleHash": "280438b42588604b658ca6e2b3454c7f00300a05c30dc82460441efc5fa5ec05",
+      "trueMakespan": 820.300048828125,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "7f0eaee15759afb24f71b4ab46578518e5cf8311a35524b1cc1549a8a9ca5175",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_suffix_637_5.json",
+          "candidateIndex": 1
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "ea4d7671ee12e17acdf32549c76108b717f8826a08bea9f3bc1898b629332868",
+      "incumbentHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "neighborhoodSignature": "042ab7f7f526f6508afd0c2135dbcaa01a2410f7c5f223c3ddcebd5f4764fe68",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "not-a-strict-improvement",
+      "requiredExpansionJobs": [],
+      "scheduleHash": "549822654c4c253c9f88d25577021f235b5ffbc7370f660787116b2741adfd1f",
+      "trueMakespan": 627.7999877929688,
+      "domainConstructed": true,
+      "propagationClosed": true,
+      "id": "0627907026ecb00b13d0d25fef37170834e5478ed33f3a3e836948cfc1835752",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter4_bayes_o4_627_8.json",
+          "candidateIndex": 4
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "f1e272c4332421a5d6f10330c9e90683d1e9ab77e16c63f1e219d427b439a6b6",
+      "incumbentHash": "90253becd1419d75348ec8cbb7a73a25889c8cc439d102d44a0d4a1e3dc33102",
+      "neighborhoodSignature": "f4cc535196c08267c10cc47d31f628f163b46ce12a0c512beb5855c45241662f",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        9,
+        11
+      ],
+      "scheduleHash": "048ee865de0a9918a50aea853172d40a8a9645bc4853aa027082c617122852ed",
+      "trueMakespan": 657.0,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "f6aa3d1c8be5b300f90a8e07a61fb45c6c1e34ee1d229fccea11b27b5a1e0f4c",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_traced_single_gaps_637_5.json",
+          "candidateIndex": 5
+        }
+      ]
+    },
+    {
+      "kind": "exact-no-good",
+      "proposalKey": "f97fc19d807e4ca2cde6b5124a839686f3a4881644374cda99c1b8bc44e92880",
+      "incumbentHash": "a44505aaf7d5dfebfad449bbfe65f8b18b3875e786c5dba54a84285df4a01eb3",
+      "neighborhoodSignature": "1fc48c22f89780511f8096d52a665e6c9377ea406bb782cd51d0adebce32c93c",
+      "operator": "alns-adjacent-o4",
+      "seed": 0,
+      "reason": "propagation-not-closed",
+      "requiredExpansionJobs": [
+        10,
+        12
+      ],
+      "scheduleHash": "b187e48379e19f504380c263527f4bd3d3daae07bdf08b75eece66815c63ea72",
+      "trueMakespan": 675.5,
+      "domainConstructed": true,
+      "propagationClosed": false,
+      "id": "60eea8a6e13369b943a36e57e7ffa36b9c311b11ca4c6305b87b9ff6342a3eed",
+      "evidence": [
+        {
+          "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_search_iter2_single_gaps_636_2.json",
+          "candidateIndex": 2
+        }
+      ]
+    }
+  ]
+}

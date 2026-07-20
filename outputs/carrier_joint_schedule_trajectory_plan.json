@@ -1,0 +1,347 @@
+{
+  "architecture": "joint-schedule-trajectory-lbbd-v1",
+  "problemId": "carrier-20-deck-update",
+  "family": "CARRIER",
+  "settings": {
+    "time_resolution": 0.1,
+    "route_library_version": "sha256:e23298df7d252dfc39c15276c0e3a69a2f8c3171c823b60ae81c57dfe6ad21b7:220-files",
+    "geometry_version": "sha256:6b74e076023fb09f1af91c8ab8a9cab76d781bd0a312697d6ad4c2704ff3b5a8:1-files",
+    "oracle_version": "sha256:071a21684092eed7aabfc0690f32ae7209376b8b7d4edb66b741d53fda09f5b7:4-files",
+    "exact_target": true,
+    "validated_experiment_count": 63,
+    "trajectory_observation_count": 1
+  },
+  "incumbent": {
+    "makespan": 6278,
+    "genericValid": true,
+    "preservation": "warm start and exact fallback"
+  },
+  "currentCarrierGap": {
+    "observedImplementation": "MAT trajectory is selected indirectly by job plus machine/spot binding; pairwise collision checking resolves conflicts mainly by 0.1-second start delays",
+    "missingJointDecisions": [
+      "explicit route-column choice and compatibility independent of opaque environment state",
+      "same-binding spatial route alternatives",
+      "vehicle-path-time co-assignment",
+      "conflict precedence selection",
+      "speed/acceleration-aware travel time"
+    ]
+  },
+  "masterProblem": {
+    "engine": "CP-SAT or MILP with incumbent hints and one deterministic worker",
+    "variables": [
+      "operation-machine assignment",
+      "resource and launch sequence arcs",
+      "tractor/vehicle assignment and continuity",
+      "preparation spot, catapult and lane binding",
+      "transport release/deadline windows",
+      "candidate route-column choice"
+    ],
+    "constraints": [
+      "job precedence and eligible modes",
+      "machine, vehicle, preparation and catapult capacities",
+      "choice-link and route-family consistency",
+      "known travel-time lower bounds",
+      "accumulated Benders conflict cuts",
+      "bounded Hamming distance from the incumbent during local improvement"
+    ],
+    "objective": [
+      "hard feasibility",
+      "true launch/service objective",
+      "joint makespan",
+      "transport and collision delay",
+      "schedule/route disruption"
+    ],
+    "boundRole": "provides a valid lower bound when every relaxed transport bound is valid"
+  },
+  "trajectorySubproblem": {
+    "enginePortfolio": [
+      "Conflict-Based Search for small discrete optimal MAPF subproblems",
+      "time-expanded network ILP/CP-SAT for exact conflict-free routing",
+      "safe-interval or shortest-path pricing for individual route columns",
+      "continuous trajectory optimization only after a discrete conflict-free plan"
+    ],
+    "inputs": [
+      "vehicle assignments",
+      "origins/destinations and route candidates",
+      "transport release/deadline windows",
+      "vehicle geometry and kinematic limits",
+      "deck graph and occupied space-time intervals"
+    ],
+    "outputs": [
+      "conflict-free timed trajectories",
+      "real transport durations and inserted waits",
+      "feasibility certificate or minimal conflict explanation",
+      "feasible upper bound for the joint objective"
+    ]
+  },
+  "cutFamilies": [
+    {
+      "kind": "route-assignment-no-good",
+      "meaning": "this machine/vehicle/route combination cannot meet its windows"
+    },
+    {
+      "kind": "conflict-precedence-disjunction",
+      "meaning": "one of two transports must clear a shared segment before the other enters"
+    },
+    {
+      "kind": "minimum-separation",
+      "meaning": "enforce an evidence-backed temporal offset for a conflicting pair"
+    },
+    {
+      "kind": "travel-time-lower-bound",
+      "meaning": "feed the shortest feasible route duration back into scheduling"
+    },
+    {
+      "kind": "vehicle-continuity",
+      "meaning": "exclude assignments that make a vehicle unreachable for its next task"
+    },
+    {
+      "kind": "causal-closure-expansion",
+      "meaning": "release only outside jobs proven to propagate a route/mode change"
+    }
+  ],
+  "outerLoop": [
+    "solve a bounded master candidate from the incumbent",
+    "discard duplicate or lower-bound-dominated candidates",
+    "solve the exact/controlled trajectory subproblem",
+    "accept a feasible joint upper bound or extract a conflict cut",
+    "update lower bound, upper bound and Cut cache",
+    "stop at zero certified gap or the deterministic budget"
+  ],
+  "optimality": {
+    "certifiableWhen": [
+      "the scheduling master is solved exactly",
+      "the routing subproblem is solved exactly",
+      "space, time, vehicle dynamics and objectives use the declared finite model",
+      "the global lower and feasible upper bounds meet"
+    ],
+    "claim": "global optimum of the declared discretized joint model at zero gap; otherwise return best feasible solution, lower bound and certified gap",
+    "realWorldLimit": "continuous hydrodynamics, uncertain motion and omitted physics prevent an unconditional claim of globally optimal real-world deck operations"
+  },
+  "diagnostics": [
+    {
+      "kind": "critical_resource_block",
+      "score": 965,
+      "operations": [
+        "J10.O1",
+        "J10.O2"
+      ],
+      "window": [
+        3614,
+        4579
+      ],
+      "resource": "T1",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 633,
+      "operations": [
+        "J18.O1",
+        "J18.O2"
+      ],
+      "window": [
+        985,
+        1618
+      ],
+      "resource": "T1",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 558,
+      "operations": [
+        "J9.O1",
+        "J9.O2"
+      ],
+      "window": [
+        3279,
+        3837
+      ],
+      "resource": "T3",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 531,
+      "operations": [
+        "J15.O1",
+        "J15.O2"
+      ],
+      "window": [
+        1516,
+        2047
+      ],
+      "resource": "T4",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 481,
+      "operations": [
+        "J3.O1",
+        "J3.O2"
+      ],
+      "window": [
+        2593,
+        3074
+      ],
+      "resource": "T4",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 478,
+      "operations": [
+        "J7.O1",
+        "J7.O2"
+      ],
+      "window": [
+        40,
+        518
+      ],
+      "resource": "T4",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 470,
+      "operations": [
+        "J6.O1",
+        "J6.O2"
+      ],
+      "window": [
+        0,
+        470
+      ],
+      "resource": "T3",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    },
+    {
+      "kind": "critical_resource_block",
+      "score": 458,
+      "operations": [
+        "J4.O1",
+        "J4.O2"
+      ],
+      "window": [
+        2645,
+        3103
+      ],
+      "resource": "T5",
+      "recommendedOperator": "critical_block_adjacent_swap"
+    }
+  ],
+  "agenticRL": {
+    "role": "select bottleneck, neighborhood, operator, route column and solver budget; never certify feasibility or directly emit unconstrained start times",
+    "learningStages": [
+      {
+        "stage": 0,
+        "method": "deterministic contextual bandit/posterior routing",
+        "trigger": "default while validated evidence is sparse"
+      },
+      {
+        "stage": 1,
+        "method": "offline imitation of deterministic and exact-solver decisions",
+        "trigger": "at least 500 deduplicated validated experiments"
+      },
+      {
+        "stage": 2,
+        "method": "offline/conservative actor-critic for neighborhood control",
+        "trigger": "imitation policy passes held-out feasibility and regret gates"
+      },
+      {
+        "stage": 3,
+        "method": "shielded online fine-tuning in simulator only",
+        "trigger": "never before deterministic rollback and Oracle shielding exist"
+      }
+    ],
+    "encoder": {
+      "recommendedNow": false,
+      "decision": "use explicit diagnostic features first; collect validated data before training an encoder",
+      "scheduleGraph": {
+        "nodeTypes": [
+          "operation",
+          "job",
+          "resource",
+          "vehicle",
+          "stage"
+        ],
+        "edgeTypes": [
+          "precedence",
+          "eligible-mode",
+          "current-assignment",
+          "resource-order",
+          "blocking/starvation",
+          "choice-link"
+        ],
+        "features": [
+          "duration and remaining work",
+          "earliest/latest time and slack",
+          "criticality and bottleneck score",
+          "resource utilization and queue length",
+          "incumbent mode/order and change cost"
+        ],
+        "candidate": "heterogeneous message-passing GNN or graph transformer"
+      },
+      "trajectoryGraph": {
+        "nodeTypes": [
+          "waypoint",
+          "route-segment",
+          "vehicle-state",
+          "conflict-event"
+        ],
+        "edgeTypes": [
+          "spatial-adjacency",
+          "route-membership",
+          "time-overlap",
+          "collision-conflict"
+        ],
+        "features": [
+          "position, length, curvature and direction",
+          "time-window occupancy and residual capacity",
+          "vehicle radius, speed and acceleration bounds",
+          "pairwise minimum distance and inserted delay"
+        ],
+        "candidate": "route-graph GNN or polyline transformer"
+      },
+      "fusion": "cross-attention between operation/vehicle assignments and route-segment occupancy"
+    },
+    "actionSpace": [
+      "select one diagnosed bottleneck",
+      "select one compatible method from the cost-aware shortlist",
+      "select bounded neighborhood radius/released fraction",
+      "select eligible machine, vehicle or route-column candidates",
+      "select deterministic solver conflict/node budget",
+      "request one evidence-backed Benders cut or causal expansion"
+    ],
+    "reward": {
+      "primary": "validated lexicographic objective improvement",
+      "efficiency": "improvement divided by deterministic solve plus Oracle cost",
+      "stability": "penalize changed modes, sequence arcs, routes and start-time disruption",
+      "hardPenalty": "reject infeasible, collision, frozen-region or route-continuity violations",
+      "trainingRule": "score post-Oracle schedules, never pre-Oracle estimates"
+    },
+    "safetyShield": [
+      "mask ineligible machines, vehicles, paths and actions",
+      "freeze every decision outside the declared neighborhood",
+      "repair every learned proposal with CP-SAT/MILP/CBS",
+      "run generic validation and trajectory/collision Oracle",
+      "retain incumbent unless the complete objective is strictly better"
+    ]
+  },
+  "implementationRoadmap": [
+    "version and convert MAT trajectories into a route/space-time graph",
+    "add multiple legal route columns per transport instead of one fixed path",
+    "build exact pairwise and multi-vehicle conflict explanations",
+    "connect CP-SAT master to trajectory subproblem through versioned cuts",
+    "prove the loop on small instances before training any neural encoder",
+    "collect validated decisions and train imitation/bandit controller",
+    "only then evaluate shielded Agentic RL against deterministic routing"
+  ],
+  "source": {
+    "schedule": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_alns_best_iter3_gap6_closed_630_5.json",
+    "legacyRoot": "/Users/guangyuwu/Desktop/sortie code/comparision_pass_video/comparision_pass -2025-9-7",
+    "routeFiles": 220
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Schedule and Route Optimization Harness"
+  short_description: "Improve schedules and routes with solvers and Oracles"
+  default_prompt: "Use $improve-schedules-with-oracles to diagnose and safely improve this existing schedule, including joint route optimization when needed."

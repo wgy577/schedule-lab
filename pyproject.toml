@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schedule-lab"
+version = "0.1.0"
+description = "Constraint-safe agentic scheduling laboratory for JSP, FSP, FJSP, HFSP and carrier operations"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp>=1.28,<2",
+  "matplotlib>=3.11,<4",
+  "gym>=0.26,<0.27",
+  "ortools>=9.15,<10",
+  "pydantic>=2.13,<3",
+  "pyjobshop>=0.0.9,<1",
+  "scipy>=1.18,<2",
+  "torch>=2.13,<3",
+]
+
+[project.scripts]
+schedule-lab = "schedule_lab.cli:main"
+schedule-lab-mcp = "schedule_lab.mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

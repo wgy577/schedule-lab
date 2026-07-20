@@ -1,0 +1,1657 @@
+{
+  "meta": {
+    "controller": "deterministic-vns-domain-replay",
+    "network": "FJSP_J20M12h",
+    "checkpoint": "100_502",
+    "seed": 0,
+    "radii": [
+      2,
+      3,
+      4
+    ],
+    "maxGaps": 1,
+    "operators": [
+      "adjacent-boundary-swap",
+      "forward-insertion",
+      "backward-insertion"
+    ],
+    "device": "cpu",
+    "domainEnvironment": "FJSP_Env + connector_two",
+    "outsideModePolicy": "reject changes outside neighborhood"
+  },
+  "incumbent": {
+    "source": "/Users/guangyuwu/Desktop/sortie code/comparision/schedule_lab/outputs/carrier_vns_best_radius5_insertions.json",
+    "scheduleHash": "b9860c37a1e50f99f4774149fd702300a5a095e5efcbc2cc47cb31d6f7811c90",
+    "trueMakespan": 657.7999877929688,
+    "gapMetrics": {
+      "positiveGapTotal": 315.699951,
+      "largestGap": 67.200035
+    }
+  },
+  "plan": {
+    "incumbentHash": "b9860c37a1e50f99f4774149fd702300a5a095e5efcbc2cc47cb31d6f7811c90",
+    "focus": {
+      "operation": 6,
+      "machine": 11,
+      "sequenceJobs": [
+        1,
+        7,
+        4,
+        6,
+        5,
+        0,
+        19,
+        17,
+        14,
+        15,
+        18,
+        8,
+        2,
+        13,
+        3,
+        9,
+        16,
+        12,
+        11,
+        10
+      ],
+      "positiveGapTotal": 315.699951,
+      "largestGap": {
+        "sequenceIndex": 18,
+        "gap": 67.200035,
+        "leftJob": 11,
+        "rightJob": 10,
+        "leftEnd": 560.5999755859375,
+        "rightStart": 627.8000106811523
+      }
+    },
+    "incumbentMakespan": 657.7999877929688,
+    "searchProtocol": {
+      "controller": "deterministic-vns",
+      "gapOrder": "descending-gap-then-time-then-job",
+      "radii": [
+        2,
+        3,
+        4
+      ],
+      "maxGaps": 1,
+      "acceptance": "strict-validated-improvement",
+      "restartAfterAcceptance": true
+    },
+    "neighborhoods": [
+      {
+        "candidateIndex": 0,
+        "signature": "429fed36aad5aee87176588f19579ea640fbf8e423c64da22ac1be376a1acd26",
+        "tabu": false,
+        "gapRank": 1,
+        "gap": {
+          "sequenceIndex": 18,
+          "gap": 67.200035,
+          "leftJob": 11,
+          "rightJob": 10,
+          "leftEnd": 560.5999755859375,
+          "rightStart": 627.8000106811523
+        },
+        "radius": 2,
+        "sequenceSlice": [
+          17,
+          20
+        ],
+        "neighborhoodJobs": [
+          12,
+          11,
+          10
+        ],
+        "releasedOperations": [
+          {
+            "job": 12,
+            "op": 0
+          },
+          {
+            "job": 12,
+            "op": 1
+          },
+          {
+            "job": 12,
+            "op": 2
+          },
+          {
+            "job": 12,
+            "op": 3
+          },
+          {
+            "job": 12,
+            "op": 4
+          },
+          {
+            "job": 12,
+            "op": 5
+          },
+          {
+            "job": 12,
+            "op": 6
+          },
+          {
+            "job": 12,
+            "op": 7
+          },
+          {
+            "job": 11,
+            "op": 0
+          },
+          {
+            "job": 11,
+            "op": 1
+          },
+          {
+            "job": 11,
+            "op": 2
+          },
+          {
+            "job": 11,
+            "op": 3
+          },
+          {
+            "job": 11,
+            "op": 4
+          },
+          {
+            "job": 11,
+            "op": 5
+          },
+          {
+            "job": 11,
+            "op": 6
+          },
+          {
+            "job": 11,
+            "op": 7
+          },
+          {
+            "job": 10,
+            "op": 0
+          },
+          {
+            "job": 10,
+            "op": 1
+          },
+          {
+            "job": 10,
+            "op": 2
+          },
+          {
+            "job": 10,
+            "op": 3
+          },
+          {
+            "job": 10,
+            "op": 4
+          },
+          {
+            "job": 10,
+            "op": 5
+          },
+          {
+            "job": 10,
+            "op": 6
+          },
+          {
+            "job": 10,
+            "op": 7
+          }
+        ],
+        "releasedOperationCount": 24,
+        "frozenOperationCount": 136,
+        "operatorOrder": [
+          "cp-sat-local-repair",
+          "adjacent-boundary-swap",
+          "forward-insertion",
+          "backward-insertion"
+        ],
+        "propagation": {
+          "freezePrefixBefore": 387.70001220703125,
+          "allowTimingShiftOutsideNeighborhood": true,
+          "allowModeChangeOutsideNeighborhood": false
+        }
+      },
+      {
+        "candidateIndex": 1,
+        "signature": "8d820b97ee1539316277c2696aeaab223a37f25a1f4b43b001e8b9eb00b12098",
+        "tabu": false,
+        "gapRank": 1,
+        "gap": {
+          "sequenceIndex": 18,
+          "gap": 67.200035,
+          "leftJob": 11,
+          "rightJob": 10,
+          "leftEnd": 560.5999755859375,
+          "rightStart": 627.8000106811523
+        },
+        "radius": 3,
+        "sequenceSlice": [
+          16,
+          20
+        ],
+        "neighborhoodJobs": [
+          16,
+          12,
+          11,
+          10
+        ],
+        "releasedOperations": [
+          {
+            "job": 16,
+            "op": 0
+          },
+          {
+            "job": 16,
+            "op": 1
+          },
+          {
+            "job": 16,
+            "op": 2
+          },
+          {
+            "job": 16,
+            "op": 3
+          },
+          {
+            "job": 16,
+            "op": 4
+          },
+          {
+            "job": 16,
+            "op": 5
+          },
+          {
+            "job": 16,
+            "op": 6
+          },
+          {
+            "job": 16,
+            "op": 7
+          },
+          {
+            "job": 12,
+            "op": 0
+          },
+          {
+            "job": 12,
+            "op": 1
+          },
+          {
+            "job": 12,
+            "op": 2
+          },
+          {
+            "job": 12,
+            "op": 3
+          },
+          {
+            "job": 12,
+            "op": 4
+          },
+          {
+            "job": 12,
+            "op": 5
+          },
+          {
+            "job": 12,
+            "op": 6
+          },
+          {
+            "job": 12,
+            "op": 7
+          },
+          {
+            "job": 11,
+            "op": 0
+          },
+          {
+            "job": 11,
+            "op": 1
+          },
+          {
+            "job": 11,
+            "op": 2
+          },
+          {
+            "job": 11,
+            "op": 3
+          },
+          {
+            "job": 11,
+            "op": 4
+          },
+          {
+            "job": 11,
+            "op": 5
+          },
+          {
+            "job": 11,
+            "op": 6
+          },
+          {
+            "job": 11,
+            "op": 7
+          },
+          {
+            "job": 10,
+            "op": 0
+          },
+          {
+            "job": 10,
+            "op": 1
+          },
+          {
+            "job": 10,
+            "op": 2
+          },
+          {
+            "job": 10,
+            "op": 3
+          },
+          {
+            "job": 10,
+            "op": 4
+          },
+          {
+            "job": 10,
+            "op": 5
+          },
+          {
+            "job": 10,
+            "op": 6
+          },
+          {
+            "job": 10,
+            "op": 7
+          }
+        ],
+        "releasedOperationCount": 32,
+        "frozenOperationCount": 128,
+        "operatorOrder": [
+          "cp-sat-local-repair",
+          "adjacent-boundary-swap",
+          "forward-insertion",
+          "backward-insertion"
+        ],
+        "propagation": {
+          "freezePrefixBefore": 349.20001220703125,
+          "allowTimingShiftOutsideNeighborhood": true,
+          "allowModeChangeOutsideNeighborhood": false
+        }
+      },
+      {
+        "candidateIndex": 2,
+        "signature": "1a1905e3fcb8b66cac96ad5da6e043da51332ea72c30a37b7eb6d0b1d10c9375",
+        "tabu": false,
+        "gapRank": 1,
+        "gap": {
+          "sequenceIndex": 18,
+          "gap": 67.200035,
+          "leftJob": 11,
+          "rightJob": 10,
+          "leftEnd": 560.5999755859375,
+          "rightStart": 627.8000106811523
+        },
+        "radius": 4,
+        "sequenceSlice": [
+          15,
+          20
+        ],
+        "neighborhoodJobs": [
+          9,
+          16,
+          12,
+          11,
+          10
+        ],
+        "releasedOperations": [
+          {
+            "job": 9,
+            "op": 0
+          },
+          {
+            "job": 9,
+            "op": 1
+          },
+          {
+            "job": 9,
+            "op": 2
+          },
+          {
+            "job": 9,
+            "op": 3
+          },
+          {
+            "job": 9,
+            "op": 4
+          },
+          {
+            "job": 9,
+            "op": 5
+          },
+          {
+            "job": 9,
+            "op": 6
+          },
+          {
+            "job": 9,
+            "op": 7
+          },
+          {
+            "job": 16,
+            "op": 0
+          },
+          {
+            "job": 16,
+            "op": 1
+          },
+          {
+            "job": 16,
+            "op": 2
+          },
+          {
+            "job": 16,
+            "op": 3
+          },
+          {
+            "job": 16,
+            "op": 4
+          },
+          {
+            "job": 16,
+            "op": 5
+          },
+          {
+            "job": 16,
+            "op": 6
+          },
+          {
+            "job": 16,
+            "op": 7
+          },
+          {
+            "job": 12,
+            "op": 0
+          },
+          {
+            "job": 12,
+            "op": 1
+          },
+          {
+            "job": 12,
+            "op": 2
+          },
+          {
+            "job": 12,
+            "op": 3
+          },
+          {
+            "job": 12,
+            "op": 4
+          },
+          {
+            "job": 12,
+            "op": 5
+          },
+          {
+            "job": 12,
+            "op": 6
+          },
+          {
+            "job": 12,
+            "op": 7
+          },
+          {
+            "job": 11,
+            "op": 0
+          },
+          {
+            "job": 11,
+            "op": 1
+          },
+          {
+            "job": 11,
+            "op": 2
+          },
+          {
+            "job": 11,
+            "op": 3
+          },
+          {
+            "job": 11,
+            "op": 4
+          },
+          {
+            "job": 11,
+            "op": 5
+          },
+          {
+            "job": 11,
+            "op": 6
+          },
+          {
+            "job": 11,
+            "op": 7
+          },
+          {
+            "job": 10,
+            "op": 0
+          },
+          {
+            "job": 10,
+            "op": 1
+          },
+          {
+            "job": 10,
+            "op": 2
+          },
+          {
+            "job": 10,
+            "op": 3
+          },
+          {
+            "job": 10,
+            "op": 4
+          },
+          {
+            "job": 10,
+            "op": 5
+          },
+          {
+            "job": 10,
+            "op": 6
+          },
+          {
+            "job": 10,
+            "op": 7
+          }
+        ],
+        "releasedOperationCount": 40,
+        "frozenOperationCount": 120,
+        "operatorOrder": [
+          "cp-sat-local-repair",
+          "adjacent-boundary-swap",
+          "forward-insertion",
+          "backward-insertion"
+        ],
+        "propagation": {
+          "freezePrefixBefore": 294.1000061035156,
+          "allowTimingShiftOutsideNeighborhood": true,
+          "allowModeChangeOutsideNeighborhood": false
+        }
+      }
+    ]
+  },
+  "best": null,
+  "candidates": [
+    {
+      "candidateIndex": 0,
+      "neighborhoodSignature": "429fed36aad5aee87176588f19579ea640fbf8e423c64da22ac1be376a1acd26",
+      "scheduleHash": "35ee95f81d31ad8bfd01a958508b2e842a5ca013f59fdc4220d0df7b4a3067c7",
+      "gapRank": 1,
+      "radius": 2,
+      "operator": "adjacent-boundary-swap",
+      "priorityJobs": [
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 7,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 0
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 0
+        },
+        {
+          "job": 16,
+          "op": 0,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 1,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 7,
+          "machine": 9
+        }
+      ],
+      "outsideModeChangeCount": 20,
+      "reportedPolicyMakespan": 727.7999877929688,
+      "trueMakespan": 747.7999877929688,
+      "gapMetrics": {
+        "positiveGapTotal": 405.699973,
+        "largestGap": 84.199995
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 1,
+      "neighborhoodSignature": "429fed36aad5aee87176588f19579ea640fbf8e423c64da22ac1be376a1acd26",
+      "scheduleHash": "4766c487d985fd844f622b749a5a263d7bbaf5b2a3fff97e0ef8afd9e62f9c7a",
+      "gapRank": 1,
+      "radius": 2,
+      "operator": "forward-insertion",
+      "priorityJobs": [
+        10,
+        12,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 7,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 0
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 0
+        },
+        {
+          "job": 16,
+          "op": 0,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 1,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 7,
+          "machine": 9
+        }
+      ],
+      "outsideModeChangeCount": 20,
+      "reportedPolicyMakespan": 711.7999877929688,
+      "trueMakespan": 731.7999877929688,
+      "gapMetrics": {
+        "positiveGapTotal": 389.699972,
+        "largestGap": 82.399995
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 2,
+      "neighborhoodSignature": "429fed36aad5aee87176588f19579ea640fbf8e423c64da22ac1be376a1acd26",
+      "scheduleHash": "35ee95f81d31ad8bfd01a958508b2e842a5ca013f59fdc4220d0df7b4a3067c7",
+      "gapRank": 1,
+      "radius": 2,
+      "operator": "backward-insertion",
+      "priorityJobs": [
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 7,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 0
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 0
+        },
+        {
+          "job": 16,
+          "op": 0,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 1,
+          "machine": 2
+        },
+        {
+          "job": 16,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 16,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 16,
+          "op": 7,
+          "machine": 9
+        }
+      ],
+      "outsideModeChangeCount": 20,
+      "reportedPolicyMakespan": 727.7999877929688,
+      "trueMakespan": 747.7999877929688,
+      "gapMetrics": {
+        "positiveGapTotal": 405.699973,
+        "largestGap": 84.199995
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 3,
+      "neighborhoodSignature": "8d820b97ee1539316277c2696aeaab223a37f25a1f4b43b001e8b9eb00b12098",
+      "scheduleHash": "35ee95f81d31ad8bfd01a958508b2e842a5ca013f59fdc4220d0df7b4a3067c7",
+      "gapRank": 1,
+      "radius": 3,
+      "operator": "adjacent-boundary-swap",
+      "priorityJobs": [
+        16,
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 7,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 0
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 0
+        }
+      ],
+      "outsideModeChangeCount": 13,
+      "reportedPolicyMakespan": 727.7999877929688,
+      "trueMakespan": 747.7999877929688,
+      "gapMetrics": {
+        "positiveGapTotal": 405.699973,
+        "largestGap": 84.199995
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 4,
+      "neighborhoodSignature": "8d820b97ee1539316277c2696aeaab223a37f25a1f4b43b001e8b9eb00b12098",
+      "scheduleHash": "a9fa9a9977cc4b3e2dd88c3c047bf59a3ea31165b06f5a60efd26625b80f2320",
+      "gapRank": 1,
+      "radius": 3,
+      "operator": "forward-insertion",
+      "priorityJobs": [
+        10,
+        16,
+        12,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 2,
+          "op": 2,
+          "machine": 7
+        },
+        {
+          "job": 2,
+          "op": 3,
+          "machine": 7
+        },
+        {
+          "job": 2,
+          "op": 4,
+          "machine": 10
+        },
+        {
+          "job": 2,
+          "op": 5,
+          "machine": 10
+        },
+        {
+          "job": 2,
+          "op": 7,
+          "machine": 10
+        },
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 2,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 3,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 4,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 5,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 7,
+          "machine": 8
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 2
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 2
+        }
+      ],
+      "outsideModeChangeCount": 18,
+      "reportedPolicyMakespan": 659.7000122070312,
+      "trueMakespan": 679.7000122070312,
+      "gapMetrics": {
+        "positiveGapTotal": 337.599878,
+        "largestGap": 50.0
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 5,
+      "neighborhoodSignature": "8d820b97ee1539316277c2696aeaab223a37f25a1f4b43b001e8b9eb00b12098",
+      "scheduleHash": "35ee95f81d31ad8bfd01a958508b2e842a5ca013f59fdc4220d0df7b4a3067c7",
+      "gapRank": 1,
+      "radius": 3,
+      "operator": "backward-insertion",
+      "priorityJobs": [
+        16,
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 9,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 9,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 9,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 9,
+          "op": 7,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 0
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 0
+        }
+      ],
+      "outsideModeChangeCount": 13,
+      "reportedPolicyMakespan": 727.7999877929688,
+      "trueMakespan": 747.7999877929688,
+      "gapMetrics": {
+        "positiveGapTotal": 405.699973,
+        "largestGap": 84.199995
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 6,
+      "neighborhoodSignature": "1a1905e3fcb8b66cac96ad5da6e043da51332ea72c30a37b7eb6d0b1d10c9375",
+      "scheduleHash": "75952fa620a50273f014c47f3ad48364040643916ed8073de438df879d5c8107",
+      "gapRank": 1,
+      "radius": 4,
+      "operator": "adjacent-boundary-swap",
+      "priorityJobs": [
+        9,
+        16,
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        9,
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 2,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 3,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 4,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 5,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 7,
+          "machine": 8
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 13,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 13,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 13,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 7,
+          "machine": 9
+        }
+      ],
+      "outsideModeChangeCount": 16,
+      "reportedPolicyMakespan": 674.9000244140625,
+      "trueMakespan": 694.9000244140625,
+      "gapMetrics": {
+        "positiveGapTotal": 352.800009,
+        "largestGap": 52.699993
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 7,
+      "neighborhoodSignature": "1a1905e3fcb8b66cac96ad5da6e043da51332ea72c30a37b7eb6d0b1d10c9375",
+      "scheduleHash": "ded7da011f0cb8a5f282901bbe35adea79371fa78581056a3f79b4faeda05e61",
+      "gapRank": 1,
+      "radius": 4,
+      "operator": "forward-insertion",
+      "priorityJobs": [
+        10,
+        9,
+        16,
+        12,
+        11
+      ],
+      "neighborhoodJobs": [
+        9,
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 2,
+          "machine": 5
+        },
+        {
+          "job": 8,
+          "op": 3,
+          "machine": 5
+        },
+        {
+          "job": 8,
+          "op": 4,
+          "machine": 8
+        },
+        {
+          "job": 8,
+          "op": 5,
+          "machine": 8
+        },
+        {
+          "job": 8,
+          "op": 7,
+          "machine": 8
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 13,
+          "op": 2,
+          "machine": 5
+        },
+        {
+          "job": 13,
+          "op": 3,
+          "machine": 5
+        },
+        {
+          "job": 13,
+          "op": 4,
+          "machine": 8
+        },
+        {
+          "job": 13,
+          "op": 5,
+          "machine": 8
+        },
+        {
+          "job": 13,
+          "op": 7,
+          "machine": 8
+        }
+      ],
+      "outsideModeChangeCount": 16,
+      "reportedPolicyMakespan": 670.300048828125,
+      "trueMakespan": 690.300048828125,
+      "gapMetrics": {
+        "positiveGapTotal": 348.199957,
+        "largestGap": 58.599996
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    },
+    {
+      "candidateIndex": 8,
+      "neighborhoodSignature": "1a1905e3fcb8b66cac96ad5da6e043da51332ea72c30a37b7eb6d0b1d10c9375",
+      "scheduleHash": "75952fa620a50273f014c47f3ad48364040643916ed8073de438df879d5c8107",
+      "gapRank": 1,
+      "radius": 4,
+      "operator": "backward-insertion",
+      "priorityJobs": [
+        9,
+        16,
+        12,
+        10,
+        11
+      ],
+      "neighborhoodJobs": [
+        9,
+        10,
+        11,
+        12,
+        16
+      ],
+      "domainConstructed": true,
+      "domainErrors": [],
+      "outsideModeChanges": [
+        {
+          "job": 3,
+          "op": 0,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 1,
+          "machine": 4
+        },
+        {
+          "job": 3,
+          "op": 2,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 3,
+          "machine": 5
+        },
+        {
+          "job": 3,
+          "op": 4,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 5,
+          "machine": 8
+        },
+        {
+          "job": 3,
+          "op": 7,
+          "machine": 8
+        },
+        {
+          "job": 8,
+          "op": 0,
+          "machine": 3
+        },
+        {
+          "job": 8,
+          "op": 1,
+          "machine": 3
+        },
+        {
+          "job": 13,
+          "op": 0,
+          "machine": 1
+        },
+        {
+          "job": 13,
+          "op": 1,
+          "machine": 1
+        },
+        {
+          "job": 13,
+          "op": 2,
+          "machine": 6
+        },
+        {
+          "job": 13,
+          "op": 3,
+          "machine": 6
+        },
+        {
+          "job": 13,
+          "op": 4,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 5,
+          "machine": 9
+        },
+        {
+          "job": 13,
+          "op": 7,
+          "machine": 9
+        }
+      ],
+      "outsideModeChangeCount": 16,
+      "reportedPolicyMakespan": 674.9000244140625,
+      "trueMakespan": 694.9000244140625,
+      "gapMetrics": {
+        "positiveGapTotal": 352.800009,
+        "largestGap": 52.699993
+      },
+      "accepted": false,
+      "operationCount": 160,
+      "decisionCount": 160
+    }
+  ]
+}

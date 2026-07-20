@@ -1,0 +1,1703 @@
+{
+  "jsp": {
+    "problemId": "example-jsp",
+    "family": "JSP",
+    "incumbent": {
+      "makespan": 14,
+      "makespanDisplay": 14.0,
+      "assignmentCount": 8,
+      "genericValid": true,
+      "domainOracleRequired": false
+    },
+    "objectiveOrder": [
+      "hard-constraint violations",
+      "declared tardiness/service objective",
+      "true makespan",
+      "bottleneck idle/starvation/blocking",
+      "flow time/WIP",
+      "route/setup/travel/energy cost",
+      "change cost",
+      "robustness"
+    ],
+    "diagnostics": [
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J3.O1",
+          "J1.O2"
+        ],
+        "window": [
+          0,
+          6
+        ],
+        "resource": "M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J1.O1",
+          "J2.O1"
+        ],
+        "window": [
+          0,
+          5
+        ],
+        "resource": "M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J3.O2",
+          "J1.O3"
+        ],
+        "window": [
+          4,
+          9
+        ],
+        "resource": "M3",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 3,
+        "operations": [
+          "J1.O3",
+          "J2.O2"
+        ],
+        "window": [
+          7,
+          10
+        ],
+        "resource": "M3",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "sink_stage_gap",
+        "score": 1,
+        "operations": [
+          "J1.O3",
+          "J2.O3"
+        ],
+        "window": [
+          9,
+          10
+        ],
+        "resource": null,
+        "recommendedOperator": "sink_gap_suffix_repair"
+      },
+      {
+        "kind": "resource_idle_gap",
+        "score": 2,
+        "operations": [
+          "J1.O2",
+          "J2.O3"
+        ],
+        "window": [
+          4,
+          14
+        ],
+        "resource": "M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      }
+    ],
+    "controller": {
+      "policy": "strictly improving incumbent loop",
+      "restartRule": "after acceptance, recompute diagnostics and restart at phase 0",
+      "plateauRule": "advance only after a declared deterministic no-improvement budget",
+      "candidateRule": "heuristics propose; exact repair constructs; validators and Oracle decide"
+    },
+    "phases": [
+      {
+        "phase": 0,
+        "purpose": "Audit and normalize the incumbent; diagnose causes rather than optimizing makespan blindly.",
+        "strategies": [
+          {
+            "id": "sequence-preserving-compaction",
+            "role": "timing normalization",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Fix modes and resource orders; left-shift avoidable idle without changing dispatch decisions.",
+            "repair_engine": "difference constraints or CP-SAT",
+            "trigger": "always run first to separate timing slack from sequencing/routing defects",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 1,
+        "purpose": "Test the smallest family-specific deterministic change.",
+        "strategies": [
+          {
+            "id": "shifting-bottleneck-decomposition",
+            "role": "machine/stage decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "HFSP",
+              "CARRIER"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Optimize the currently most constraining machine or stage, then reinsert it and recompute criticality.",
+            "repair_engine": "single-machine exact sequencing plus global propagation",
+            "trigger": "one machine or final stage dominates critical-path length",
+            "combines_with": [
+              "critical-block-vns",
+              "sequence-preserving-compaction"
+            ]
+          },
+          {
+            "id": "critical-block-vns",
+            "role": "local sequencing",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Rank critical blocks or sink gaps and expand radii in a fixed order.",
+            "repair_engine": "CP-SAT or exact enumeration",
+            "trigger": "critical block, bottleneck idle gap, starvation, or blocking",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "tabu-signature-memory"
+            ]
+          },
+          {
+            "id": "tabu-signature-memory",
+            "role": "duplicate and cycle control",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Hash changed modes, sequence arcs, release boundary, and solver settings.",
+            "repair_engine": "controller memory",
+            "trigger": "always enable once more than one candidate is evaluated",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 2,
+        "purpose": "Replace radius-only release with causal closure and a bounded exact repair.",
+        "strategies": [
+          {
+            "id": "causal-closure-fix-and-optimize",
+            "role": "graph-guided repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Trace backward from an objective bottleneck through precedence, resource, route, and blocking arcs; release the smallest propagation-closed causal set instead of a radius.",
+            "repair_engine": "CP-SAT local branching with frozen complement",
+            "trigger": "radius neighborhoods either release too much or repeatedly require propagation expansion",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "local-branching-fix-and-optimize",
+            "role": "exact stable repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Bound the Hamming distance in mode and sequence arcs rather than selecting jobs by geometry.",
+            "repair_engine": "CP-SAT or MILP",
+            "trigger": "a good incumbent exists but the responsible operation set is uncertain",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "tabu-signature-memory"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 3,
+        "purpose": "Scale beyond one neighborhood without rebuilding the complete schedule.",
+        "strategies": [
+          {
+            "id": "rolling-horizon-relax-and-fix",
+            "role": "time decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Freeze the completed prefix, optimize an overlapping time window, then advance with overlap consistency.",
+            "repair_engine": "CP-SAT rolling horizon",
+            "trigger": "large instances or long suffixes exceed a useful exact-repair budget",
+            "combines_with": [
+              "sequence-preserving-compaction",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "deterministic-alns",
+            "role": "plateau escape",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Destroy ranked related blocks, gaps, late suffixes, or overloaded routes in a fixed order.",
+            "repair_engine": "CP-SAT, exact insertion, or fixed-width beam repair",
+            "trigger": "one-component VNS and exact local branching reach a declared plateau",
+            "combines_with": [
+              "tabu-signature-memory",
+              "bayesian-budget-allocation"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 4,
+        "purpose": "Relink two validated elite schedules through repaired intermediate schedules.",
+        "strategies": [
+          {
+            "id": "elite-path-relinking",
+            "role": "structured diversification",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Move from the incumbent toward a second validated elite by adopting ranked mode or sequence arcs one at a time.",
+            "repair_engine": "deterministic repair at each checkpoint",
+            "trigger": "at least two structurally different validated elite schedules exist",
+            "combines_with": [
+              "local-branching-fix-and-optimize",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 5,
+        "purpose": "Allocate the next expensive deterministic experiment from accumulated evidence.",
+        "strategies": [
+          {
+            "id": "bayesian-budget-allocation",
+            "role": "experiment selection",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Rank operator and neighborhood configurations from validated gain, feasibility, and Oracle-cost posteriors.",
+            "repair_engine": "posterior ranking only; never constructs or validates schedules",
+            "trigger": "at least 12 deduplicated validated experiments are available",
+            "combines_with": [
+              "critical-block-vns",
+              "deterministic-alns",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "selected experiment must still pass generic validation + frozen-region equality + lexicographic improvement"
+      }
+    ],
+    "contingentStrategies": [
+      {
+        "id": "robust-scenario-polishing",
+        "role": "uncertainty and stability",
+        "families": [
+          "JSP",
+          "FSP",
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Replay a fixed versioned scenario set and optimize tail degradation after hard feasibility.",
+        "repair_engine": "scenario CP-SAT or deterministic simulation optimization",
+        "trigger": "processing, travel, setup, or collision delays are uncertain",
+        "combines_with": [
+          "rolling-horizon-relax-and-fix",
+          "domain-oracle"
+        ]
+      },
+      {
+        "id": "critical-path-decision-diagram",
+        "role": "bounded exact/beam sequencing",
+        "families": [
+          "JSP",
+          "FSP",
+          "HFSP",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Enumerate partial critical-block orders with stable dominance and a fixed state width.",
+        "repair_engine": "decision diagram or deterministic beam search",
+        "trigger": "small critical blocks recur and CP-SAT repeatedly explores equivalent partial orders",
+        "combines_with": [
+          "shifting-bottleneck-decomposition",
+          "tabu-signature-memory"
+        ]
+      }
+    ]
+  },
+  "fsp": {
+    "problemId": "example-fsp",
+    "family": "FSP",
+    "incumbent": {
+      "makespan": 22,
+      "makespanDisplay": 22.0,
+      "assignmentCount": 12,
+      "genericValid": true,
+      "domainOracleRequired": false
+    },
+    "objectiveOrder": [
+      "hard-constraint violations",
+      "declared tardiness/service objective",
+      "true makespan",
+      "bottleneck idle/starvation/blocking",
+      "flow time/WIP",
+      "route/setup/travel/energy cost",
+      "change cost",
+      "robustness"
+    ],
+    "diagnostics": [
+      {
+        "kind": "sink_stage_gap",
+        "score": 3,
+        "operations": [
+          "J4.O3",
+          "J2.O3"
+        ],
+        "window": [
+          16,
+          19
+        ],
+        "resource": null,
+        "recommendedOperator": "permutation_insertion"
+      },
+      {
+        "kind": "sink_stage_gap",
+        "score": 2,
+        "operations": [
+          "J1.O3",
+          "J4.O3"
+        ],
+        "window": [
+          13,
+          15
+        ],
+        "resource": null,
+        "recommendedOperator": "permutation_insertion"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 9,
+        "operations": [
+          "J4.O2",
+          "J2.O2"
+        ],
+        "window": [
+          10,
+          19
+        ],
+        "resource": "M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 7,
+        "operations": [
+          "J3.O1",
+          "J1.O1"
+        ],
+        "window": [
+          0,
+          7
+        ],
+        "resource": "M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J1.O1",
+          "J4.O1"
+        ],
+        "window": [
+          4,
+          10
+        ],
+        "resource": "M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J3.O3",
+          "J1.O3"
+        ],
+        "window": [
+          7,
+          13
+        ],
+        "resource": "M3",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J3.O2",
+          "J1.O2"
+        ],
+        "window": [
+          4,
+          9
+        ],
+        "resource": "M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J4.O1",
+          "J2.O1"
+        ],
+        "window": [
+          7,
+          12
+        ],
+        "resource": "M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      }
+    ],
+    "controller": {
+      "policy": "strictly improving incumbent loop",
+      "restartRule": "after acceptance, recompute diagnostics and restart at phase 0",
+      "plateauRule": "advance only after a declared deterministic no-improvement budget",
+      "candidateRule": "heuristics propose; exact repair constructs; validators and Oracle decide"
+    },
+    "phases": [
+      {
+        "phase": 0,
+        "purpose": "Audit and normalize the incumbent; diagnose causes rather than optimizing makespan blindly.",
+        "strategies": [
+          {
+            "id": "sequence-preserving-compaction",
+            "role": "timing normalization",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Fix modes and resource orders; left-shift avoidable idle without changing dispatch decisions.",
+            "repair_engine": "difference constraints or CP-SAT",
+            "trigger": "always run first to separate timing slack from sequencing/routing defects",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 1,
+        "purpose": "Test the smallest family-specific deterministic change.",
+        "strategies": [
+          {
+            "id": "shifting-bottleneck-decomposition",
+            "role": "machine/stage decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "HFSP",
+              "CARRIER"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Optimize the currently most constraining machine or stage, then reinsert it and recompute criticality.",
+            "repair_engine": "single-machine exact sequencing plus global propagation",
+            "trigger": "one machine or final stage dominates critical-path length",
+            "combines_with": [
+              "critical-block-vns",
+              "sequence-preserving-compaction"
+            ]
+          },
+          {
+            "id": "constructive-heuristic-proposals",
+            "role": "cheap proposal generation",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": false,
+            "search_basis": "Use stable NEH, shifting-bottleneck, insertion, ATC/SPT, or load-balancing rules only to propose orders/modes.",
+            "repair_engine": "deterministic projection and validation",
+            "trigger": "exact methods need diverse starting arcs or a cheap lower-quality reference",
+            "combines_with": [
+              "elite-path-relinking",
+              "local-branching-fix-and-optimize"
+            ]
+          },
+          {
+            "id": "tabu-signature-memory",
+            "role": "duplicate and cycle control",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Hash changed modes, sequence arcs, release boundary, and solver settings.",
+            "repair_engine": "controller memory",
+            "trigger": "always enable once more than one candidate is evaluated",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 2,
+        "purpose": "Replace radius-only release with causal closure and a bounded exact repair.",
+        "strategies": [
+          {
+            "id": "causal-closure-fix-and-optimize",
+            "role": "graph-guided repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Trace backward from an objective bottleneck through precedence, resource, route, and blocking arcs; release the smallest propagation-closed causal set instead of a radius.",
+            "repair_engine": "CP-SAT local branching with frozen complement",
+            "trigger": "radius neighborhoods either release too much or repeatedly require propagation expansion",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "local-branching-fix-and-optimize",
+            "role": "exact stable repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Bound the Hamming distance in mode and sequence arcs rather than selecting jobs by geometry.",
+            "repair_engine": "CP-SAT or MILP",
+            "trigger": "a good incumbent exists but the responsible operation set is uncertain",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "tabu-signature-memory"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 3,
+        "purpose": "Scale beyond one neighborhood without rebuilding the complete schedule.",
+        "strategies": [
+          {
+            "id": "rolling-horizon-relax-and-fix",
+            "role": "time decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Freeze the completed prefix, optimize an overlapping time window, then advance with overlap consistency.",
+            "repair_engine": "CP-SAT rolling horizon",
+            "trigger": "large instances or long suffixes exceed a useful exact-repair budget",
+            "combines_with": [
+              "sequence-preserving-compaction",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "deterministic-alns",
+            "role": "plateau escape",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Destroy ranked related blocks, gaps, late suffixes, or overloaded routes in a fixed order.",
+            "repair_engine": "CP-SAT, exact insertion, or fixed-width beam repair",
+            "trigger": "one-component VNS and exact local branching reach a declared plateau",
+            "combines_with": [
+              "tabu-signature-memory",
+              "bayesian-budget-allocation"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 4,
+        "purpose": "Relink two validated elite schedules through repaired intermediate schedules.",
+        "strategies": [
+          {
+            "id": "elite-path-relinking",
+            "role": "structured diversification",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Move from the incumbent toward a second validated elite by adopting ranked mode or sequence arcs one at a time.",
+            "repair_engine": "deterministic repair at each checkpoint",
+            "trigger": "at least two structurally different validated elite schedules exist",
+            "combines_with": [
+              "local-branching-fix-and-optimize",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 5,
+        "purpose": "Allocate the next expensive deterministic experiment from accumulated evidence.",
+        "strategies": [
+          {
+            "id": "bayesian-budget-allocation",
+            "role": "experiment selection",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Rank operator and neighborhood configurations from validated gain, feasibility, and Oracle-cost posteriors.",
+            "repair_engine": "posterior ranking only; never constructs or validates schedules",
+            "trigger": "at least 12 deduplicated validated experiments are available",
+            "combines_with": [
+              "critical-block-vns",
+              "deterministic-alns",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "selected experiment must still pass generic validation + frozen-region equality + lexicographic improvement"
+      }
+    ],
+    "contingentStrategies": [
+      {
+        "id": "robust-scenario-polishing",
+        "role": "uncertainty and stability",
+        "families": [
+          "JSP",
+          "FSP",
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Replay a fixed versioned scenario set and optimize tail degradation after hard feasibility.",
+        "repair_engine": "scenario CP-SAT or deterministic simulation optimization",
+        "trigger": "processing, travel, setup, or collision delays are uncertain",
+        "combines_with": [
+          "rolling-horizon-relax-and-fix",
+          "domain-oracle"
+        ]
+      },
+      {
+        "id": "critical-path-decision-diagram",
+        "role": "bounded exact/beam sequencing",
+        "families": [
+          "JSP",
+          "FSP",
+          "HFSP",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Enumerate partial critical-block orders with stable dominance and a fixed state width.",
+        "repair_engine": "decision diagram or deterministic beam search",
+        "trigger": "small critical blocks recur and CP-SAT repeatedly explores equivalent partial orders",
+        "combines_with": [
+          "shifting-bottleneck-decomposition",
+          "tabu-signature-memory"
+        ]
+      }
+    ]
+  },
+  "fjsp": {
+    "problemId": "example-fjsp",
+    "family": "FJSP",
+    "incumbent": {
+      "makespan": 11,
+      "makespanDisplay": 11.0,
+      "assignmentCount": 6,
+      "genericValid": true,
+      "domainOracleRequired": false
+    },
+    "objectiveOrder": [
+      "hard-constraint violations",
+      "declared tardiness/service objective",
+      "true makespan",
+      "bottleneck idle/starvation/blocking",
+      "flow time/WIP",
+      "route/setup/travel/energy cost",
+      "change cost",
+      "robustness"
+    ],
+    "diagnostics": [
+      {
+        "kind": "flexible_resource_imbalance",
+        "score": 0.9090909090909091,
+        "operations": [
+          "J1.O2"
+        ],
+        "window": [
+          7,
+          10
+        ],
+        "resource": "M3",
+        "alternativeModes": [
+          "J1.O2@M2"
+        ],
+        "recommendedOperator": "alternative_resource_reassignment"
+      },
+      {
+        "kind": "flexible_resource_imbalance",
+        "score": 0.9090909090909091,
+        "operations": [
+          "J2.O1"
+        ],
+        "window": [
+          4,
+          7
+        ],
+        "resource": "M3",
+        "alternativeModes": [
+          "J2.O1@M1"
+        ],
+        "recommendedOperator": "alternative_resource_reassignment"
+      },
+      {
+        "kind": "flexible_resource_imbalance",
+        "score": 0.9090909090909091,
+        "operations": [
+          "J3.O1"
+        ],
+        "window": [
+          0,
+          4
+        ],
+        "resource": "M3",
+        "alternativeModes": [
+          "J3.O1@M2"
+        ],
+        "recommendedOperator": "alternative_resource_reassignment"
+      },
+      {
+        "kind": "flexible_resource_imbalance",
+        "score": 0.7272727272727273,
+        "operations": [
+          "J1.O1"
+        ],
+        "window": [
+          0,
+          4
+        ],
+        "resource": "M2",
+        "alternativeModes": [
+          "J1.O1@M1"
+        ],
+        "recommendedOperator": "alternative_resource_reassignment"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 7,
+        "operations": [
+          "J3.O1",
+          "J2.O1"
+        ],
+        "window": [
+          0,
+          7
+        ],
+        "resource": "M3",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J2.O1",
+          "J1.O2"
+        ],
+        "window": [
+          4,
+          10
+        ],
+        "resource": "M3",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "resource_idle_gap",
+        "score": 5,
+        "operations": [
+          "J1.O1",
+          "J2.O2"
+        ],
+        "window": [
+          0,
+          11
+        ],
+        "resource": "M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      }
+    ],
+    "controller": {
+      "policy": "strictly improving incumbent loop",
+      "restartRule": "after acceptance, recompute diagnostics and restart at phase 0",
+      "plateauRule": "advance only after a declared deterministic no-improvement budget",
+      "candidateRule": "heuristics propose; exact repair constructs; validators and Oracle decide"
+    },
+    "phases": [
+      {
+        "phase": 0,
+        "purpose": "Audit and normalize the incumbent; diagnose causes rather than optimizing makespan blindly.",
+        "strategies": [
+          {
+            "id": "sequence-preserving-compaction",
+            "role": "timing normalization",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Fix modes and resource orders; left-shift avoidable idle without changing dispatch decisions.",
+            "repair_engine": "difference constraints or CP-SAT",
+            "trigger": "always run first to separate timing slack from sequencing/routing defects",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 1,
+        "purpose": "Test the smallest family-specific deterministic change.",
+        "strategies": [
+          {
+            "id": "assignment-sequence-alternation",
+            "role": "routing and sequencing coordination",
+            "families": [
+              "FJSP",
+              "HFSP",
+              "CARRIER"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Alternate a bounded eligible-machine reassignment step with an exact sequence repair step.",
+            "repair_engine": "CP-SAT fix-and-optimize",
+            "trigger": "parallel-resource load imbalance or expensive route/machine binding",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "dual-price-guided-release",
+            "role": "relaxation-guided diagnosis",
+            "families": [
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Use LP/Lagrangian congestion prices to rank resource-time arcs whose release has the largest estimated value.",
+            "repair_engine": "LP/Lagrangian relaxation followed by CP-SAT repair",
+            "trigger": "many eligible resources or several competing bottlenecks make gap ranking ambiguous",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "assignment-sequence-alternation"
+            ]
+          },
+          {
+            "id": "tabu-signature-memory",
+            "role": "duplicate and cycle control",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Hash changed modes, sequence arcs, release boundary, and solver settings.",
+            "repair_engine": "controller memory",
+            "trigger": "always enable once more than one candidate is evaluated",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 2,
+        "purpose": "Replace radius-only release with causal closure and a bounded exact repair.",
+        "strategies": [
+          {
+            "id": "causal-closure-fix-and-optimize",
+            "role": "graph-guided repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Trace backward from an objective bottleneck through precedence, resource, route, and blocking arcs; release the smallest propagation-closed causal set instead of a radius.",
+            "repair_engine": "CP-SAT local branching with frozen complement",
+            "trigger": "radius neighborhoods either release too much or repeatedly require propagation expansion",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "local-branching-fix-and-optimize",
+            "role": "exact stable repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Bound the Hamming distance in mode and sequence arcs rather than selecting jobs by geometry.",
+            "repair_engine": "CP-SAT or MILP",
+            "trigger": "a good incumbent exists but the responsible operation set is uncertain",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "tabu-signature-memory"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 3,
+        "purpose": "Scale beyond one neighborhood without rebuilding the complete schedule.",
+        "strategies": [
+          {
+            "id": "rolling-horizon-relax-and-fix",
+            "role": "time decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Freeze the completed prefix, optimize an overlapping time window, then advance with overlap consistency.",
+            "repair_engine": "CP-SAT rolling horizon",
+            "trigger": "large instances or long suffixes exceed a useful exact-repair budget",
+            "combines_with": [
+              "sequence-preserving-compaction",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "deterministic-alns",
+            "role": "plateau escape",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Destroy ranked related blocks, gaps, late suffixes, or overloaded routes in a fixed order.",
+            "repair_engine": "CP-SAT, exact insertion, or fixed-width beam repair",
+            "trigger": "one-component VNS and exact local branching reach a declared plateau",
+            "combines_with": [
+              "tabu-signature-memory",
+              "bayesian-budget-allocation"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 4,
+        "purpose": "Relink two validated elite schedules through repaired intermediate schedules.",
+        "strategies": [
+          {
+            "id": "elite-path-relinking",
+            "role": "structured diversification",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Move from the incumbent toward a second validated elite by adopting ranked mode or sequence arcs one at a time.",
+            "repair_engine": "deterministic repair at each checkpoint",
+            "trigger": "at least two structurally different validated elite schedules exist",
+            "combines_with": [
+              "local-branching-fix-and-optimize",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 5,
+        "purpose": "Allocate the next expensive deterministic experiment from accumulated evidence.",
+        "strategies": [
+          {
+            "id": "bayesian-budget-allocation",
+            "role": "experiment selection",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Rank operator and neighborhood configurations from validated gain, feasibility, and Oracle-cost posteriors.",
+            "repair_engine": "posterior ranking only; never constructs or validates schedules",
+            "trigger": "at least 12 deduplicated validated experiments are available",
+            "combines_with": [
+              "critical-block-vns",
+              "deterministic-alns",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "selected experiment must still pass generic validation + frozen-region equality + lexicographic improvement"
+      }
+    ],
+    "contingentStrategies": [
+      {
+        "id": "logic-based-benders-oracle-cuts",
+        "role": "master/subproblem decomposition",
+        "families": [
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Let a master choose assignments and sequence arcs; let an exact timing or domain subproblem return reusable no-good, precedence, separation, or path cuts.",
+        "repair_engine": "CP-SAT/MILP master plus CP or domain-Oracle subproblem",
+        "trigger": "domain replay is expensive and repeated failures share structural causes",
+        "combines_with": [
+          "causal-closure-fix-and-optimize",
+          "domain-oracle"
+        ]
+      },
+      {
+        "id": "robust-scenario-polishing",
+        "role": "uncertainty and stability",
+        "families": [
+          "JSP",
+          "FSP",
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Replay a fixed versioned scenario set and optimize tail degradation after hard feasibility.",
+        "repair_engine": "scenario CP-SAT or deterministic simulation optimization",
+        "trigger": "processing, travel, setup, or collision delays are uncertain",
+        "combines_with": [
+          "rolling-horizon-relax-and-fix",
+          "domain-oracle"
+        ]
+      }
+    ]
+  },
+  "hfsp": {
+    "problemId": "example-hfsp",
+    "family": "HFSP",
+    "incumbent": {
+      "makespan": 17,
+      "makespanDisplay": 17.0,
+      "assignmentCount": 12,
+      "genericValid": true,
+      "domainOracleRequired": false
+    },
+    "objectiveOrder": [
+      "hard-constraint violations",
+      "declared tardiness/service objective",
+      "true makespan",
+      "bottleneck idle/starvation/blocking",
+      "flow time/WIP",
+      "route/setup/travel/energy cost",
+      "change cost",
+      "robustness"
+    ],
+    "diagnostics": [
+      {
+        "kind": "critical_resource_block",
+        "score": 9,
+        "operations": [
+          "J1.O2",
+          "J2.O2"
+        ],
+        "window": [
+          3,
+          12
+        ],
+        "resource": "S2M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J1.O1",
+          "J4.O1"
+        ],
+        "window": [
+          0,
+          6
+        ],
+        "resource": "S1M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J3.O1",
+          "J2.O1"
+        ],
+        "window": [
+          0,
+          6
+        ],
+        "resource": "S1M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 6,
+        "operations": [
+          "J3.O3",
+          "J1.O3"
+        ],
+        "window": [
+          6,
+          12
+        ],
+        "resource": "S3M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J1.O3",
+          "J2.O3"
+        ],
+        "window": [
+          10,
+          15
+        ],
+        "resource": "S3M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J2.O3",
+          "J4.O3"
+        ],
+        "window": [
+          12,
+          17
+        ],
+        "resource": "S3M1",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "critical_resource_block",
+        "score": 5,
+        "operations": [
+          "J3.O2",
+          "J4.O2"
+        ],
+        "window": [
+          4,
+          9
+        ],
+        "resource": "S2M2",
+        "recommendedOperator": "critical_block_adjacent_swap"
+      },
+      {
+        "kind": "flexible_resource_imbalance",
+        "score": 0.5294117647058824,
+        "operations": [
+          "J1.O2"
+        ],
+        "window": [
+          3,
+          7
+        ],
+        "resource": "S2M1",
+        "alternativeModes": [
+          "J1.O2@S2M2"
+        ],
+        "recommendedOperator": "alternative_resource_reassignment"
+      }
+    ],
+    "controller": {
+      "policy": "strictly improving incumbent loop",
+      "restartRule": "after acceptance, recompute diagnostics and restart at phase 0",
+      "plateauRule": "advance only after a declared deterministic no-improvement budget",
+      "candidateRule": "heuristics propose; exact repair constructs; validators and Oracle decide"
+    },
+    "phases": [
+      {
+        "phase": 0,
+        "purpose": "Audit and normalize the incumbent; diagnose causes rather than optimizing makespan blindly.",
+        "strategies": [
+          {
+            "id": "sequence-preserving-compaction",
+            "role": "timing normalization",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Fix modes and resource orders; left-shift avoidable idle without changing dispatch decisions.",
+            "repair_engine": "difference constraints or CP-SAT",
+            "trigger": "always run first to separate timing slack from sequencing/routing defects",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 1,
+        "purpose": "Test the smallest family-specific deterministic change.",
+        "strategies": [
+          {
+            "id": "shifting-bottleneck-decomposition",
+            "role": "machine/stage decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "HFSP",
+              "CARRIER"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Optimize the currently most constraining machine or stage, then reinsert it and recompute criticality.",
+            "repair_engine": "single-machine exact sequencing plus global propagation",
+            "trigger": "one machine or final stage dominates critical-path length",
+            "combines_with": [
+              "critical-block-vns",
+              "sequence-preserving-compaction"
+            ]
+          },
+          {
+            "id": "assignment-sequence-alternation",
+            "role": "routing and sequencing coordination",
+            "families": [
+              "FJSP",
+              "HFSP",
+              "CARRIER"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Alternate a bounded eligible-machine reassignment step with an exact sequence repair step.",
+            "repair_engine": "CP-SAT fix-and-optimize",
+            "trigger": "parallel-resource load imbalance or expensive route/machine binding",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "tabu-signature-memory",
+            "role": "duplicate and cycle control",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Hash changed modes, sequence arcs, release boundary, and solver settings.",
+            "repair_engine": "controller memory",
+            "trigger": "always enable once more than one candidate is evaluated",
+            "combines_with": []
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 2,
+        "purpose": "Replace radius-only release with causal closure and a bounded exact repair.",
+        "strategies": [
+          {
+            "id": "causal-closure-fix-and-optimize",
+            "role": "graph-guided repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Trace backward from an objective bottleneck through precedence, resource, route, and blocking arcs; release the smallest propagation-closed causal set instead of a radius.",
+            "repair_engine": "CP-SAT local branching with frozen complement",
+            "trigger": "radius neighborhoods either release too much or repeatedly require propagation expansion",
+            "combines_with": [
+              "dual-price-guided-release",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "local-branching-fix-and-optimize",
+            "role": "exact stable repair",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Bound the Hamming distance in mode and sequence arcs rather than selecting jobs by geometry.",
+            "repair_engine": "CP-SAT or MILP",
+            "trigger": "a good incumbent exists but the responsible operation set is uncertain",
+            "combines_with": [
+              "causal-closure-fix-and-optimize",
+              "tabu-signature-memory"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 3,
+        "purpose": "Scale beyond one neighborhood without rebuilding the complete schedule.",
+        "strategies": [
+          {
+            "id": "rolling-horizon-relax-and-fix",
+            "role": "time decomposition",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Freeze the completed prefix, optimize an overlapping time window, then advance with overlap consistency.",
+            "repair_engine": "CP-SAT rolling horizon",
+            "trigger": "large instances or long suffixes exceed a useful exact-repair budget",
+            "combines_with": [
+              "sequence-preserving-compaction",
+              "domain-oracle"
+            ]
+          },
+          {
+            "id": "deterministic-alns",
+            "role": "plateau escape",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Destroy ranked related blocks, gaps, late suffixes, or overloaded routes in a fixed order.",
+            "repair_engine": "CP-SAT, exact insertion, or fixed-width beam repair",
+            "trigger": "one-component VNS and exact local branching reach a declared plateau",
+            "combines_with": [
+              "tabu-signature-memory",
+              "bayesian-budget-allocation"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 4,
+        "purpose": "Relink two validated elite schedules through repaired intermediate schedules.",
+        "strategies": [
+          {
+            "id": "elite-path-relinking",
+            "role": "structured diversification",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Move from the incumbent toward a second validated elite by adopting ranked mode or sequence arcs one at a time.",
+            "repair_engine": "deterministic repair at each checkpoint",
+            "trigger": "at least two structurally different validated elite schedules exist",
+            "combines_with": [
+              "local-branching-fix-and-optimize",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "generic validation + frozen-region equality + lexicographic improvement"
+      },
+      {
+        "phase": 5,
+        "purpose": "Allocate the next expensive deterministic experiment from accumulated evidence.",
+        "strategies": [
+          {
+            "id": "bayesian-budget-allocation",
+            "role": "experiment selection",
+            "families": [
+              "JSP",
+              "FSP",
+              "FJSP",
+              "HFSP",
+              "CARRIER",
+              "GENERIC"
+            ],
+            "deterministic": true,
+            "incumbent_preserving": true,
+            "search_basis": "Rank operator and neighborhood configurations from validated gain, feasibility, and Oracle-cost posteriors.",
+            "repair_engine": "posterior ranking only; never constructs or validates schedules",
+            "trigger": "at least 12 deduplicated validated experiments are available",
+            "combines_with": [
+              "critical-block-vns",
+              "deterministic-alns",
+              "domain-oracle"
+            ]
+          }
+        ],
+        "acceptanceGate": "selected experiment must still pass generic validation + frozen-region equality + lexicographic improvement"
+      }
+    ],
+    "contingentStrategies": [
+      {
+        "id": "logic-based-benders-oracle-cuts",
+        "role": "master/subproblem decomposition",
+        "families": [
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Let a master choose assignments and sequence arcs; let an exact timing or domain subproblem return reusable no-good, precedence, separation, or path cuts.",
+        "repair_engine": "CP-SAT/MILP master plus CP or domain-Oracle subproblem",
+        "trigger": "domain replay is expensive and repeated failures share structural causes",
+        "combines_with": [
+          "causal-closure-fix-and-optimize",
+          "domain-oracle"
+        ]
+      },
+      {
+        "id": "robust-scenario-polishing",
+        "role": "uncertainty and stability",
+        "families": [
+          "JSP",
+          "FSP",
+          "FJSP",
+          "HFSP",
+          "CARRIER",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Replay a fixed versioned scenario set and optimize tail degradation after hard feasibility.",
+        "repair_engine": "scenario CP-SAT or deterministic simulation optimization",
+        "trigger": "processing, travel, setup, or collision delays are uncertain",
+        "combines_with": [
+          "rolling-horizon-relax-and-fix",
+          "domain-oracle"
+        ]
+      },
+      {
+        "id": "critical-path-decision-diagram",
+        "role": "bounded exact/beam sequencing",
+        "families": [
+          "JSP",
+          "FSP",
+          "HFSP",
+          "GENERIC"
+        ],
+        "deterministic": true,
+        "incumbent_preserving": true,
+        "search_basis": "Enumerate partial critical-block orders with stable dominance and a fixed state width.",
+        "repair_engine": "decision diagram or deterministic beam search",
+        "trigger": "small critical blocks recur and CP-SAT repeatedly explores equivalent partial orders",
+        "combines_with": [
+          "shifting-bottleneck-decomposition",
+          "tabu-signature-memory"
+        ]
+      }
+    ]
+  }
+}

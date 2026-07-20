@@ -1,0 +1,512 @@
+{
+  "controller": "cut-driven-joint-causal-closure-v1",
+  "sourceCutId": "joint-cut-8c51f2616dfb0c3742a4",
+  "affectedJobs": [
+    2,
+    3,
+    8,
+    9,
+    10,
+    11,
+    12,
+    16
+  ],
+  "neighborRadius": 1,
+  "maxReleasedJobs": 10,
+  "releasedJobs": [
+    2,
+    3,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    16
+  ],
+  "releasedOperations": [
+    "J3.O1",
+    "J3.O2",
+    "J3.O3",
+    "J3.O4",
+    "J3.O5",
+    "J3.O6",
+    "J3.O7",
+    "J3.O8",
+    "J4.O1",
+    "J4.O2",
+    "J4.O3",
+    "J4.O4",
+    "J4.O5",
+    "J4.O6",
+    "J4.O7",
+    "J4.O8",
+    "J9.O1",
+    "J9.O2",
+    "J9.O3",
+    "J9.O4",
+    "J9.O5",
+    "J9.O6",
+    "J9.O7",
+    "J9.O8",
+    "J10.O1",
+    "J10.O2",
+    "J10.O3",
+    "J10.O4",
+    "J10.O5",
+    "J10.O6",
+    "J10.O7",
+    "J10.O8",
+    "J11.O1",
+    "J11.O2",
+    "J11.O3",
+    "J11.O4",
+    "J11.O5",
+    "J11.O6",
+    "J11.O7",
+    "J11.O8",
+    "J12.O1",
+    "J12.O2",
+    "J12.O3",
+    "J12.O4",
+    "J12.O5",
+    "J12.O6",
+    "J12.O7",
+    "J12.O8",
+    "J13.O1",
+    "J13.O2",
+    "J13.O3",
+    "J13.O4",
+    "J13.O5",
+    "J13.O6",
+    "J13.O7",
+    "J13.O8",
+    "J14.O1",
+    "J14.O2",
+    "J14.O3",
+    "J14.O4",
+    "J14.O5",
+    "J14.O6",
+    "J14.O7",
+    "J14.O8",
+    "J15.O1",
+    "J15.O2",
+    "J15.O3",
+    "J15.O4",
+    "J15.O5",
+    "J15.O6",
+    "J15.O7",
+    "J15.O8",
+    "J17.O1",
+    "J17.O2",
+    "J17.O3",
+    "J17.O4",
+    "J17.O5",
+    "J17.O6",
+    "J17.O7",
+    "J17.O8"
+  ],
+  "frozenJobs": [
+    0,
+    1,
+    4,
+    5,
+    6,
+    7,
+    15,
+    17,
+    18,
+    19
+  ],
+  "frozenOperationCount": 80,
+  "evidenceEdges": [
+    {
+      "fromJob": 9,
+      "toJob": 16,
+      "surface": "tractor-order",
+      "machine": 0,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 18,
+      "surface": "tractor-order",
+      "machine": 0,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 9,
+      "surface": "tractor-order",
+      "machine": 0,
+      "distance": 1
+    },
+    {
+      "fromJob": 10,
+      "toJob": 11,
+      "surface": "tractor-order",
+      "machine": 1,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 13,
+      "surface": "tractor-order",
+      "machine": 1,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 10,
+      "surface": "tractor-order",
+      "machine": 1,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 15,
+      "surface": "tractor-order",
+      "machine": 2,
+      "distance": 1
+    },
+    {
+      "fromJob": 2,
+      "toJob": 14,
+      "surface": "tractor-order",
+      "machine": 3,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 19,
+      "surface": "tractor-order",
+      "machine": 4,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 12,
+      "surface": "tractor-order",
+      "machine": 4,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 3,
+      "surface": "tractor-order",
+      "machine": 4,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 13,
+      "surface": "preparation-route-order",
+      "machine": 5,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 12,
+      "surface": "preparation-route-order",
+      "machine": 5,
+      "distance": 1
+    },
+    {
+      "fromJob": 10,
+      "toJob": 12,
+      "surface": "preparation-route-order",
+      "machine": 5,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 8,
+      "surface": "preparation-route-order",
+      "machine": 5,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 10,
+      "surface": "preparation-route-order",
+      "machine": 5,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 15,
+      "surface": "preparation-route-order",
+      "machine": 6,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 11,
+      "surface": "preparation-route-order",
+      "machine": 6,
+      "distance": 1
+    },
+    {
+      "fromJob": 9,
+      "toJob": 11,
+      "surface": "preparation-route-order",
+      "machine": 6,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 3,
+      "surface": "preparation-route-order",
+      "machine": 6,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 9,
+      "surface": "preparation-route-order",
+      "machine": 6,
+      "distance": 1
+    },
+    {
+      "fromJob": 2,
+      "toJob": 16,
+      "surface": "preparation-route-order",
+      "machine": 7,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 18,
+      "surface": "preparation-route-order",
+      "machine": 7,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 2,
+      "surface": "preparation-route-order",
+      "machine": 7,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 13,
+      "surface": "catapult-lock-order",
+      "machine": 8,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 12,
+      "surface": "catapult-lock-order",
+      "machine": 8,
+      "distance": 1
+    },
+    {
+      "fromJob": 10,
+      "toJob": 12,
+      "surface": "catapult-lock-order",
+      "machine": 8,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 8,
+      "surface": "catapult-lock-order",
+      "machine": 8,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 10,
+      "surface": "catapult-lock-order",
+      "machine": 8,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 15,
+      "surface": "catapult-lock-order",
+      "machine": 9,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 11,
+      "surface": "catapult-lock-order",
+      "machine": 9,
+      "distance": 1
+    },
+    {
+      "fromJob": 9,
+      "toJob": 11,
+      "surface": "catapult-lock-order",
+      "machine": 9,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 3,
+      "surface": "catapult-lock-order",
+      "machine": 9,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 9,
+      "surface": "catapult-lock-order",
+      "machine": 9,
+      "distance": 1
+    },
+    {
+      "fromJob": 2,
+      "toJob": 16,
+      "surface": "catapult-lock-order",
+      "machine": 10,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 18,
+      "surface": "catapult-lock-order",
+      "machine": 10,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 2,
+      "surface": "catapult-lock-order",
+      "machine": 10,
+      "distance": 1
+    },
+    {
+      "fromJob": 2,
+      "toJob": 12,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 2,
+      "toJob": 9,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 16,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 3,
+      "toJob": 8,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 3,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 8,
+      "toJob": 11,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 9,
+      "toJob": 2,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 9,
+      "toJob": 10,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 10,
+      "toJob": 9,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 8,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 11,
+      "toJob": 12,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 11,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 12,
+      "toJob": 2,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 13,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    },
+    {
+      "fromJob": 16,
+      "toJob": 3,
+      "surface": "global-launch-order",
+      "machine": 11,
+      "distance": 1
+    }
+  ],
+  "nextMaster": {
+    "variables": [
+      "dispatch-order arcs inside the closure",
+      "tractor assignment and depot/previous-spot route compatibility",
+      "preparation/catapult binding and existing MAT route column",
+      "start times on the 0.1-second finite grid"
+    ],
+    "fixed": [
+      "all modes and order arcs outside the closure",
+      "the incumbent prefix before each released boundary",
+      "all original MAT geometry"
+    ],
+    "limits": {
+      "machineBindingChanges": 2,
+      "dispatchArcChanges": 4,
+      "routeColumnChanges": 2,
+      "workers": 1
+    },
+    "requiredSubproblems": [
+      "finite-grid pairwise trajectory conflict check",
+      "legacy state-dependent machine/route reachability replay"
+    ]
+  }
+}
