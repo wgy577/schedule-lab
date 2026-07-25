@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Causal Schedule Lab 可缩放项目图</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #eef3f7;
+      --panel: #ffffff;
+      --canvas: #f7fafc;
+      --text: #17212b;
+      --muted: #5b6b79;
+      --border: #c7d2dc;
+      --edge: #73879a;
+      --active: #176b87;
+      --active-soft: #d9eef5;
+      --partial: #8a5b13;
+      --partial-soft: #f7ebcc;
+      --planned: #6d5b8f;
+      --planned-soft: #ebe5f5;
+      --group: rgba(77, 111, 135, 0.06);
+      --shadow: rgba(25, 45, 60, 0.12);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #10171d;
+        --panel: #182129;
+        --canvas: #111a21;
+        --text: #e7eef4;
+        --muted: #a8b5c0;
+        --border: #3b4a56;
+        --edge: #7f95a7;
+        --active: #74c7df;
+        --active-soft: #193b48;
+        --partial: #e4b564;
+        --partial-soft: #48391d;
+        --planned: #c1ace5;
+        --planned-soft: #342b46;
+        --group: rgba(163, 194, 214, 0.05);
+        --shadow: rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+    }
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    h1 { font-size: 18px; margin: 0; font-weight: 600; }
+    .toolbar, .tabs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    button {
+      appearance: none;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 7px 11px;
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--active); }
+    button:focus-visible { outline: 3px solid var(--active-soft); }
+    button[aria-pressed="true"] {
+      background: var(--active-soft);
+      border-color: var(--active);
+      color: var(--text);
+    }
+    .zoom-value {
+      min-width: 58px;
+      text-align: center;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    #viewport {
+      position: relative;
+      flex: 1;
+      min-height: 720px;
+      overflow: hidden;
+      background:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px),
+        var(--canvas);
+      background-size: 32px 32px;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+    #viewport.dragging { cursor: grabbing; }
+    #canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: 0 0;
+    }
+    #edge-layer {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .group {
+      position: absolute;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      background: var(--group);
+      padding: 14px;
+      pointer-events: none;
+    }
+    .group-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .node {
+      position: absolute;
+      width: 220px;
+      min-height: 68px;
+      border: 1px solid var(--border);
+      border-left-width: 5px;
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: 0 5px 14px var(--shadow);
+      padding: 10px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .node:hover, .node.selected { border-color: var(--active); }
+    .node.active { border-left-color: var(--active); }
+    .node.partial { border-left-color: var(--partial); }
+    .node.planned { border-left-color: var(--planned); }
+    .node-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+    .node-detail { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .node-status {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .active .node-status { background: var(--active-soft); color: var(--text); }
+    .partial .node-status { background: var(--partial-soft); color: var(--text); }
+    .planned .node-status { background: var(--planned-soft); color: var(--text); }
+    .edge {
+      fill: none;
+      stroke: var(--edge);
+      stroke-width: 2;
+      marker-end: url(#arrow);
+    }
+    .edge.highlight { stroke: var(--active); stroke-width: 4; }
+    footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 9px 18px;
+      color: var(--muted);
+      font-size: 13px;
+      min-height: 38px;
+    }
+    @media (max-width: 720px) {
+      header { align-items: flex-start; }
+      #viewport { min-height: 620px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <h1>Causal Schedule Lab · 可缩放项目图</h1>
+        <div class="tabs" aria-label="图层选择">
+          <button id="macro-tab" type="button" aria-pressed="true">第一层：大模块</button>
+          <button id="detail-tab" type="button" aria-pressed="false">第二层：实现细节</button>
+        </div>
+      </div>
+      <div class="toolbar" aria-label="视图控制">
+        <button id="zoom-out" type="button" aria-label="缩小">−</button>
+        <span id="zoom-value" class="zoom-value">100%</span>
+        <button id="zoom-in" type="button" aria-label="放大">＋</button>
+        <button id="fit" type="button">适应窗口</button>
+        <button id="reset" type="button">重置</button>
+        <button id="fullscreen" type="button">全屏</button>
+      </div>
+    </header>
+    <section id="viewport" aria-label="可缩放、可拖拽项目模块图">
+      <div id="canvas">
+        <svg id="edge-layer" aria-hidden="true"></svg>
+      </div>
+    </section>
+    <footer id="detail-line">滚轮缩放 · 拖拽平移 · 点击节点查看模块说明</footer>
+  </main>
+  <script>
+    (() => {
+      const STATUS = {
+        active: "主闭环已运行",
+        partial: "代码已实现但未接入",
+        planned: "尚未实现 / 外部责任"
+      };
+
+      const macro = {
+        width: 2220,
+        height: 830,
+        groups: [],
+        nodes: [
+          ["A", "项目输入与证据", "代码、论文、配置、测试、实例", "active", 60, 270],
+          ["B", "语义理解与知识记忆", "分片导航、分批分析、受控复读、图谱与 L0–L4 证据", "partial", 350, 270],
+          ["C", "统一调度表示", "Problem、Schedule、目标向量", "active", 640, 270],
+          ["D", "诊断与因果机制", "异构图、CIP、机制测量、资格门", "partial", 930, 270],
+          ["E", "Agent 决策与候选生成", "动作 Mask、算子、闭包、局部修复", "partial", 1220, 270],
+          ["F", "求解与多保真验证", "Code、Static、Light、Full Oracle", "active", 1510, 270],
+          ["G", "严格接受或回退", "Full 合法且正式目标严格改善", "active", 1800, 270],
+          ["H", "实验记忆与统计", "干预记录、效应后验、成本与训练数据", "partial", 1220, 580],
+          ["I", "人工 / 领域专家", "语义、约束、Oracle 与最终业务验收", "planned", 350, 55],
+          ["J", "论文 / 代码 / 综述", "知识先验与项目证据来源", "planned", 60, 55],
+          ["K", "领域 Oracle / 仿真", "轨迹、碰撞、人员、数字孪生", "planned", 1510, 55]
+        ],
+        edges: [
+          ["A", "B"], ["B", "C"], ["C", "D"], ["D", "E"], ["E", "F"],
+          ["F", "G"], ["G", "H"], ["H", "B"], ["H", "D"], ["H", "E"],
+          ["I", "B"], ["I", "F"], ["I", "G"], ["J", "B"], ["K", "F"]
+        ]
+      };
+
+      const detailGroups = [
+        ["ga", "A · 输入与证据", 35, 40, 270, 1370],
+        ["gb", "B · 语义与长期记忆", 335, 40, 300, 1370],
+        ["gc", "C · 统一调度表示", 665, 40, 270, 1370],
+        ["gd", "D · 诊断与因果机制", 965, 40, 300, 1370],
+        ["ge", "E · Agent 与候选", 1295, 40, 300, 1370],
+        ["gf", "F · 多保真验证", 1625, 40, 270, 1370],
+        ["gg", "G · 接受与回退", 1925, 40, 270, 1370],
+        ["gh", "H · 实验记忆与统计", 2225, 40, 300, 1370]
+      ];
+
+      function col(group, x, items) {
+        return items.map((item, index) => [
+          item[0], item[1], item[2], item[3], x, 115 + index * 135, group
+        ]);
+      }
+
+      const detail = {
+        width: 2560,
+        height: 1460,
+        groups: detailGroups,
+        nodes: [
+          ...col("ga", 60, [
+            ["A1", "Repository Index", "仓库文件、AST 与符号索引", "active"],
+            ["A2", "Paper / Review PDF", "论文和综述进入 proposed 证据层", "partial"],
+            ["A3", "Code / Config / Tests", "项目事实的主要机械证据", "active"],
+            ["A4", "Instance / Incumbent", "问题实例与稳定基线排程", "active"],
+            ["A5", "Evidence Packet", "受预算约束的引用证据包", "active"]
+          ]),
+          ...col("gb", 370, [
+            ["B0", "Cheap Navigator", "按预算分片建图并合并项目导航", "partial"],
+            ["B1", "Strong Batched Analyst", "三个固定任务批次进行高能力分析", "partial"],
+            ["B2", "Evidence Sufficiency MCQ", "先判断证据充分、部分、不足或冲突", "partial"],
+            ["B3", "Controlled AST Re-read", "程序审批跨文件函数复读请求", "partial"],
+            ["B4", "Short-term Memory", "结构化压缩事实、证据 ID、矛盾和未知", "partial"],
+            ["B5", "Synthesis + Audit", "最终综合、Schema 修复与引用核验", "partial"],
+            ["B6", "SQLite Property Graph", "节点、边、作用域、版本与冲突", "partial"],
+            ["B7", "L0–L4 FTS5 Index", "分层证据检索与外部文档导入", "partial"],
+            ["B8", "Family / Variant Seed", "JSP、FSP、FJSP、HFSP 与工程模式", "active"],
+            ["B9", "Constraint Impact Critic", "影响档位、候选区分度与安全门", "partial"]
+          ]),
+          ...col("gc", 690, [
+            ["C1", "Project Manifest", "adapter、semantics、generator、Oracle", "active"],
+            ["C2", "Adapter / Generator", "项目输入转换与候选生成协议", "active"],
+            ["C3", "Canonical Problem IR", "作业、工序、资源、模式和约束", "active"],
+            ["C4", "Schedule + Hash", "可重放排程与完整性签名", "active"],
+            ["C5", "Objective Vector", "makespan 与词典序正式目标", "active"]
+          ]),
+          ...col("gd", 1000, [
+            ["D1", "Schedule Graph", "工序、作业、资源、阶段与关系边", "active"],
+            ["D2", "CIP = D/R/P/Ω", "诊断点、责任点、路径与闭包", "active"],
+            ["D3", "Mechanism Library", "八类 makespan 中间机制", "partial"],
+            ["D4", "Deterministic Calculators", "空闲、等待、关键路径、负载等", "partial"],
+            ["D5", "Candidate Variation Gate", "同实例候选不变化则退出优化", "partial"],
+            ["D6", "Controllability Gate", "direct / verified indirect", "partial"],
+            ["D7", "Mechanism Path", "factor → mechanism → objective", "partial"]
+          ]),
+          ...col("ge", 1330, [
+            ["E1", "Rule / GNN Ranker", "规则基线与可学习 CIP 排序", "partial"],
+            ["E2", "Action Mask", "语义、预算、失败历史与合法动作", "partial"],
+            ["E3", "Operator × Closure × Control", "短时程 Agent 动作空间", "partial"],
+            ["E4", "VNS / ALNS / Tabu", "确定性有界局部搜索组合", "partial"],
+            ["E5", "Conditional Generator", "部分排程重构与多候选", "partial"],
+            ["E6", "Bounded CP-SAT Repair", "闭包外冻结的精确局部修复", "active"]
+          ]),
+          ...col("gf", 1660, [
+            ["F1", "Code Gate", "语义声明证据完整性", "active"],
+            ["F2", "Static Gate", "IR 硬约束与冻结边界", "active"],
+            ["F3", "Light Proxy", "低成本代理和风险筛选", "active"],
+            ["F4", "Full Domain Oracle", "完整通用验证与领域插件", "planned"],
+            ["F5", "Validity + Cost", "合法性、时间和调用成本", "active"]
+          ]),
+          ...col("gg", 1960, [
+            ["G1", "Lexicographic Objective", "项目正式目标与容差", "active"],
+            ["G2", "Strict Improvement Gate", "Full 合法且严格改善", "active"],
+            ["G3", "Accept Incumbent", "更新当前解和历史最好解", "active"],
+            ["G4", "Reject + Revert", "拒绝候选并保留原解", "active"]
+          ]),
+          ...col("gh", 2260, [
+            ["H1", "Intervention Record", "作用域、动作、机制、结果和失败", "partial"],
+            ["H2", "Scoped Effect Posterior", "有效率与保守收益后验", "partial"],
+            ["H3", "Time / Token / Failure Cost", "联合采集成本", "partial"],
+            ["H4", "Counterfactual Controls", "配对因果对照", "partial"],
+            ["H5", "Dataset / Statistics", "训练数据、效应量与多重检验", "partial"]
+          ])
+        ],
+        edges: [
+          ["A1", "A5"], ["A2", "A5"], ["A3", "A5"],
+          ["A1", "B0"], ["A3", "B0"], ["B0", "B1"], ["B1", "B2"],
+          ["B2", "B3"], ["B3", "B1"], ["B1", "B4"], ["B4", "B1"],
+          ["B1", "B5"], ["B8", "B6"], ["B8", "B7"], ["A2", "B7"],
+          ["B6", "B1"], ["B7", "B1"], ["B5", "B9"],
+          ["A4", "C2"], ["C1", "C2"], ["C2", "C3"], ["C2", "C4"],
+          ["C3", "C5"], ["C4", "C5"],
+          ["C3", "D1"], ["C4", "D1"], ["D1", "D2"], ["B6", "D3"],
+          ["C3", "D4"], ["C4", "D4"], ["D3", "D4"], ["D4", "D5"],
+          ["D5", "D6"], ["D6", "D7"],
+          ["D2", "E1"], ["E1", "E2"], ["D7", "E2"], ["E2", "E3"],
+          ["E3", "E4"], ["E3", "E5"], ["E4", "E6"], ["E5", "E6"],
+          ["E6", "F1"], ["F1", "F2"], ["F2", "F3"], ["F3", "F4"], ["F4", "F5"],
+          ["F5", "G1"], ["G1", "G2"], ["G2", "G3"], ["G2", "G4"],
+          ["G3", "H1"], ["G4", "H1"], ["H1", "H2"], ["H1", "H3"],
+          ["H1", "H4"], ["H1", "H5"], ["H2", "E2"], ["H2", "B6"], ["H1", "B7"]
+        ]
+      };
+
+      const viewport = document.getElementById("viewport");
+      const canvas = document.getElementById("canvas");
+      const edgeLayer = document.getElementById("edge-layer");
+      const zoomValue = document.getElementById("zoom-value");
+      const detailLine = document.getElementById("detail-line");
+      const macroTab = document.getElementById("macro-tab");
+      const detailTab = document.getElementById("detail-tab");
+      let mode = new URLSearchParams(location.search).get("view") === "detail"
+        ? "detail"
+        : "macro";
+      let scale = 1;
+      let tx = 0;
+      let ty = 0;
+      let dragging = false;
+      let lastX = 0;
+      let lastY = 0;
+      let selected = null;
+
+      const data = () => mode === "macro" ? macro : detail;
+      const nodeMap = () => new Map(data().nodes.map(n => [n[0], n]));
+
+      function applyTransform() {
+        canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+        zoomValue.textContent = `${Math.round(scale * 100)}%`;
+      }
+
+      function drawEdges() {
+        edgeLayer.innerHTML = `
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--edge)"></path>
+            </marker>
+          </defs>`;
+        const map = nodeMap();
+        for (const [from, to] of data().edges) {
+          const a = map.get(from);
+          const b = map.get(to);
+          if (!a || !b) continue;
+          const ax = a[4] + 220;
+          const ay = a[5] + 34;
+          const bx = b[4];
+          const by = b[5] + 34;
+          let path;
+          if (bx >= ax - 20) {
+            const bend = Math.max(55, (bx - ax) * 0.45);
+            path = `M ${ax} ${ay} C ${ax + bend} ${ay}, ${bx - bend} ${by}, ${bx} ${by}`;
+          } else {
+            const lift = Math.min(95, Math.abs(by - ay) * 0.35 + 40);
+            path = `M ${ax} ${ay} C ${ax + 70} ${ay - lift}, ${bx - 70} ${by - lift}, ${bx} ${by}`;
+          }
+          const element = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          element.setAttribute("d", path);
+          element.setAttribute("class", "edge");
+          element.dataset.from = from;
+          element.dataset.to = to;
+          edgeLayer.appendChild(element);
+        }
+      }
+
+      function render() {
+        selected = null;
+        detailLine.textContent = "滚轮缩放 · 拖拽平移 · 点击节点查看模块说明";
+        canvas.querySelectorAll(".group, .node").forEach(el => el.remove());
+        canvas.style.width = `${data().width}px`;
+        canvas.style.height = `${data().height}px`;
+        edgeLayer.setAttribute("width", data().width);
+        edgeLayer.setAttribute("height", data().height);
+        for (const group of data().groups) {
+          const el = document.createElement("section");
+          el.className = "group";
+          el.style.left = `${group[2]}px`;
+          el.style.top = `${group[3]}px`;
+          el.style.width = `${group[4]}px`;
+          el.style.height = `${group[5]}px`;
+          el.innerHTML = `<div class="group-title">${group[1]}</div>`;
+          canvas.appendChild(el);
+        }
+        for (const node of data().nodes) {
+          const el = document.createElement("article");
+          el.className = `node ${node[3]}`;
+          el.dataset.id = node[0];
+          el.style.left = `${node[4]}px`;
+          el.style.top = `${node[5]}px`;
+          el.innerHTML = `
+            <div class="node-title">${node[0]} · ${node[1]}</div>
+            <div class="node-detail">${node[2]}</div>
+            <span class="node-status">${STATUS[node[3]]}</span>`;
+          el.addEventListener("click", event => {
+            event.stopPropagation();
+            selectNode(node[0]);
+          });
+          canvas.appendChild(el);
+        }
+        drawEdges();
+        fitView();
+      }
+
+      function selectNode(id) {
+        selected = id;
+        canvas.querySelectorAll(".node").forEach(el => {
+          el.classList.toggle("selected", el.dataset.id === id);
+        });
+        edgeLayer.querySelectorAll(".edge").forEach(el => {
+          el.classList.toggle(
+            "highlight",
+            el.dataset.from === id || el.dataset.to === id
+          );
+        });
+        const node = nodeMap().get(id);
+        detailLine.textContent = `${node[0]} · ${node[1]} — ${node[2]} — ${STATUS[node[3]]}`;
+      }
+
+      function fitView() {
+        const rect = viewport.getBoundingClientRect();
+        const padding = 42;
+        scale = Math.min(
+          (rect.width - padding * 2) / data().width,
+          (rect.height - padding * 2) / data().height,
+          1.4
+        );
+        scale = Math.max(0.15, scale);
+        tx = (rect.width - data().width * scale) / 2;
+        ty = (rect.height - data().height * scale) / 2;
+        applyTransform();
+      }
+
+      function zoomAt(nextScale, clientX, clientY) {
+        const rect = viewport.getBoundingClientRect();
+        const px = clientX - rect.left;
+        const py = clientY - rect.top;
+        const canvasX = (px - tx) / scale;
+        const canvasY = (py - ty) / scale;
+        scale = Math.min(3.5, Math.max(0.15, nextScale));
+        tx = px - canvasX * scale;
+        ty = py - canvasY * scale;
+        applyTransform();
+      }
+
+      viewport.addEventListener("wheel", event => {
+        event.preventDefault();
+        zoomAt(scale * (event.deltaY < 0 ? 1.12 : 0.89), event.clientX, event.clientY);
+      }, { passive: false });
+      viewport.addEventListener("pointerdown", event => {
+        if (event.target.closest(".node")) return;
+        dragging = true;
+        lastX = event.clientX;
+        lastY = event.clientY;
+        viewport.classList.add("dragging");
+        viewport.setPointerCapture(event.pointerId);
+      });
+      viewport.addEventListener("pointermove", event => {
+        if (!dragging) return;
+        tx += event.clientX - lastX;
+        ty += event.clientY - lastY;
+        lastX = event.clientX;
+        lastY = event.clientY;
+        applyTransform();
+      });
+      viewport.addEventListener("pointerup", event => {
+        dragging = false;
+        viewport.classList.remove("dragging");
+        if (viewport.hasPointerCapture(event.pointerId)) {
+          viewport.releasePointerCapture(event.pointerId);
+        }
+      });
+      viewport.addEventListener("click", () => {
+        if (selected) selectNode(selected);
+      });
+
+      document.getElementById("zoom-in").addEventListener("click", () => {
+        const rect = viewport.getBoundingClientRect();
+        zoomAt(scale * 1.2, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      });
+      document.getElementById("zoom-out").addEventListener("click", () => {
+        const rect = viewport.getBoundingClientRect();
+        zoomAt(scale / 1.2, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      });
+      document.getElementById("fit").addEventListener("click", fitView);
+      document.getElementById("reset").addEventListener("click", () => {
+        scale = 1;
+        tx = 35;
+        ty = 35;
+        applyTransform();
+      });
+      document.getElementById("fullscreen").addEventListener("click", async () => {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+        setTimeout(fitView, 100);
+      });
+      macroTab.addEventListener("click", () => {
+        mode = "macro";
+        macroTab.setAttribute("aria-pressed", "true");
+        detailTab.setAttribute("aria-pressed", "false");
+        render();
+      });
+      detailTab.addEventListener("click", () => {
+        mode = "detail";
+        macroTab.setAttribute("aria-pressed", "false");
+        detailTab.setAttribute("aria-pressed", "true");
+        render();
+      });
+      window.addEventListener("resize", fitView);
+      macroTab.setAttribute("aria-pressed", mode === "macro" ? "true" : "false");
+      detailTab.setAttribute("aria-pressed", mode === "detail" ? "true" : "false");
+      render();
+    })();
+  </script>
+</body>
+</html>

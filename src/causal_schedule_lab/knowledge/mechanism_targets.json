@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "objective": "makespan",
+  "mechanisms": [
+    {
+      "id": "critical_resource_idle_gap",
+      "name": "关键资源内部空闲间隙",
+      "aliases": ["bottleneck idle gap", "关键机器空闲", "瓶颈空闲"],
+      "description": "关键或最高利用率单容量资源上，相邻已排工序之间可观察的内部空闲时间。",
+      "calculator": "critical_resource_idle_gap",
+      "required_data": ["assignments", "selected modes", "resource capacities"],
+      "objective_direction": "decrease_usually_improves",
+      "limitations": ["必须通过最终 makespan 验证", "并非所有内部间隙都可消除"]
+    },
+    {
+      "id": "critical_path_length",
+      "name": "实现调度关键路径长度",
+      "aliases": ["critical path", "关键链", "最长路径"],
+      "description": "由工艺前置与实现资源次序共同构造的调度 DAG 最长路径。",
+      "calculator": "critical_path_length",
+      "required_data": ["precedence", "assignments", "selected resources"],
+      "objective_direction": "decrease_usually_improves",
+      "limitations": ["若关系图成环则计算不可用"]
+    },
+    {
+      "id": "critical_operation_waiting",
+      "name": "工序可用后的等待时间",
+      "aliases": ["operation waiting", "ready-to-start waiting", "工序等待"],
+      "description": "工序满足释放与作业内前置关系后，到实际开始之间的等待。",
+      "calculator": "critical_operation_waiting",
+      "required_data": ["releases", "precedence", "assignments"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["等待减少可能把冲突转移到其他资源"]
+    },
+    {
+      "id": "bottleneck_load_imbalance",
+      "name": "资源负载不均衡",
+      "aliases": ["load imbalance", "负载均衡", "机器负载差异"],
+      "description": "可比资源利用率之间的变异系数，用于发现明显失衡而非替代 makespan。",
+      "calculator": "bottleneck_load_imbalance",
+      "required_data": ["selected resources", "assignment durations"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["异构资源需按 family 分层解释"]
+    },
+    {
+      "id": "critical_setup_overhead",
+      "name": "关键换型与准备损失",
+      "aliases": ["setup overhead", "changeover", "换型损失"],
+      "description": "候选排程显式记录的 setup/changeover 时间总量。",
+      "calculator": "metadata_setup_overhead",
+      "required_data": ["assignment metadata setup_time/setup_duration"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["无显式 setup 数据时返回 unavailable"]
+    },
+    {
+      "id": "transport_synchronization_delay",
+      "name": "运输与同步延迟",
+      "aliases": ["transport delay", "synchronization delay", "运输等待"],
+      "description": "候选排程显式记录的运输、车辆等待与同步延迟。",
+      "calculator": "metadata_transport_delay",
+      "required_data": ["assignment metadata transport_delay/synchronization_delay"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["没有轨迹或运输 Oracle 数据时返回 unavailable"]
+    },
+    {
+      "id": "blocking_no_wait_loss",
+      "name": "阻塞与无等待传播损失",
+      "aliases": ["blocking loss", "no-wait pressure", "阻塞损失"],
+      "description": "候选排程显式记录的 blocking delay 或 no-wait 传播惩罚。",
+      "calculator": "metadata_blocking_loss",
+      "required_data": ["assignment metadata blocking_delay/no_wait_penalty"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["必须由对应变体求解器或 Oracle 提供"]
+    },
+    {
+      "id": "parallel_capacity_loss",
+      "name": "并行资源容量损失",
+      "aliases": ["parallelism loss", "capacity loss", "并行性损失"],
+      "description": "排程跨度内资源总可用容量与实际忙碌量之间的归一化差额。",
+      "calculator": "parallel_capacity_loss",
+      "required_data": ["resource capacities", "assignment durations", "makespan"],
+      "objective_direction": "decrease_may_improve",
+      "limitations": ["包含不可避免空闲，只用于候选对比"]
+    }
+  ]
+}

@@ -1,315 +1,298 @@
-# Schedule Lab
+# Causal Schedule Lab
 
-**简体中文** | [English](README_EN.md)
+面向 JSP、FSP、FJSP、HFSP 与项目约束调度的“项目条件化因果核心点发现 +
+Agentic 局部改进”研究平台。
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
-[![Version](https://img.shields.io/badge/version-0.1.1-blue)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/tests-25%2F25%20passing-brightgreen)](tests/test_schedule_lab.py)
-[![Status](https://img.shields.io/badge/status-active-success)](SCHEDULE_LAB_PLAN.md)
-[![Visibility](https://img.shields.io/badge/repository-private-lightgrey)](#license)
+本项目不是从零随机重排，也不是让大模型直接生成一张甘特图。它从一个已验证的
+稳定 incumbent 出发，先定位损失出现的位置，再追踪到可修改的责任决策与最小
+因果传播闭包；Agent 只决定“在哪里改、用什么算子、释放多大闭包、何时调用高成本
+Oracle”，具体排程由确定性 CP-SAT/条件生成器完成，最后由验证器裁决。
 
-面向 JSP、FSP、FJSP、HFSP 和领域约束调度的确定性优化框架。
+> 当前仓库是独立通用工程，不依赖任何既有业务项目或外部调度代码。
 
-Schedule Lab 从已有可行调度出发，由 Agent 诊断瓶颈、选择局部优化策略，再由启发式算法、CP-SAT、验证器和领域 Oracle 构造并认证候选。项目重点是可行性、可复现性和可审计性，而不是让大模型直接生成未经验证的调度结果。
-
-## 目录 (Table of Contents)
-
-- [项目简介](#项目简介-overview)
-- [核心功能](#核心功能-key-features)
-- [当前结果](#当前结果-current-results)
-- [系统架构](#系统架构-architecture)
-- [安装](#安装-installation)
-- [使用方法](#使用方法-usage)
-- [MCP 服务](#mcp-服务-mcp-server)
-- [项目结构](#项目结构-repository-structure)
-- [项目文档](#项目文档-documentation)
-- [路线图](#路线图-roadmap)
-- [贡献与更新](#贡献与更新-contributing)
-- [许可](#许可-license)
-
-## 项目简介 (Overview)
+## 核心闭环
 
 ```text
-Feasible incumbent
-  → normalize and audit
-  → diagnose bottlenecks
-  → select a bounded neighborhood
-  → deterministic repair
-  → generic validation
-  → optional domain Oracle
-  → reproduce and accept or reject
+项目代码/文档/测试
+        │
+        ▼
+语义编译与证据审计 ── 未证实语义只能标记 unknown
+        │
+        ▼
+统一 IR + incumbent ──► 异构调度图
+        │                    │
+        │                    ▼
+        │             CIP = (D, R, P, Ω)
+        │                    │
+        │                    ▼
+        │       多任务评分 + 因果闭包预测
+        │                    │
+        │                    ▼
+        │       短时程 Agentic RL 决策
+        │                    │
+        │                    ▼
+        └──── 闭包外冻结 ◄─ 条件生成 / CP-SAT 局部修复
+                             │
+                             ▼
+                  Code → Static → Light → Full Oracle
+                             │
+                    严格改善才接受，否则回退
 ```
 
-设计原则：
-
-- 从可信 incumbent 继续优化，不默认从头随机重排；
-- 冻结邻域外决策，并记录 released/frozen 范围；
-- Agent 负责诊断和实验编排，不直接宣告可行；
-- 求解器生成候选，验证器和 Oracle 负责验收；
-- 使用固定 seed、稳定排序、单 worker 和候选哈希保证复现；
-- 轨迹联合优化作为可选 Tool，不影响通用调度主流程。
-
-## 核心功能 (Key Features)
-
-| Category | Capabilities | Status |
-|---|---|---|
-| Problem families | JSP、FSP、FJSP、HFSP、混合领域问题 | Stable |
-| Modeling | 多模式工序、可选机器、多资源容量、任意前序、跨资源绑定 | Stable |
-| Solvers | Dispatching heuristics、PyJobShop、OR-Tools CP-SAT | Stable |
-| Improvement | Compaction、VNS、局部 CP-SAT、因果闭包、有界 ALNS | Stable / v1 |
-| Search control | Tabu 哈希、fast → balanced 升级、贝叶斯证据排序 | Stable / v1 |
-| Validation | 通用硬约束、冻结区检查、真实指标重算 | Stable |
-| Domain Oracle | 舰载机轨迹、避碰、车辆连续性、动态可达性回放 | Integrated |
-| Interfaces | Python API、CLI、MCP Server、Codex Skill | Available |
-| Visualization | 甘特图、共享时间轴对比视频、审计 manifest | Available |
-| Joint trajectories | 路线目录、固定路线时空模型、Oracle Cut | Experimental |
-| Agentic RL | 搜索策略控制与图 Encoder | Planned |
-
-## 当前结果 (Current Results)
-
-### 舰载机调度
-
-| 阶段 | 真实 makespan | 验证状态 |
-|---|---:|---|
-| Greedy 基线 | 675.5 s | 已保存、可复现 |
-| 受控策略搜索 | 637.5 s | 通用验证与领域验证通过 |
-| 确定性 ALNS 第 1 轮 | 636.2 s | 已验证 |
-| 确定性 ALNS 第 2 轮 | 630.5 s | 已验证 |
-| **当前 incumbent** | **627.8 s** | **已验证** |
-
-当前 incumbent 相比 675.5 秒基线缩短 **47.7 秒 / 7.06%**。
-
-![Current 627.8-second carrier schedule](outputs/carrier_alns_best_iter3_gap6_closed_630_5.png)
-
-关键产物：
-
-- [当前 627.8 秒调度方案](outputs/carrier_alns_best_iter3_gap6_closed_630_5.json)
-- [原始 675.5 秒基线](outputs/carrier_greedy_baseline_675_5.json)
-- [637.5 vs 627.8 对比视频](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.mp4)
-- [对比视频审计 manifest](outputs/videos/carrier_schedule_comparison_637_5_vs_627_8.manifest.json)
-
-> 文件名中的 `630_5` 为历史审计标记，表示该轮优化的输入 incumbent 是 630.5 秒。文件内调度按最晚工序结束时间重新计算后的真实 makespan 为 627.8 秒。
-
-### 多问题族回归
-
-| 问题族 | LPT incumbent | 改进结果 | 结论 |
-|---|---:|---:|---|
-| JSP | 14 | **11** | 已改善 |
-| FSP | 22 | **19** | 已改善 |
-| FJSP | 11 | **7** | 已改善 |
-| HFSP | 17 | 17 | 当前有界邻域未改善 |
-
-完整结果见[自适应多问题族回归](outputs/adaptive_multifamily_improvement_benchmark.json)。
-
-### 被拒绝的实验候选
-
-| 实验 | 抽象结果 | 领域结果 | 结论 |
-|---|---:|---:|---|
-| 固定路线时空 CP-SAT | 619.5 s | 803.9 s，出现 40 个绑定变化 | 拒绝 |
-| 有界路线绑定主问题 | 634.6 s | 未送入昂贵领域 Oracle | 在 Oracle 前拒绝 |
-
-抽象求解器得到的目标值，只有通过全部通用验证和领域回放后，才能作为正式优化结果。
-
-## 系统架构 (Architecture)
+共同因果骨架为：
 
 ```text
-Problem Adapter
-└── Canonical Scheduling IR
-    ├── Metrics and Bottleneck Diagnosis
-    ├── Family Strategy Router
-    │   ├── JSP: critical blocks
-    │   ├── FSP: permutation and blocking
-    │   ├── FJSP: routing and sequencing
-    │   └── HFSP: stage load and sink gaps
-    └── Deterministic Search Controller
-        ├── VNS and exact enumeration
-        ├── CP-SAT local repair
-        ├── bounded ALNS
-        └── tabu and Bayesian budget allocation
-            ↓
-      Generic Validator
-            ↓
-      Optional Domain Oracle
-            ↓
-      Reproduce → Compare → Accept / Reject
+上游状态 A → 局部到达 L → 等待 W → 开始 T → 时长 D → 目标 J
 ```
 
-### 职责边界
+## 已实现能力
 
-| 组件 | 职责 |
-|---|---|
-| Agent | 诊断瓶颈，选择策略、邻域和预算 |
-| 启发式 / VNS / ALNS | 生成结构化候选提案 |
-| CP-SAT / 精确方法 | 在释放区域内构造合法调度 |
-| 通用验证器 | 检查前序、资源、资格、绑定和冻结决策 |
-| 领域 Oracle | 检查轨迹、碰撞、状态依赖可达性和真实时间 |
-| 人工审核 | 确认目标、风险阈值和正式发布决策 |
+- 独立统一 IR：作业、工序、候选模式、资源容量、前置关系、选择绑定、扩展约束、
+  词典序目标和可验证排程。
+- 项目语义编译：旧单轮链作为回归基线保留；新链先用低成本模型分片建立代码导航，
+  再由高能力模型按“项目环境、目标约束、决策 Oracle”三批分析。模型只能申请复读
+  相关函数，程序按 AST 调用/import 关系、白名单和预算审批，最后重新综合并审计
+  引用。火山 Coding Plan 单轮 Provider 已实测；分阶段链已离线验收、尚待正式
+  在线质量对照。
+- 调度语义知识检索：预存 JSP/FSP/HFSP/FJSP 的经典定义、常见变体，以及运输、
+  人员、维护、缓冲、换型、能耗、动态事件和数字孪生等工程模式，让 LLM 重点发现
+  项目增量；知识先验不替代代码证据。
+- 长期记忆：SQLite 属性图保存经审核关系，L0–L4 FTS5 保存问题族、机制、原始证据
+  和实验；外部 PDF/文本默认只进入 `proposed`，不会自动升级为事实。
+- makespan 机制目标：八类确定性测量、同实例候选变化硬门、直接/验证间接控制门，
+  以及按实例/状态记录的干预后验；当前独立可运行，尚未控制默认 Agent。
+- 约束影响分析：独立高推理 Critic 分开评估可行性重要度、决策杠杆、目标敏感度
+  和候选区分度；LLM 只选枚举档位，程序固定映射分数，低优化权重不能删除硬约束
+  验证。
+- 四类基准适配：JSP、FSP、FJSP、HFSP，附确定性实例生成器。
+- 调度异构图：工序、作业、资源、阶段及 precedence、resource sequence、
+  eligibility、competition、causal edges。
+- CIP 四元组：诊断点 D、责任点 R、因果路径 P、传播闭包 Ω。
+- 规则召回与确定性排序基线；可替换为关系感知 GNN。
+- 多任务学习头：改善量、有效性、验证成本、失败风险、排序、闭包成员、路径成员。
+- 反事实与 pairwise 监督数据导出。
+- 1–3 级闭包规则基线及节点级稀疏闭包学习接口。
+- 层级 Agent 动作空间：`operator × closure level × control action`，带合法性 Mask。
+- BC、Masked Actor-Critic 与 PPO 更新。
+- 条件部分排程训练：destroy/reconstruct 样本、模式/开始偏好解码、多候选生成。
+- 确定性局部 CP-SAT：incumbent hint、闭包外精确冻结、单 worker、固定 seed。
+- 搜索组合：有序 VNS、平台期 bounded ALNS、禁忌记忆、多保真贝叶斯采集。
+- 四级验证：代码语义、静态约束、轻量反事实代理、完整 Oracle。
+- 三组因果对照：同算子随机点、同点随机算子、同闭包规模随机区域。
+- 实验设施：统一 JSONL、消融矩阵、bootstrap、Wilcoxon、Cliff's delta、
+  Friedman 与 Holm 校正。
 
-## 安装 (Installation)
+详细架构与持续维护入口：
 
-### 环境要求
+- [项目状态与持续路线图](PROJECT_STATUS_AND_ROADMAP.md)
+- [两层项目模块图](PROJECT_MODULE_GRAPH.md)
+- [可缩放项目模块图](PROJECT_MODULE_GRAPH_INTERACTIVE.html)
+- [分类文档索引](docs/README.md)
+- [系统详细架构](docs/architecture/SYSTEM_ARCHITECTURE.md)
+- [Agent 平台壳实施计划](docs/architecture/AGENT_PLATFORM_WORKPLAN.md)
+- [因果模块实施任务](docs/architecture/CAUSAL_MODULE_WORKPLAN.md)
+- [长期记忆、分层检索与因果机制目标](docs/architecture/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md)
+- [数学公式实现矩阵](docs/architecture/FORMULA_IMPLEMENTATION_MATRIX.md)
+- [原框架逐节追踪](docs/architecture/TRACEABILITY.md)
+- [LLM 项目语义编译器](docs/semantics/LLM_SEMANTIC_COMPILER.md)
+- [LLM 项目语义盲测 Harness](docs/semantics/LLM_SEMANTIC_HARNESS.md)
+- [L2D 多模型对比报告](docs/semantics/L2D_MODEL_COMPARISON_REPORT.md)
+- [L2D 论文—代码人工核验清单](docs/semantics/L2D_PAPER_CODE_HUMAN_VERIFICATION.md)
+- [调度语义知识库与优化影响权重](docs/semantics/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md)
+- [无论文/碎片文档语义学习](docs/semantics/CODE_ONLY_SEMANTIC_LEARNING.md)
+- [项目架构维护 Skill](.agents/skills/maintain-causal-schedule-lab/SKILL.md)
 
-- Python 3.11 or later
-- macOS, Linux or Windows
-- 本私有仓库的访问权限
+## 目录
 
-### 安装步骤
+```text
+causal_schedule_lab/
+├── configs/                    # 语义 DSL 与实验配置
+├── PROJECT_STATUS_AND_ROADMAP.md # 当前状态、缺口与后续任务
+├── PROJECT_MODULE_GRAPH.md     # 两层项目结构图
+├── docs/
+│   ├── architecture/           # 架构、因果、公式、追踪与长期记忆
+│   ├── semantics/              # LLM 语义、知识库与模型核验
+│   ├── experiments/            # 实验协议
+│   └── guides/                 # 接入与操作指南
+├── examples/manifests/         # 四类内置演示
+├── scripts/reproduce_all.sh    # 一键安装、测试和四类 smoke run
+├── src/causal_schedule_lab/
+│   ├── ir.py                   # 独立统一调度 IR
+│   ├── semantic_compiler.py    # 项目语义编译与证据门
+│   ├── llm_semantics.py        # LLM 选择题语义解析与严格 JSON
+│   ├── semantic_agent.py       # 分片导航、分批分析、受控复读与短期记忆
+│   ├── semantic_knowledge.py   # JSP/FSP/HFSP/FJSP 知识检索
+│   ├── constraint_impact.py    # 情境化约束优化影响 Critic
+│   ├── knowledge/              # 问题族知识与 makespan 机制目标
+│   ├── storage/                # SQLite 图谱、证据索引与干预记忆
+│   ├── mechanisms.py           # 机制计算、资格门与效应后验
+│   ├── semantic_harness.py     # 论文隐藏标签与代码盲测
+│   ├── providers/              # 火山/OpenAI 兼容 Provider
+│   ├── graph.py                # 异构调度图
+│   ├── cip.py                  # CIP 召回、责任路径与闭包
+│   ├── learning.py             # 关系 GNN 与多任务头
+│   ├── agentic_rl.py           # 完整层级动作空间
+│   ├── agent.py                # BC / Masked PPO 基线
+│   ├── conditional_generator.py# 部分排程训练与条件修复
+│   ├── search.py               # VNS / ALNS / tabu / acquisition
+│   ├── posterior.py            # 多保真后验
+│   ├── core_validation.py      # 通用硬约束
+│   ├── validation.py           # 四级 Oracle
+│   ├── experiment_runner.py    # 基准与消融执行
+│   └── statistics.py           # 统计检验
+└── tests/
+```
+
+## 安装
+
+需要 Python 3.11+。
 
 ```bash
-git clone https://github.com/wgy577/schedule-lab.git
-cd schedule-lab
-
+cd /Users/guangyuwu/Desktop/causal_schedule_lab
 python3 -m venv .venv
-.venv/bin/pip install .
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install '.[dev]'
 ```
 
-舰载机专用命令还需要本地 legacy 项目、训练网络权重和 MAT 轨迹资源。通用 JSP/FSP/FJSP/HFSP 工作流不依赖这些资产。
+## 快速运行
 
-## 使用方法 (Usage)
-
-### 运行测试
+运行全部测试：
 
 ```bash
-.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m pytest -q
 ```
 
-### 运行调度回归
+建立当前知识图谱与分层证据库：
 
 ```bash
-.venv/bin/schedule-lab benchmark
+.venv/bin/causal-schedule-lab memory-build
+.venv/bin/causal-schedule-lab memory-status
+.venv/bin/causal-schedule-lab memory-search \
+  --query "AGV transport synchronization" \
+  --family FJSP
 ```
 
-### 运行自适应多问题族回归
+把新综述放入待审核证据层：
 
 ```bash
-.venv/bin/schedule-lab adaptive-improvement-benchmark --baseline-rule lpt
+.venv/bin/causal-schedule-lab memory-ingest-document \
+  --file /path/to/review.pdf \
+  --title "Review title" \
+  --source-kind peer_reviewed_survey \
+  --scope FJSP
 ```
 
-### 分析并改进 incumbent
+测量一个已接入项目当前排程的 makespan 中间机制：
 
 ```bash
-.venv/bin/schedule-lab improvement-workflow \
-  problem.json incumbent.json \
-  --evidence-count 12 \
-  --validated-elite-count 2 \
-  --output outputs/improvement_workflow.json
+.venv/bin/causal-schedule-lab measure-mechanisms \
+  --project examples/manifests/jsp.json \
+  --output outputs/jsp_mechanisms.json
 ```
 
-### 审计舰载机调度
+审计一个项目的代码语义：
 
 ```bash
-.venv/bin/schedule-lab carrier-audit
+.venv/bin/causal-schedule-lab compile-semantics \
+  --project-root /path/to/scheduling-project \
+  --output outputs/semantic_compilation.json
 ```
 
-该审计命令为只读操作，不会覆盖当前方案。
-
-### 生成对比视频
+运行四类内置实例：
 
 ```bash
-python3 workflows/video/render_schedule_comparison.py
+.venv/bin/causal-schedule-lab demo --family jsp  --mode optimize
+.venv/bin/causal-schedule-lab demo --family fsp  --mode optimize
+.venv/bin/causal-schedule-lab demo --family fjsp --mode optimize
+.venv/bin/causal-schedule-lab demo --family hfsp --mode optimize
 ```
 
-视频工作流使用统一时间尺度。较短方案完成后停留在最终帧并等待较长方案结束，两侧不会被分别压缩到相同时长。
-
-## MCP 服务 (MCP Server)
-
-启动服务：
+完整可复现 smoke workflow：
 
 ```bash
-.venv/bin/schedule-lab-mcp
+bash scripts/reproduce_all.sh
 ```
 
-主要工具包括：
+LLM 语义编译（读取本地 `.env`，输出仍需人工审核）：
 
-- `scheduling_capabilities`
-- `analyze_schedule`
-- `solve_problem`
-- `compare_schedules`
-- `plan_schedule_improvement`
-- `fast_improve_schedule`
-- `adaptive_improve_schedule`
-- `plan_joint_schedule_and_trajectories`
-- `audit_current_carrier`
-- `search_current_carrier`
-
-MCP 层用于向 Agent 提供调度能力，不替代求解器、验证器或领域 Oracle。
-
-## 项目结构 (Repository Structure)
-
-```text
-schedule-lab/
-├── README.md
-├── README_EN.md
-├── CHANGELOG.md
-├── EXPERIMENTS.md
-├── SCHEDULE_LAB_PLAN.md
-├── pyproject.toml
-├── run_schedule_lab.py
-├── src/schedule_lab/
-│   ├── model.py
-│   ├── validation.py
-│   ├── fast_controller.py
-│   ├── generic_neighborhood.py
-│   ├── strategy_router.py
-│   ├── carrier_*.py
-│   └── solvers/
-├── tests/
-├── skills/
-├── workflows/
-└── outputs/
+```bash
+PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
+  compile-semantics-llm \
+  --project-root . \
+  --env-file .env \
+  --provider-prefix SEED \
+  --output outputs/llm_semantic_compilation.json
 ```
 
-## 项目文档 (Documentation)
+新的分阶段链（默认低成本 MiMo 导航、Anthropic/Opus 强分析）：
 
-| 文档 | 用途 |
-|---|---|
-| [技术计划与路线图](SCHEDULE_LAB_PLAN.md) | 当前能力、架构、风险和分阶段开发计划 |
-| [实验记录](EXPERIMENTS.md) | 已接受、已拒绝、临时和计划中的实验 |
-| [更新日志](CHANGELOG.md) | 版本化仓库更新 |
-| [调度优化 Skill](skills/improve-schedules-with-oracles/SKILL.md) | 可复用 Agent 工作流和验证规则 |
-| [方法选择](skills/improve-schedules-with-oracles/references/method-selection.md) | 问题族与优化方法路由 |
-| [高级方法组合](skills/improve-schedules-with-oracles/references/advanced-optimization-portfolio.md) | 分解、路径重连、Oracle Cut 和鲁棒优化 |
-| [调度—轨迹联合设计](skills/improve-schedules-with-oracles/references/agentic-rl-and-joint-trajectories.md) | 可选轨迹 Tool 和 Agentic RL 边界 |
-| [对比视频规范](workflows/video/COMPARISON_VIDEO_TEMPLATE.md) | 共享时间轴渲染和审计要求 |
+```bash
+PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
+  compile-semantics-staged \
+  --project-root . \
+  --env-file .env \
+  --navigator-provider-prefix MIMO \
+  --analyst-protocol anthropic \
+  --max-rounds-per-batch 3 \
+  --max-reads 18 \
+  --output outputs/staged_semantic_compilation.json
+```
 
-## 路线图 (Roadmap)
+建议先加 `--dry-run` 检查哪些非论文文件会进入导航；该模式不调用 API。
 
-- [x] Unified JSP/FSP/FJSP/HFSP problem representation
-- [x] Deterministic validation and metric audit
-- [x] VNS, local CP-SAT and bounded ALNS workflow
-- [x] Carrier trajectory/collision Oracle integration
-- [x] Tabu signatures, Oracle Cuts and Bayesian evidence ranking
-- [x] Validated carrier improvement from 675.5 to 627.8 seconds
-- [ ] Standardize the 627.8-second incumbent artifact and reproduction manifest
-- [ ] Compare causal closure, local branching and shifting bottleneck on the current incumbent
-- [ ] Expand the multi-family benchmark suite
-- [ ] Package trajectory optimization as a fully optional Tool
-- [ ] Add robustness scenarios and lexicographic multi-objective acceptance
-- [ ] Evaluate Agentic RL and graph encoders after sufficient validated evidence exists
+运行网上公开论文—官方代码盲测案例：
 
-详细里程碑和验收标准见 [SCHEDULE_LAB_PLAN.md](SCHEDULE_LAB_PLAN.md#8-后续技术计划)。
+```bash
+.venv/bin/causal-schedule-lab run-semantic-harness \
+  --case examples/harness_cases/l2d.json \
+  --env-file .env \
+  --provider-prefix SEED \
+  --max-paper-characters 36000 \
+  --max-code-characters 42000 \
+  --output outputs/l2d_semantic_harness.json
+```
 
-## 贡献与更新 (Contributing)
+论文只生成隐藏标签，代码分析端不会收到论文文本或标签。第三方案例内容放在
+被忽略的 `external_cases/`，不复制进本仓库。
 
-本仓库以“已验证实验”为更新单位，不以未经验证的求解器输出作为正式结果。
+使用已有固定标签比较另一个 OpenAI 兼容模型：
 
-提交改动前：
+```bash
+.venv/bin/causal-schedule-lab run-code-semantic-benchmark \
+  --case examples/harness_cases/l2d.json \
+  --label-artifact outputs/l2d_semantic_harness.json \
+  --provider-prefix DEEPSEEK \
+  --protocol openai \
+  --max-code-characters 42000
+```
 
-1. 保留当前 incumbent 并记录规范化哈希；
-2. 在 [EXPERIMENTS.md](EXPERIMENTS.md) 登记实验；
-3. 保持声明邻域以外的所有决策冻结；
-4. 运行通用验证和所需领域 Oracle；
-5. 对接受候选进行复跑并比较规范化哈希；
-6. 更新 [CHANGELOG.md](CHANGELOG.md) 的 `Unreleased` 部分；
-7. 运行完整测试集。
+Anthropic Messages 兼容中转使用 `--protocol anthropic`。当前五模型实测结论和
+限制见 [对比报告](docs/semantics/L2D_MODEL_COMPARISON_REPORT.md)。
 
-实验状态：
+## 接入新项目
 
-- `ACCEPTED`：全部验证通过且目标严格改善；
-- `REJECTED`：不可行、恶化、不稳定或无法复现；
-- `PROVISIONAL`：仅在抽象模型中成立，仍等待领域验证；
-- `PLANNED`：已定义但尚未执行。
+1. 将问题和 incumbent 转为 `ir.Problem` / `ir.Schedule`，或实现
+   `SchedulingProjectAdapter`。
+2. 对未知项目调用 LLM 语义编译 Provider 做多轮理解，再以代码、测试、文档
+   证据和人工审核确认；无 LLM 时只能索引和审计已有语义。
+3. 在 manifest 中声明问题族、目标、硬约束、生成器和可选领域 Oracle。
+4. 对 IR 已表达的约束使用通用验证；轨迹、仿真、数字孪生等未建模约束通过
+   `domain_oracle` 插件接入。
+5. 先生成反事实数据和 BC 示范，再训练多任务 CIP/闭包模型与短时程策略。
+6. 只有 Full Oracle 合法且词典序严格改善的候选才能更新 incumbent。
 
-## 许可 (License)
+详见 [项目适配指南](docs/guides/ADAPTER_GUIDE.md)。
 
-本仓库为私有研究项目，目前未授予公开使用许可。未经仓库所有者允许，不得重新分发源代码、模型、轨迹资产或实验产物。
+## 可复现性与研究边界
+
+- 固定 seed、单 worker、确定性预算、incumbent hash 与候选签名全部进入日志。
+- 搜索只释放声明闭包，闭包外操作必须保持原 mode/start/end。
+- 学习模型只排序和控制预算，不越过求解器与 Oracle 的硬约束。
+- 没有完整 Oracle 的项目不会被宣传为“已验证可行”。
+- 当前仓库提供完整研究流水线和 smoke tests；跨数据集性能结论必须在真实基准
+  实验运行后，依据统计报告给出，不预先伪造结果。
+
+## License
+
+当前为研究原型。正式发布前请补充所需许可证与第三方数据许可说明。

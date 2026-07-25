@@ -3,24 +3,34 @@ requires = ["setuptools>=75"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "schedule-lab"
-version = "0.1.1"
-description = "Constraint-safe agentic scheduling laboratory for JSP, FSP, FJSP, HFSP and carrier operations"
+name = "causal-schedule-lab"
+version = "0.5.0"
+description = "Domain-independent project-conditioned causal and agentic schedule improvement laboratory"
 requires-python = ">=3.11"
 dependencies = [
-  "mcp>=1.28,<2",
-  "matplotlib>=3.11,<4",
-  "gym>=0.26,<0.27",
-  "ortools>=9.15,<10",
+  "numpy>=2.0,<3",
+  "ortools>=9.12,<10",
   "pydantic>=2.13,<3",
-  "pyjobshop>=0.0.9,<1",
-  "scipy>=1.18,<2",
+  "pypdf>=5,<7",
+  "scipy>=1.14,<2",
   "torch>=2.13,<3",
 ]
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<10",
+  "pytest-cov>=6,<8",
+]
+
 [project.scripts]
-schedule-lab = "schedule_lab.cli:main"
-schedule-lab-mcp = "schedule_lab.mcp_server:main"
+causal-schedule-lab = "causal_schedule_lab.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+causal_schedule_lab = ["knowledge/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["external_cases", ".git", ".venv", "outputs"]

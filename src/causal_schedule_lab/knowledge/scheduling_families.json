@@ -1,0 +1,542 @@
+{
+  "schema_version": "1.0",
+  "review_status": "curated_seed",
+  "updated_at": "2026-07-25",
+  "scope": "JSP, FSP, HFSP, FJSP 及其常见变体的检索先验；不能替代项目代码证据",
+  "sources": [
+    {
+      "id": "google_or_tools_jsp",
+      "title": "The Job Shop Problem",
+      "url": "https://developers.google.com/optimization/scheduling/job_shop",
+      "kind": "official_documentation",
+      "supports": ["JSP"]
+    },
+    {
+      "id": "jsp_types_review_2022",
+      "title": "A survey of job shop scheduling problem: The types and models",
+      "url": "https://doi.org/10.1016/j.cor.2022.105731",
+      "kind": "peer_reviewed_survey",
+      "supports": ["JSP", "JSP_variants"]
+    },
+    {
+      "id": "fjsp_review_2024",
+      "title": "The flexible job shop scheduling problem: A review",
+      "url": "https://doi.org/10.1016/j.ejor.2023.05.017",
+      "kind": "peer_reviewed_survey",
+      "supports": ["FJSP", "FJSP_variants"]
+    },
+    {
+      "id": "integrated_fjsp_review_2022",
+      "title": "Survey of integrated flexible job shop scheduling problems",
+      "url": "https://doi.org/10.1016/j.cie.2022.108786",
+      "kind": "peer_reviewed_survey",
+      "supports": ["FJSP_variants"]
+    },
+    {
+      "id": "pfsp_review_2005",
+      "title": "A comprehensive review and evaluation of permutation flowshop heuristics",
+      "url": "https://doi.org/10.1016/j.ejor.2004.04.017",
+      "kind": "peer_reviewed_survey",
+      "supports": ["FSP", "PFSP"]
+    },
+    {
+      "id": "npfsp_review_2018",
+      "title": "The Non-Permutation Flow-Shop scheduling problem: A literature review",
+      "url": "https://doi.org/10.1016/j.omega.2017.05.010",
+      "kind": "peer_reviewed_survey",
+      "supports": ["FSP", "NPFSP"]
+    },
+    {
+      "id": "hfsp_review_2010",
+      "title": "Review and classification of hybrid flow shop scheduling problems",
+      "url": "https://doi.org/10.1016/j.cor.2009.11.001",
+      "kind": "peer_reviewed_survey",
+      "supports": ["HFSP", "HFSP_variants"]
+    },
+    {
+      "id": "industry4_scheduling_review_2019",
+      "title": "Scheduling in the Industry 4.0: A systematic literature review",
+      "url": "https://hdl.handle.net/2117/180742",
+      "kind": "other",
+      "supports": ["engineering_patterns", "dynamic", "real_time"]
+    },
+    {
+      "id": "dynamic_fjsp_review_2025",
+      "title": "Towards greater resilience: A systematic review of dynamic shop floor scheduling in Industry 5.0",
+      "url": "https://doi.org/10.1016/j.aei.2025.104241",
+      "kind": "peer_reviewed_survey",
+      "supports": ["dynamic", "disruption", "rescheduling"]
+    },
+    {
+      "id": "resource_flexibility_review_2026",
+      "title": "Job-shop scheduling with resource flexibility: A systematic review",
+      "url": "https://doi.org/10.1016/j.jii.2026.101093",
+      "kind": "peer_reviewed_survey",
+      "supports": ["worker", "dual_resource", "human_robot"]
+    },
+    {
+      "id": "production_maintenance_review_2021",
+      "title": "Integrated Production and Maintenance Planning: A Systematic Literature Review",
+      "url": "https://doi.org/10.1007/978-3-030-76307-7_26",
+      "kind": "peer_reviewed_survey",
+      "supports": ["maintenance", "calendar", "breakdown"]
+    },
+    {
+      "id": "green_fjsp_agv_2023",
+      "title": "A Green Flexible Job-Shop Scheduling Model for Multiple AGVs Considering Carbon Footprint",
+      "url": "https://doi.org/10.3390/systems11080427",
+      "kind": "peer_reviewed_paper",
+      "supports": ["transport", "AGV", "energy", "setup"]
+    }
+  ],
+  "families": [
+    {
+      "family": "JSP",
+      "aliases": ["JSP", "JSSP", "job shop", "job-shop", "作业车间", "作业车间调度"],
+      "definition": "每个作业包含按给定工艺顺序执行的工序；每道工序通常绑定一台指定机器；同一机器上的工序需要排序。",
+      "defining_features": [
+        "不同作业可以具有不同机器访问顺序",
+        "同一作业内存在固定工序前置关系",
+        "经典问题中每道工序只有一台指定机器",
+        "经典主要决策是同机工序排序，开始时间通常由序列和最早可行插入派生"
+      ],
+      "core_constraints": [
+        {
+          "kind": "precedence",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "high",
+          "note": "决定作业内部可行顺序和关键路径传播"
+        },
+        {
+          "kind": "no_overlap",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "同机排序是经典 JSP 的主要组合决策"
+        },
+        {
+          "kind": "resource_eligibility",
+          "role": "fixed_instance_structure",
+          "typical_optimization_leverage": "low",
+          "note": "经典 JSP 中机器通常固定，不是资源分配决策"
+        },
+        {
+          "kind": "other",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "low",
+          "note": "不可抢占通常由单一连续加工区间隐式实现"
+        }
+      ],
+      "primary_decisions": ["sequence", "select"],
+      "default_assumptions": [
+        "静态、确定性、离线",
+        "所有作业通常在时间 0 可用",
+        "机器容量为 1",
+        "不可抢占",
+        "加工时间已知"
+      ],
+      "common_variants": [
+        {
+          "id": "jsp_release_dates_dynamic",
+          "aliases": ["release time", "release date", "arrival", "dynamic JSP", "动态作业车间", "释放时间", "到达时间"],
+          "added_features": ["非零释放时间", "在线到达或滚动重调度"],
+          "decision_changes": ["可能增加 release/accept-reject/重调度决策"],
+          "impact_note": "若所有候选共享相同且全为零的释放时间，优化杠杆低；动态到达时可能成为关键状态变量"
+        },
+        {
+          "id": "jsp_setup",
+          "aliases": ["setup time", "sequence-dependent setup", "换型", "准备时间"],
+          "added_features": ["顺序相关或机器相关准备时间"],
+          "decision_changes": ["机器序列对实际加工时长和关键路径的影响增强"],
+          "impact_note": "通常是高优化杠杆"
+        },
+        {
+          "id": "jsp_transport",
+          "aliases": ["transport", "AGV", "vehicle", "路径", "运输", "搬运"],
+          "added_features": ["工序间运输、车辆容量、路径或碰撞约束"],
+          "decision_changes": ["运输资源分配、路由、同步"],
+          "impact_note": "只在项目真实建模运输时进入优化核心"
+        },
+        {
+          "id": "jsp_no_wait_blocking",
+          "aliases": ["no-wait", "no wait", "blocking", "无等待", "阻塞"],
+          "added_features": ["工序间零等待或有限缓冲阻塞"],
+          "decision_changes": ["局部排序会产生更大范围的时间传播"],
+          "impact_note": "通常显著收缩可行域"
+        },
+        {
+          "id": "jsp_dual_resource",
+          "aliases": ["worker", "operator", "dual resource", "人员", "工人", "双资源"],
+          "added_features": ["机器与人员等多资源同步占用"],
+          "decision_changes": ["多资源分配与同步"],
+          "impact_note": "资源选择和容量可能成为关键杠杆"
+        },
+        {
+          "id": "jsp_stochastic_robust",
+          "aliases": ["stochastic", "uncertain", "robust", "fuzzy", "随机", "不确定", "鲁棒", "模糊"],
+          "added_features": ["随机加工时间、故障或不确定到达"],
+          "decision_changes": ["策略、缓冲和风险权衡"],
+          "impact_note": "不能使用确定性 JSP 先验直接过滤"
+        }
+      ],
+      "source_ids": ["google_or_tools_jsp", "jsp_types_review_2022"]
+    },
+    {
+      "family": "FSP",
+      "aliases": ["FSP", "flow shop", "flow-shop", "flowshop", "流水车间", "流水作业"],
+      "definition": "所有作业经过相同的机器或阶段顺序；一般 FSP 允许不同机器上的作业顺序不同，PFSP 要求所有机器使用同一作业排列。",
+      "defining_features": [
+        "所有作业共享相同机器访问顺序",
+        "机器容量通常为 1",
+        "FSP 与 PFSP 必须区分",
+        "主要决策是各机器顺序，PFSP 中缩减为一个全局排列"
+      ],
+      "core_constraints": [
+        {
+          "kind": "precedence",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "high",
+          "note": "所有作业遵循相同工艺路线"
+        },
+        {
+          "kind": "no_overlap",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "机器上的排列决定拥塞和关键路径"
+        }
+      ],
+      "primary_decisions": ["sequence"],
+      "default_assumptions": ["静态、确定性、离线", "机器容量为 1", "不可抢占", "加工时间已知"],
+      "common_variants": [
+        {
+          "id": "pfsp",
+          "aliases": ["PFSP", "permutation flow shop", "permutation flowshop", "置换流水车间"],
+          "added_features": ["所有机器共享同一作业排列"],
+          "decision_changes": ["只优化一个全局排列"],
+          "impact_note": "这是搜索空间结构，不应当误识别为普通 FSP 的普遍约束"
+        },
+        {
+          "id": "npfsp",
+          "aliases": ["NPFSP", "non-permutation", "non permutation", "非置换流水车间"],
+          "added_features": ["不同机器允许不同作业顺序"],
+          "decision_changes": ["每台机器独立排序"],
+          "impact_note": "自由度更大，邻域和编码不同"
+        },
+        {
+          "id": "fsp_no_wait_blocking",
+          "aliases": ["no-wait", "no wait", "blocking", "limited buffer", "无等待", "阻塞", "有限缓冲"],
+          "added_features": ["零等待、阻塞或有限中间缓冲"],
+          "decision_changes": ["顺序变化引起跨机器耦合"],
+          "impact_note": "通常是高可行域影响和高优化杠杆"
+        },
+        {
+          "id": "fsp_setup",
+          "aliases": ["setup time", "sequence-dependent setup", "换型", "准备时间"],
+          "added_features": ["顺序相关准备时间"],
+          "decision_changes": ["排序同时改变额外时长"],
+          "impact_note": "通常高杠杆"
+        },
+        {
+          "id": "distributed_fsp",
+          "aliases": ["distributed flow shop", "DPFSP", "分布式流水车间", "工厂分配"],
+          "added_features": ["多工厂/多产线分配"],
+          "decision_changes": ["工厂选择加作业排序"],
+          "impact_note": "assignment 与 sequence 都是核心决策"
+        },
+        {
+          "id": "reentrant_fsp",
+          "aliases": ["reentrant", "re-entrant", "重入", "回流"],
+          "added_features": ["作业重复访问阶段或机器"],
+          "decision_changes": ["访问层级和机器序列耦合"],
+          "impact_note": "不能套用单遍标准 FSP"
+        }
+      ],
+      "source_ids": ["pfsp_review_2005", "npfsp_review_2018"]
+    },
+    {
+      "family": "HFSP",
+      "aliases": ["HFSP", "HFS", "hybrid flow shop", "flexible flow shop", "混合流水车间", "柔性流水车间"],
+      "definition": "作业依次经过相同的生产阶段，至少一个阶段具有两台或以上并行机器；需要同时决定阶段内机器分配和同机作业排序。",
+      "defining_features": [
+        "所有作业经过相同阶段顺序",
+        "至少一个阶段具有并行机器",
+        "机器可以是相同、均匀或不相关",
+        "主要决策是阶段机器分配与同机排序"
+      ],
+      "core_constraints": [
+        {
+          "kind": "precedence",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "high",
+          "note": "阶段顺序固定"
+        },
+        {
+          "kind": "resource_capacity",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "阶段并行容量决定瓶颈"
+        },
+        {
+          "kind": "resource_eligibility",
+          "role": "decision_lever",
+          "typical_optimization_leverage": "critical",
+          "note": "机器分配通常是核心组合决策"
+        },
+        {
+          "kind": "no_overlap",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "分配后仍需同机排序"
+        }
+      ],
+      "primary_decisions": ["assign_resource", "sequence"],
+      "default_assumptions": [
+        "静态、确定性、离线",
+        "作业在时间 0 可用",
+        "同阶段机器经典情况下相同",
+        "无限中间缓冲",
+        "不可抢占"
+      ],
+      "common_variants": [
+        {
+          "id": "hfsp_unrelated_eligibility",
+          "aliases": ["unrelated parallel", "uniform parallel", "eligibility", "异构并行机", "机器资格"],
+          "added_features": ["同阶段机器速度不同或工序仅可选部分机器"],
+          "decision_changes": ["机器分配影响加工时长与可行性"],
+          "impact_note": "通常是关键杠杆"
+        },
+        {
+          "id": "hfsp_blocking_buffer",
+          "aliases": ["blocking", "limited buffer", "buffer", "阻塞", "有限缓冲", "缓冲区"],
+          "added_features": ["有限或零阶段间缓冲"],
+          "decision_changes": ["上游释放与下游容量强耦合"],
+          "impact_note": "通常显著改变关键路径与可行域"
+        },
+        {
+          "id": "hfsp_setup",
+          "aliases": ["setup time", "sequence-dependent setup", "machine-dependent setup", "换型", "准备时间"],
+          "added_features": ["顺序和机器相关准备时间"],
+          "decision_changes": ["分配与排序共同改变额外时长"],
+          "impact_note": "通常高杠杆"
+        },
+        {
+          "id": "hfsp_no_wait",
+          "aliases": ["no-wait", "no wait", "无等待"],
+          "added_features": ["相邻阶段之间不得等待"],
+          "decision_changes": ["时间联动范围扩大"],
+          "impact_note": "高可行域影响"
+        },
+        {
+          "id": "hfsp_batch",
+          "aliases": ["batch", "batching", "批处理", "成批"],
+          "added_features": ["批形成与批容量"],
+          "decision_changes": ["批选择、分配和排序"],
+          "impact_note": "增加新的核心决策层"
+        },
+        {
+          "id": "hfsp_transport",
+          "aliases": ["transport", "AGV", "vehicle", "运输", "搬运", "路径"],
+          "added_features": ["阶段间运输资源和时间"],
+          "decision_changes": ["车辆分配、路径和同步"],
+          "impact_note": "只在项目真实建模时进入核心"
+        }
+      ],
+      "source_ids": ["hfsp_review_2010"]
+    },
+    {
+      "family": "FJSP",
+      "aliases": ["FJSP", "FJSSP", "flexible job shop", "flexible job-shop", "柔性作业车间", "柔性作业车间调度"],
+      "definition": "JSP 的推广：每道工序可从一组候选机器中选择，通常机器不同则加工时间也不同；需要联合优化机器分配和同机工序排序。",
+      "defining_features": [
+        "不同作业可以有不同工艺路线",
+        "每道工序具有一个或多个候选机器/模式",
+        "机器选择可能改变加工时间",
+        "assignment 与 sequence 是联合核心决策"
+      ],
+      "core_constraints": [
+        {
+          "kind": "precedence",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "high",
+          "note": "作业内工序顺序固定"
+        },
+        {
+          "kind": "resource_eligibility",
+          "role": "decision_lever",
+          "typical_optimization_leverage": "critical",
+          "note": "候选机器集合定义柔性"
+        },
+        {
+          "kind": "choice_binding",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "每道工序必须选择且通常只选择一个执行模式"
+        },
+        {
+          "kind": "no_overlap",
+          "role": "feasibility_guard",
+          "typical_optimization_leverage": "critical",
+          "note": "分配后需要同机排序"
+        }
+      ],
+      "primary_decisions": ["assign_resource", "sequence", "select"],
+      "default_assumptions": ["静态、确定性、离线", "机器容量为 1", "不可抢占", "加工时间已知"],
+      "common_variants": [
+        {
+          "id": "partial_total_fjsp",
+          "aliases": ["partial flexibility", "total flexibility", "部分柔性", "完全柔性"],
+          "added_features": ["每道工序可选机器集合大小不同"],
+          "decision_changes": ["机器分配搜索空间不同"],
+          "impact_note": "属于 FJSP 核心结构参数"
+        },
+        {
+          "id": "dynamic_fjsp",
+          "aliases": ["dynamic FJSP", "arrival", "breakdown", "rescheduling", "动态柔性作业车间", "故障", "重调度"],
+          "added_features": ["新作业到达、机器故障或实时事件"],
+          "decision_changes": ["在线选择、重调度和稳定性权衡"],
+          "impact_note": "事件状态通常高影响"
+        },
+        {
+          "id": "distributed_fjsp",
+          "aliases": ["distributed FJSP", "DFJSP", "多工厂", "分布式柔性作业车间"],
+          "added_features": ["工厂/车间分配"],
+          "decision_changes": ["工厂、机器和序列三级决策"],
+          "impact_note": "新增关键 assignment 层"
+        },
+        {
+          "id": "fjsp_transport",
+          "aliases": ["AGV", "transport", "vehicle", "routing", "运输", "牵引车", "搬运", "路径", "避碰"],
+          "added_features": ["运输时间、车辆、路径、连续性或碰撞"],
+          "decision_changes": ["机器分配、车辆分配、路径与时间同步"],
+          "impact_note": "可能需要领域 Oracle，不能只用经典 FJSP 约束"
+        },
+        {
+          "id": "fjsp_dual_resource",
+          "aliases": ["worker", "operator", "dual resource", "人员", "工人", "双资源"],
+          "added_features": ["人员技能和机器联合资格"],
+          "decision_changes": ["机器与人员联合分配"],
+          "impact_note": "资源绑定通常高影响"
+        },
+        {
+          "id": "fjsp_setup_maintenance",
+          "aliases": ["setup", "maintenance", "换型", "维护", "保养"],
+          "added_features": ["顺序相关准备或机器维护窗口"],
+          "decision_changes": ["排序、机器选择与日历耦合"],
+          "impact_note": "通常高影响"
+        },
+        {
+          "id": "fjsp_energy_multiobjective",
+          "aliases": ["energy", "carbon", "multi-objective", "能耗", "碳排", "多目标"],
+          "added_features": ["能耗、成本、延期或鲁棒性目标"],
+          "decision_changes": ["目标权衡和 Pareto/词典序选择"],
+          "impact_note": "属于目标层，不应误记为硬约束"
+        },
+        {
+          "id": "fjsp_stochastic_robust",
+          "aliases": ["stochastic", "uncertain", "fuzzy", "robust", "随机", "不确定", "模糊", "鲁棒"],
+          "added_features": ["不确定加工时间、故障或需求"],
+          "decision_changes": ["风险、缓冲与策略决策"],
+          "impact_note": "需要场景、分布或仿真证据"
+        }
+      ],
+      "source_ids": ["fjsp_review_2024", "integrated_fjsp_review_2022"]
+    }
+  ],
+  "engineering_patterns": [
+    {
+      "id": "mobile_transport_coupling",
+      "aliases": ["AGV", "vehicle", "transport", "routing", "牵引车", "运输", "搬运", "路径", "避碰"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["运输任务", "移动资源", "路径或区段", "充电状态"],
+      "added_decisions": ["车辆分配", "运输排序", "路由", "生产-运输同步"],
+      "constraint_choices": ["transport", "route_continuity", "collision_avoidance", "resource_capacity", "synchronization"],
+      "objective_choices": ["makespan", "energy", "cost", "throughput"],
+      "oracle_needs": ["静态路径验证", "离散事件仿真", "碰撞/连续轨迹 Oracle"],
+      "screening_questions": ["运输时间是否进入工序开始时间", "车辆或路径是否是决策变量", "不同候选是否产生不同运输冲突"],
+      "source_ids": ["integrated_fjsp_review_2022", "green_fjsp_agv_2023"]
+    },
+    {
+      "id": "human_dual_resource",
+      "aliases": ["worker", "operator", "labor", "skill", "ergonomic", "人员", "工人", "技能", "疲劳", "人机协作"],
+      "applies_to": ["JSP", "HFSP", "FJSP"],
+      "introduced_entities": ["人员", "技能矩阵", "班次", "疲劳/人体工学状态"],
+      "added_decisions": ["人员分配", "机器-人员绑定", "班次内排序"],
+      "constraint_choices": ["resource_eligibility", "resource_capacity", "calendar", "choice_binding", "synchronization"],
+      "objective_choices": ["makespan", "cost", "robustness", "other"],
+      "oracle_needs": ["技能与班次 validator", "疲劳/人体工学模型"],
+      "screening_questions": ["人员是否限制机器可用性", "技能是否改变加工时间", "人员分配是否由优化器控制"],
+      "source_ids": ["resource_flexibility_review_2026"]
+    },
+    {
+      "id": "maintenance_and_availability",
+      "aliases": ["maintenance", "breakdown", "downtime", "availability", "维护", "保养", "故障", "停机", "可用时间"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["维护任务", "机器日历", "故障事件", "健康状态"],
+      "added_decisions": ["维护时机", "预防维护选择", "故障后重调度"],
+      "constraint_choices": ["calendar", "time_window", "synchronization", "resource_capacity"],
+      "objective_choices": ["makespan", "cost", "robustness", "throughput"],
+      "oracle_needs": ["机器日历 validator", "可靠性/故障模型", "仿真"],
+      "screening_questions": ["维护是固定日历还是联合决策", "故障是否随机", "候选排程是否改变维护成本或风险"],
+      "source_ids": ["production_maintenance_review_2021", "dynamic_fjsp_review_2025"]
+    },
+    {
+      "id": "dynamic_events_and_rescheduling",
+      "aliases": ["dynamic", "real-time", "rescheduling", "arrival", "disruption", "动态", "实时", "重调度", "到达", "扰动"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["事件流", "当前执行状态", "冻结区", "滚动时间窗"],
+      "added_decisions": ["触发时机", "重调度范围", "接受/拒绝", "稳定性权衡"],
+      "constraint_choices": ["release_time", "time_window", "calendar", "domain_oracle"],
+      "objective_choices": ["makespan", "total_tardiness", "robustness", "cost"],
+      "oracle_needs": ["状态同步", "事件回放", "数字孪生/仿真"],
+      "screening_questions": ["事件在优化前已知还是在线到达", "已执行工序是否冻结", "稳定性是否进入目标"],
+      "source_ids": ["dynamic_fjsp_review_2025", "industry4_scheduling_review_2019"]
+    },
+    {
+      "id": "buffer_material_and_blocking",
+      "aliases": ["buffer", "blocking", "kitting", "material availability", "缓冲", "阻塞", "齐套", "物料"],
+      "applies_to": ["FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["中间缓冲", "物料/套件", "在制品容量"],
+      "added_decisions": ["释放控制", "缓冲分配", "齐套同步"],
+      "constraint_choices": ["buffer", "blocking", "release_time", "synchronization"],
+      "objective_choices": ["makespan", "throughput", "flow_time"],
+      "oracle_needs": ["缓冲占用 validator", "离散事件仿真"],
+      "screening_questions": ["缓冲容量是否有限", "阻塞是否占用上游机器", "物料是否会延迟工序释放"],
+      "source_ids": ["hfsp_review_2010", "fjsp_review_2024"]
+    },
+    {
+      "id": "sequence_dependent_changeover",
+      "aliases": ["setup", "changeover", "cleaning", "family sequence", "换型", "准备", "清洗", "切换"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["作业族", "切换矩阵", "清洗规则"],
+      "added_decisions": ["序列选择", "活动/资源模式选择"],
+      "constraint_choices": ["setup_time", "choice_binding"],
+      "objective_choices": ["makespan", "cost", "energy"],
+      "oracle_needs": ["切换矩阵与序列 validator"],
+      "screening_questions": ["切换时间是否依赖前后作业", "切换是否占用机器/人员", "是否允许通过分组减少切换"],
+      "source_ids": ["jsp_types_review_2022", "hfsp_review_2010"]
+    },
+    {
+      "id": "energy_and_sustainability",
+      "aliases": ["energy", "carbon", "emission", "peak power", "能耗", "碳排", "排放", "峰值功率"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["机器状态功率", "运输能耗", "分时电价", "碳因子"],
+      "added_decisions": ["速度/模式选择", "开关机", "多目标权衡"],
+      "constraint_choices": ["time_window", "calendar", "other"],
+      "objective_choices": ["energy", "cost", "weighted_multi_objective", "lexicographic"],
+      "oracle_needs": ["能耗计算器", "设备状态模型"],
+      "screening_questions": ["能耗是目标还是约束", "候选模式是否改变功率/时长", "碳或电价是否随时间变化"],
+      "source_ids": ["fjsp_review_2024", "green_fjsp_agv_2023"]
+    },
+    {
+      "id": "digital_twin_real_time",
+      "aliases": ["digital twin", "IoT", "sensor", "MES", "实时数据", "数字孪生", "传感器", "制造执行系统"],
+      "applies_to": ["JSP", "FSP", "HFSP", "FJSP"],
+      "introduced_entities": ["实时状态源", "外部系统接口", "状态版本/延迟"],
+      "added_decisions": ["重调度触发", "数据置信度门", "在线控制"],
+      "constraint_choices": ["domain_oracle", "calendar", "time_window"],
+      "objective_choices": ["robustness", "throughput", "cost"],
+      "oracle_needs": ["数字孪生", "MES/IoT 接口", "状态一致性检查"],
+      "screening_questions": ["实时数据是否改变可行域", "数据延迟是否影响决策", "数字孪生是状态源、仿真器还是权威 Oracle"],
+      "source_ids": ["industry4_scheduling_review_2019", "dynamic_fjsp_review_2025"]
+    }
+  ]
+}
