@@ -10,9 +10,12 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+
+if TYPE_CHECKING:
+    from .llm_semantics import SemanticAnalysis
 
 
 class FrozenModel(BaseModel):
@@ -129,15 +132,23 @@ def _term_present(text: str, term: str) -> bool:
         return False
     # Short Latin aliases such as JSP must match token boundaries; otherwise
     # JSP would spuriously match FJSP.
-    if re.fullmatch(r"[a-z0-9-]{1,6}", normalized_term):
-        return (
-            re.search(
-                rf"(?<![a-z0-9]){re.escape(normalized_term)}(?![a-z0-9])",
-                text,
-            )
-            is not None
-        )
-    return normalized_term in text
+    pattern = (
+        rf"(?<![a-z0-9]){re.escape(normalized_term)}(?![a-z0-9])"
+        if re.fullmatch(r"[a-z0-9-]{1,6}", normalized_term)
+        else re.escape(normalized_term)
+    )
+    for match in re.finditer(pattern, text):
+        prefix = text[max(0, match.start() - 96) : match.start()]
+        # A prior must not turn an explicit absence statement into a positive
+        # variant hit.  The executable project evidence remains authoritative.
+        if re.search(
+            r"(?:\bno\b|\bwithout\b|\bnot\b|未见|没有|未出现|不存在|不包含|不涉及|无)"
+            r"[^。；.!?]{0,80}$",
+            prefix,
+        ):
+            continue
+        return True
+    return False
 
 
 class SchedulingKnowledgeBase:
@@ -258,6 +269,100 @@ class SchedulingKnowledgeBase:
         hits.sort(key=lambda item: (-item.score, item.pattern_id))
         return tuple(hits[:top_k])
 
+    def retrieve_conditioned_on_analysis(
+        self,
+        analysis: "SemanticAnalysis",
+        *,
+        top_k: int = 4,
+    ) -> tuple[tuple[KnowledgeHit, ...], tuple[EngineeringPatternHit, ...]]:
+        """Retrieve priors from structured semantics, never from negated prose."""
+
+        families = tuple(
+            dict.fromkeys(
+                "JSP" if item.value == "JSSP" else item.value
+                for item in analysis.problem_families
+            )
+        )
+        constraint_kinds = {item.kind.value for item in analysis.constraints}
+        environment_kinds = {item.kind.value for item in analysis.environments}
+        objective_kinds = {item.kind.value for item in analysis.objectives}
+        variant_suffixes: set[str] = set()
+        if "setup_time" in constraint_kinds:
+            variant_suffixes.add("setup")
+        if constraint_kinds & {"transport", "route_continuity", "collision_avoidance"}:
+            variant_suffixes.add("transport")
+        if constraint_kinds & {"blocking", "buffer"}:
+            variant_suffixes.update({"blocking", "buffer"})
+        if "no_wait" in constraint_kinds:
+            variant_suffixes.add("no_wait")
+        if "batching" in constraint_kinds:
+            variant_suffixes.add("batch")
+
+        family_hits: list[KnowledgeHit] = []
+        for family in families:
+            profile = self._profiles.get(family)
+            if profile is None:
+                continue
+            matched_variants = tuple(
+                VariantHit(
+                    id=variant.id,
+                    matched_terms=tuple(
+                        sorted(
+                            suffix
+                            for suffix in variant_suffixes
+                            if suffix in variant.id
+                        )
+                    ),
+                )
+                for variant in profile.common_variants
+                if any(suffix in variant.id for suffix in variant_suffixes)
+            )
+            family_hits.append(
+                KnowledgeHit(
+                    family=profile.family,
+                    score=100.0 + 2.0 * len(matched_variants),
+                    matched_terms=(profile.family,),
+                    matched_variants=matched_variants,
+                    profile=profile,
+                    source_urls=tuple(
+                        self._sources[source_id].url
+                        for source_id in profile.source_ids
+                        if source_id in self._sources
+                    ),
+                )
+            )
+
+        allowed_patterns: set[str] = set()
+        if constraint_kinds & {"transport", "route_continuity", "collision_avoidance"}:
+            allowed_patterns.add("mobile_transport_coupling")
+        if "setup_time" in constraint_kinds:
+            allowed_patterns.add("sequence_dependent_changeover")
+        if constraint_kinds & {"blocking", "buffer"}:
+            allowed_patterns.add("buffer_material_and_blocking")
+        if "maintenance" in constraint_kinds:
+            allowed_patterns.add("maintenance_and_availability")
+        if environment_kinds & {"dynamic", "online", "stochastic"}:
+            allowed_patterns.add("dynamic_events_and_rescheduling")
+        if objective_kinds & {"energy", "emission"}:
+            allowed_patterns.add("energy_and_sustainability")
+        engineering_hits = tuple(
+            EngineeringPatternHit(
+                pattern_id=profile.id,
+                score=1.0,
+                matched_terms=("structured_project_semantics",),
+                profile=profile,
+                source_urls=tuple(
+                    self._sources[source_id].url
+                    for source_id in profile.source_ids
+                    if source_id in self._sources
+                ),
+            )
+            for profile in self.document.engineering_patterns
+            if profile.id in allowed_patterns
+            and (not families or set(families) & set(profile.applies_to))
+        )
+        return tuple(family_hits[:top_k]), engineering_hits
+
 
 def compact_knowledge_context(
     hits: tuple[KnowledgeHit, ...],
@@ -284,9 +389,10 @@ def compact_knowledge_context(
                 ],
                 "primary_decisions": hit.profile.primary_decisions,
                 "default_assumptions": hit.profile.default_assumptions,
-                "common_variants": [
+                "matched_variant_priors": [
                     item.model_dump(mode="json")
                     for item in hit.profile.common_variants
+                    if item.id in {variant.id for variant in hit.matched_variants}
                 ],
                 "sources": hit.source_urls,
             }
@@ -311,5 +417,5 @@ def compact_knowledge_context(
             "engineering_pattern_candidates": engineering,
         },
         ensure_ascii=False,
-        indent=2,
+        separators=(",", ":"),
     )

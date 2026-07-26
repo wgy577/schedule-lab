@@ -10,6 +10,8 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import re
+import warnings
 from collections import defaultdict
 from enum import StrEnum
 from pathlib import Path
@@ -34,6 +36,7 @@ from .llm_semantics import (
 from .providers.base import ModelProvider, ModelRequest, ModelResponse, TokenUsage
 from .semantic_knowledge import SchedulingKnowledgeBase
 from .storage import HierarchicalMemory
+from .taxonomy import ResolvedTaxonomyProfile, VariantHeadSelection
 
 
 _SKIP_PARTS = {
@@ -46,6 +49,11 @@ _SKIP_PARTS = {
     "build",
     "outputs",
     "checkpoints",
+    "train_log",
+    "trained_network",
+    "savednetwork",
+    "test_results",
+    "or_solution",
 }
 _TEXT_SUFFIXES = {".py", ".md", ".json", ".yaml", ".yml", ".toml", ".txt"}
 _PAPER_MARKERS = {
@@ -113,6 +121,10 @@ def _is_paper_like(relative: Path) -> bool:
 class FileRole(StrEnum):
     ENTRYPOINT = "entrypoint"
     SOURCE = "source"
+    ENVIRONMENT = "environment"
+    MODEL = "model"
+    TRAINING = "training"
+    EVALUATION = "evaluation"
     CONFIG = "config"
     TEST = "test"
     PROJECT_DOCUMENT = "project_document"
@@ -143,6 +155,11 @@ class NavigationInventory(FrozenModel):
 def _role_hint(relative: Path, symbols: tuple[str, ...]) -> FileRole:
     text = relative.as_posix().lower()
     name = relative.name.lower()
+    if any(
+        term in name
+        for term in ("test_trained", "test_heuristic", "benchmark", "evaluate")
+    ) or name in {"print_test_result.py", "readstats.py"}:
+        return FileRole.EVALUATION
     if "test" in relative.parts or name.startswith("test_"):
         return FileRole.TEST
     if any(term in text for term in ("validator", "validation", "oracle")):
@@ -151,10 +168,23 @@ def _role_hint(relative: Path, symbols: tuple[str, ...]) -> FileRole:
         return FileRole.SOLVER
     if name in {"main.py", "cli.py", "__main__.py", "app.py"}:
         return FileRole.ENTRYPOINT
+    if (
+        name in {"train.py", "trainer.py", "training.py"}
+        or "training" in relative.parts
+    ):
+        return FileRole.TRAINING
+    if "model" in relative.parts or any(
+        term in name for term in ("actor", "critic", "network", "attention")
+    ):
+        return FileRole.MODEL
+    if any(term in name for term in ("environment", "_env", "env_")):
+        return FileRole.ENVIRONMENT
     if name in {"pyproject.toml", "package.json"} or any(
-        term in text for term in ("config", "manifest")
+        term in text for term in ("config", "manifest", "params", "settings")
     ):
         return FileRole.CONFIG
+    if any(term in name for term in ("schema", "datasetexplanation")):
+        return FileRole.DATA_SCHEMA
     if relative.suffix.lower() in {".json", ".yaml", ".yml", ".toml"}:
         return FileRole.DATA_SCHEMA
     if relative.suffix.lower() == ".py" or symbols:
@@ -166,7 +196,9 @@ def _role_hint(relative: Path, symbols: tuple[str, ...]) -> FileRole:
 
 def _python_inventory(text: str) -> tuple[tuple[str, ...], tuple[str, ...]]:
     try:
-        tree = ast.parse(text)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", SyntaxWarning)
+            tree = ast.parse(text)
     except SyntaxError:
         return (), ()
     symbols: list[str] = []
@@ -187,7 +219,9 @@ def _navigation_excerpt(path: Path, text: str, max_chars: int) -> str:
     indexes = set(range(min(36, len(lines))))
     if path.suffix.lower() == ".py":
         try:
-            tree = ast.parse(text)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", SyntaxWarning)
+                tree = ast.parse(text)
             for node in tree.body:
                 if isinstance(
                     node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
@@ -281,6 +315,8 @@ class ProjectNavigation(FrozenModel):
     entrypoints: tuple[str, ...] = ()
     configs: tuple[str, ...] = ()
     tests: tuple[str, ...] = ()
+    evaluations: tuple[str, ...] = ()
+    training_entrypoints: tuple[str, ...] = ()
     validators_or_oracles: tuple[str, ...] = ()
     priority_reading_paths: tuple[str, ...] = Field(min_length=1)
     uncertainties: tuple[str, ...] = ()
@@ -303,7 +339,9 @@ _NAV_SYSTEM = """\
 2. 论文、文章和外部知识不在本阶段输入，也不得据此补充事实。
 3. 不输出目标、约束或优化结论；不确定就写入 uncertainties。
 4. 所有模块 id 使用 module_1、module_2……，depends_on 只能引用这些 id。
-5. 返回一个 JSON 对象，不要 Markdown 或解释。
+5. 必须区分 environment、model、training、evaluation、test 和 validator：
+   评估脚本/benchmark 不是硬约束测试，训练入口不是生产运行入口。
+6. 返回一个 JSON 对象，不要 Markdown 或解释。
 """
 
 
@@ -314,6 +352,27 @@ def _navigation_prompt(inventory: NavigationInventory) -> str:
         + json.dumps(ProjectNavigation.model_json_schema(), ensure_ascii=False, indent=2)
         + "\n\n仓库清单：\n"
         + inventory.model_dump_json(indent=2)
+    )
+
+
+def _structured_repair_prompt(
+    *,
+    stage: str,
+    content: str,
+    error: Exception,
+    schema: dict[str, Any],
+) -> str:
+    return (
+        f"{stage} 的上一次输出未通过严格 JSON Schema。"
+        "只删除额外字段、补齐必填字段或修复非法枚举；"
+        "不要改变已有证据支持的语义，不要加入新的文件或事实。\n\n"
+        "校验错误：\n"
+        + str(error)[:5000]
+        + "\n\n上一次输出：\n"
+        + content[:40000]
+        + "\n\n目标 JSON Schema：\n"
+        + json.dumps(schema, ensure_ascii=False, indent=2)
+        + "\n\n只返回一个修复后的 JSON 对象。"
     )
 
 
@@ -383,6 +442,8 @@ def _audit_navigation(
         *navigation.entrypoints,
         *navigation.configs,
         *navigation.tests,
+        *navigation.evaluations,
+        *navigation.training_entrypoints,
         *navigation.validators_or_oracles,
         *navigation.priority_reading_paths,
         *(path for module in navigation.modules for path in module.files),
@@ -409,6 +470,7 @@ def build_project_navigation_with_llm(
     *,
     provider: ModelProvider,
     max_output_tokens: int = 5000,
+    max_schema_repairs: int = 1,
 ) -> tuple[NavigationInventory, ProjectNavigation, tuple[ModelResponse, ...]]:
     inventory = build_navigation_inventory(root)
     inventory_chunks = _split_navigation_inventory(inventory)
@@ -432,12 +494,42 @@ def build_project_navigation_with_llm(
             )
         )
         responses.append(response)
-        try:
-            shard = ProjectNavigation.model_validate(_extract_object(response.content))
-        except (ValueError, ValidationError) as error:
-            raise ValueError(
-                f"project navigation shard {index} failed schema validation: {error}"
-            ) from error
+        repairs = 0
+        while True:
+            try:
+                shard = ProjectNavigation.model_validate(
+                    _extract_object(responses[-1].content)
+                )
+                break
+            except (ValueError, ValidationError) as error:
+                if repairs >= max_schema_repairs:
+                    raise ValueError(
+                        f"project navigation shard {index} failed schema "
+                        f"validation after {repairs} repair(s): {error}"
+                    ) from error
+                repairs += 1
+                repair = provider.complete(
+                    ModelRequest(
+                        system=_NAV_SYSTEM,
+                        user=_structured_repair_prompt(
+                            stage=f"project_navigation_shard_{index}",
+                            content=responses[-1].content,
+                            error=error,
+                            schema=ProjectNavigation.model_json_schema(),
+                        ),
+                        temperature=0.0,
+                        max_output_tokens=max_output_tokens,
+                        require_json=True,
+                        thinking_mode="enabled",
+                        reasoning_effort="medium",
+                        metadata={
+                            "task": "project_navigation_schema_repair",
+                            "shard": index,
+                            "repair": repairs,
+                        },
+                    )
+                )
+                responses.append(repair)
         _audit_navigation(shard, chunk)
         shard_maps.append(shard)
     if len(shard_maps) == 1:
@@ -461,14 +553,41 @@ def build_project_navigation_with_llm(
             )
         )
         responses.append(response)
-        try:
-            navigation = ProjectNavigation.model_validate(
-                _extract_object(response.content)
-            )
-        except (ValueError, ValidationError) as error:
-            raise ValueError(
-                f"project navigation consolidation failed schema validation: {error}"
-            ) from error
+        repairs = 0
+        while True:
+            try:
+                navigation = ProjectNavigation.model_validate(
+                    _extract_object(responses[-1].content)
+                )
+                break
+            except (ValueError, ValidationError) as error:
+                if repairs >= max_schema_repairs:
+                    raise ValueError(
+                        "project navigation consolidation failed schema validation "
+                        f"after {repairs} repair(s): {error}"
+                    ) from error
+                repairs += 1
+                repair = provider.complete(
+                    ModelRequest(
+                        system=_NAV_SYSTEM,
+                        user=_structured_repair_prompt(
+                            stage="project_navigation_consolidation",
+                            content=responses[-1].content,
+                            error=error,
+                            schema=ProjectNavigation.model_json_schema(),
+                        ),
+                        temperature=0.0,
+                        max_output_tokens=max_output_tokens,
+                        require_json=True,
+                        thinking_mode="enabled",
+                        reasoning_effort="medium",
+                        metadata={
+                            "task": "project_navigation_schema_repair",
+                            "repair": repairs,
+                        },
+                    )
+                )
+                responses.append(repair)
     return inventory, _audit_navigation(navigation, inventory), tuple(responses)
 
 
@@ -624,7 +743,9 @@ class ProjectCodeIndex:
                 continue
             text = path.read_text(encoding="utf-8", errors="replace")
             try:
-                tree = ast.parse(text)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", SyntaxWarning)
+                    tree = ast.parse(text)
             except SyntaxError:
                 continue
             for node in ast.walk(tree):
@@ -897,6 +1018,8 @@ class LongTermMemoryContext(FrozenModel):
     node_ids: tuple[str, ...] = ()
     chunks: tuple[str, ...] = ()
     conflicts: tuple[str, ...] = ()
+    taxonomy_profiles: tuple[ResolvedTaxonomyProfile, ...] = ()
+    variant_head_selections: tuple[VariantHeadSelection, ...] = ()
 
 
 def retrieve_long_term_context(
@@ -910,7 +1033,19 @@ def retrieve_long_term_context(
     path = Path(database).expanduser().resolve()
     if not path.is_file():
         return None
-    result = HierarchicalMemory.open(path).retrieve(query, limit=limit)
+    memory = HierarchicalMemory.open(path)
+    result = memory.retrieve(query, limit=limit)
+    taxonomy_profiles = []
+    variant_head_selections: list[VariantHeadSelection] = []
+    normalized = query.lower()
+    for family in ("JSP", "FSP", "HFSP", "FJSP"):
+        token = family.lower()
+        if re.search(rf"(?<![a-z0-9]){re.escape(token)}(?![a-z0-9])", normalized):
+            selection = memory.select_taxonomy_variant(family, query)
+            variant_head_selections.append(selection)
+            taxonomy_profiles.append(
+                memory.resolve_taxonomy(selection.selected_node_id)
+            )
     return LongTermMemoryContext(
         query=query,
         node_ids=tuple(item.canonical_id for item in result.nodes),
@@ -920,6 +1055,8 @@ def retrieve_long_term_context(
             for item in result.evidence
         ),
         conflicts=result.conflicts,
+        taxonomy_profiles=tuple(taxonomy_profiles),
+        variant_head_selections=tuple(variant_head_selections),
     )
 
 
@@ -973,6 +1110,7 @@ BATCH_SPECS = (
             FileRole.PROJECT_DOCUMENT,
             FileRole.CONFIG,
             FileRole.DATA_SCHEMA,
+            FileRole.ENVIRONMENT,
         ),
     ),
     SemanticBatchSpec(
@@ -984,6 +1122,7 @@ BATCH_SPECS = (
         ),
         file_roles=(
             FileRole.SOURCE,
+            FileRole.ENVIRONMENT,
             FileRole.SOLVER,
             FileRole.VALIDATOR,
             FileRole.TEST,
@@ -998,6 +1137,10 @@ BATCH_SPECS = (
         ),
         file_roles=(
             FileRole.ENTRYPOINT,
+            FileRole.ENVIRONMENT,
+            FileRole.MODEL,
+            FileRole.TRAINING,
+            FileRole.EVALUATION,
             FileRole.SOLVER,
             FileRole.VALIDATOR,
             FileRole.TEST,
@@ -1020,7 +1163,8 @@ _BATCH_SYSTEM = """\
 5. 不得要求读取 .env、秘密、二进制、论文或项目外路径。
 6. 不重复请求已经出现在 tool evidence 或短期记忆 evidence_ids 中的内容。
 7. compressed_summary 只保留后续批次需要的事实、证据 ID、矛盾和未知，不保留推理过程。
-8. 返回一个 JSON 对象，不要 Markdown 或额外解释。
+8. batch_id 必须逐字复制 User Prompt 给出的批次名，禁止添加轮次、后缀或解释。
+9. 返回一个 JSON 对象，不要 Markdown 或额外解释。
 """
 
 
@@ -1084,6 +1228,11 @@ def _batch_prompt(
             if long_term_context is not None
             else '{"status":"not_configured"}'
         )
+        + "\n继承树使用规则：Variant Head Router 每个问题族只选择一个三级分支；"
+        "先读取该分支 lineage，从根到叶合并 resolved。contributions 只说明每一级"
+        "新增了什么。matched_heads 只是路由先验，必须用当前代码证据验证；未命中"
+        "具体 Head 时使用 classic 分支。禁止自行展开或注入未选中的兄弟变体，也"
+        "不得把祖先知识复制为项目事实。\n"
         + "\n\n初始文件证据：\n"
         + json.dumps(
             [item.model_dump(mode="json") for item in files],
@@ -1191,12 +1340,20 @@ def compile_project_semantics_staged(
     impact_provider: ModelProvider | None = None,
     impact_max_output_tokens: int = 12000,
     memory_database: str | Path | None = None,
+    analyst_reasoning_effort: Literal[
+        "low", "medium", "high", "xhigh", "max"
+    ] = "high",
+    impact_reasoning_effort: Literal[
+        "low", "medium", "high", "xhigh", "max"
+    ] = "high",
 ) -> StagedSemanticCompilation:
     """Run the navigator, batched analyst, controlled reader and final synthesis."""
 
     base = Path(root).expanduser().resolve()
     inventory, navigation, navigator_responses = build_project_navigation_with_llm(
-        base, provider=navigator_provider
+        base,
+        provider=navigator_provider,
+        max_schema_repairs=max_schema_repairs,
     )
     index = ProjectCodeIndex(base)
     gate = ControlledReadGate(index, max_total_reads=max_reads)
@@ -1214,9 +1371,18 @@ def compile_project_semantics_staged(
         all_initial_files.update({item.path: item for item in files})
         new_evidence: tuple[ToolEvidence, ...] = ()
         rounds: list[BatchRound] = []
+        confirmed_context = " ".join(
+            item.statement for item in memory.confirmed_facts
+        )
         long_term = retrieve_long_term_context(
             memory_database,
-            f"{navigation.project_summary} {' '.join(spec.questions)}",
+            " ".join(
+                (
+                    navigation.project_summary,
+                    confirmed_context,
+                    *spec.questions,
+                )
+            ),
         )
         if long_term is not None:
             long_term_contexts.append(long_term)
@@ -1237,7 +1403,7 @@ def compile_project_semantics_staged(
                     max_output_tokens=max_output_tokens,
                     require_json=True,
                     thinking_mode="enabled",
-                    reasoning_effort="max",
+                    reasoning_effort=analyst_reasoning_effort,
                     metadata={
                         "task": "staged_semantic_batch",
                         "batch": spec.id,
@@ -1246,11 +1412,50 @@ def compile_project_semantics_staged(
                 )
             )
             analyst_responses.append(response)
-            analysis = BatchAnalysis.model_validate(_extract_object(response.content))
-            if analysis.batch_id != spec.id:
-                raise ValueError(
-                    f"batch response id {analysis.batch_id!r} does not match {spec.id!r}"
-                )
+            turn_responses = [response]
+            schema_repairs = 0
+            while True:
+                try:
+                    analysis = BatchAnalysis.model_validate(
+                        _extract_object(turn_responses[-1].content)
+                    )
+                    if analysis.batch_id != spec.id:
+                        raise ValueError(
+                            f"batch_id must equal {spec.id!r}, got "
+                            f"{analysis.batch_id!r}"
+                        )
+                    break
+                except (ValueError, ValidationError) as error:
+                    if schema_repairs >= max_schema_repairs:
+                        raise ValueError(
+                            f"semantic batch {spec.id} round {round_index} failed "
+                            f"schema validation after {schema_repairs} repair(s): {error}"
+                        ) from error
+                    schema_repairs += 1
+                    repair = analyst_provider.complete(
+                        ModelRequest(
+                            system=_BATCH_SYSTEM,
+                            user=_structured_repair_prompt(
+                                stage=f"{spec.id}_round_{round_index}",
+                                content=turn_responses[-1].content,
+                                error=error,
+                                schema=BatchAnalysis.model_json_schema(),
+                            ),
+                            temperature=0.0,
+                            max_output_tokens=max_output_tokens,
+                            require_json=True,
+                            thinking_mode="enabled",
+                            reasoning_effort=analyst_reasoning_effort,
+                            metadata={
+                                "task": "staged_semantic_batch_schema_repair",
+                                "batch": spec.id,
+                                "round": round_index,
+                                "repair": schema_repairs,
+                            },
+                        )
+                    )
+                    turn_responses.append(repair)
+                    analyst_responses.append(repair)
             decisions, approved = gate.decide(analysis)
             approved_count += len(approved)
             rejected_count += sum(not item.approved for item in decisions)
@@ -1263,10 +1468,18 @@ def compile_project_semantics_staged(
                     read_decisions=decisions,
                     tool_evidence=evidence,
                     metadata={
-                        "provider": response.provider,
-                        "model": response.response_model or response.requested_model,
-                        "input_tokens": response.usage.input_tokens,
-                        "output_tokens": response.usage.output_tokens,
+                        "provider": turn_responses[-1].provider,
+                        "model": (
+                            turn_responses[-1].response_model
+                            or turn_responses[-1].requested_model
+                        ),
+                        "input_tokens": sum(
+                            item.usage.input_tokens for item in turn_responses
+                        ),
+                        "output_tokens": sum(
+                            item.usage.output_tokens for item in turn_responses
+                        ),
+                        "schema_repairs": schema_repairs,
                     },
                 )
             )
@@ -1303,7 +1516,7 @@ def compile_project_semantics_staged(
             max_output_tokens=max_output_tokens,
             require_json=True,
             thinking_mode="enabled",
-            reasoning_effort="max",
+            reasoning_effort=analyst_reasoning_effort,
             metadata={"task": "staged_semantic_final_synthesis"},
         )
     )
@@ -1330,7 +1543,7 @@ def compile_project_semantics_staged(
                     max_output_tokens=max_output_tokens,
                     require_json=True,
                     thinking_mode="enabled",
-                    reasoning_effort="max",
+                    reasoning_effort=analyst_reasoning_effort,
                     metadata={
                         "task": "staged_semantic_schema_repair",
                         "repair": schema_repairs,
@@ -1339,15 +1552,9 @@ def compile_project_semantics_staged(
             )
             analyst_responses.append(repair)
 
-    final_hits = knowledge.retrieve(
-        packet_text,
-        family_hints=tuple(item.value for item in semantic_analysis.problem_families),
+    final_hits, final_engineering_hits = knowledge.retrieve_conditioned_on_analysis(
+        semantic_analysis,
         top_k=4,
-    )
-    final_engineering_hits = knowledge.retrieve_engineering_patterns(
-        packet_text,
-        family_hints=tuple(item.value for item in semantic_analysis.problem_families),
-        top_k=8,
     )
     impact = (
         assess_constraint_impacts_with_llm(
@@ -1357,16 +1564,23 @@ def compile_project_semantics_staged(
             engineering_hits=final_engineering_hits,
             max_output_tokens=impact_max_output_tokens,
             thinking_mode="enabled",
-            reasoning_effort="max",
+            reasoning_effort=impact_reasoning_effort,
         )
         if impact_provider is not None
         else None
     )
+    from .semantic_graph import build_project_constraint_graph
+
     final = LLMSemanticCompilation(
         packet=packet,
         knowledge_hits=final_hits,
         engineering_pattern_hits=final_engineering_hits,
         analysis=semantic_analysis,
+        constraint_graph=build_project_constraint_graph(
+            semantic_analysis,
+            project_id=packet.project_name,
+            impact_report=impact,
+        ),
         constraint_impact=impact,
         evidence_checks=audit_llm_evidence(base, packet, semantic_analysis),
         metadata=_aggregate_metadata(

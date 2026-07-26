@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=A,B,H; capabilities=blind_harness,leakage_control,artifact_filter; level=integration; cost=low
 import json
 from pathlib import Path
 

@@ -1,0 +1,106 @@
+{
+  "schema_version": "round5.incremental.1",
+  "basis": "targeted journal scan; additive only",
+  "updates": [
+    {
+      "capability_group": "batch_processing_and_lot_streaming",
+      "status": "partially_addressed",
+      "new_candidates": [
+        "batch_formation_wait_time",
+        "batch_capacity_slack_ratio",
+        "sublot_merge_wait_time"
+      ],
+      "new_views": [
+        "variant_head:batch_processing",
+        "variant_head:lot_streaming",
+        "mechanism:batch_formation"
+      ],
+      "remaining_gaps": [
+        "no code-backed calculator",
+        "lot-splitting merge semantics vary",
+        "no intervention evidence"
+      ]
+    },
+    {
+      "capability_group": "reentrant_and_wip",
+      "status": "partially_addressed",
+      "new_candidates": [
+        "work_in_process_area",
+        "reentrant_revisit_queue_wait"
+      ],
+      "new_views": [
+        "variant_head:reentrant",
+        "mechanism:wip_congestion"
+      ],
+      "remaining_gaps": [
+        "route visit indexing absent from baseline IR",
+        "WIP direction is context-dependent"
+      ]
+    },
+    {
+      "capability_group": "worker_tool_auxiliary",
+      "status": "partially_addressed",
+      "new_candidates": [
+        "worker_transfer_delay_total",
+        "worker_workload_cv",
+        "fixture_loading_unloading_time_total"
+      ],
+      "new_diagnostics": [
+        "multi_resource_wait_attribution_conservation"
+      ],
+      "remaining_gaps": [
+        "worker/tool event traces",
+        "overlap attribution policy",
+        "tool-specific workload metric not yet justified"
+      ]
+    },
+    {
+      "capability_group": "transport_agv",
+      "status": "partially_addressed",
+      "new_candidates": [
+        "agv_charging_wait_time"
+      ],
+      "new_diagnostics": [
+        "agv_battery_trace_feasibility"
+      ],
+      "new_views": [
+        "variant_head:charging",
+        "mechanism:charging_availability"
+      ],
+      "remaining_gaps": [
+        "battery/SOC trace absent",
+        "charging counterfactual attribution not validated"
+      ]
+    },
+    {
+      "capability_group": "assembly_sync",
+      "status": "new_targeted_view",
+      "new_candidates": [
+        "assembly_component_sync_wait"
+      ],
+      "new_views": [
+        "variant_head:assembly",
+        "mechanism:assembly_sync"
+      ],
+      "remaining_gaps": [
+        "assembly gate not represented in baseline problem-family router"
+      ]
+    },
+    {
+      "capability_group": "stochastic_and_dynamic",
+      "status": "partially_addressed",
+      "new_candidates": [
+        "scenario_infeasibility_rate",
+        "rescheduling_event_count"
+      ],
+      "new_diagnostics": [
+        "scenario_set_integrity",
+        "baseline_revised_correspondence_completeness"
+      ],
+      "remaining_gaps": [
+        "scenario outcomes and schedule-version semantics not available",
+        "roles remain diagnostic/primary objective, not secondary metric"
+      ]
+    }
+  ]
+}

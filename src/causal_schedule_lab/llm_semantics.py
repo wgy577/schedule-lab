@@ -23,6 +23,7 @@ from .semantic_knowledge import (
     SchedulingKnowledgeBase,
     compact_knowledge_context,
 )
+from .semantic_graph_models import ProjectConstraintGraph
 
 
 class FrozenModel(BaseModel):
@@ -300,6 +301,7 @@ class LLMSemanticCompilation(FrozenModel):
     knowledge_hits: tuple[KnowledgeHit, ...] = ()
     engineering_pattern_hits: tuple[EngineeringPatternHit, ...] = ()
     analysis: SemanticAnalysis
+    constraint_graph: ProjectConstraintGraph | None = None
     constraint_impact: ConstraintImpactReport | None = None
     evidence_checks: tuple[EvidenceCheck, ...]
     metadata: LLMCompilationMetadata
@@ -715,7 +717,7 @@ def compile_project_semantics_with_llm(
     max_output_tokens: int = 6000,
     max_schema_repairs: int = 1,
     thinking_mode: Literal["enabled", "disabled", "adaptive"] | None = "enabled",
-    reasoning_effort: Literal["low", "medium", "high", "xhigh", "max"] | None = "max",
+    reasoning_effort: Literal["low", "medium", "high", "xhigh", "max"] | None = "high",
     include_paths: Iterable[str] | None = None,
     excluded_prefixes: Iterable[str] = (),
     knowledge_base_path: str | Path | None = None,
@@ -788,19 +790,11 @@ def compile_project_semantics_with_llm(
                     )
                 )
             )
-    final_hits = knowledge_base.retrieve(
-        packet_text,
-        family_hints=tuple(
-            item.value for item in analysis.problem_families
-        ),
-        top_k=4,
-    )
-    final_engineering_hits = knowledge_base.retrieve_engineering_patterns(
-        packet_text,
-        family_hints=tuple(
-            item.value for item in analysis.problem_families
-        ),
-        top_k=8,
+    final_hits, final_engineering_hits = (
+        knowledge_base.retrieve_conditioned_on_analysis(
+            analysis,
+            top_k=4,
+        )
     )
     impact_report = (
         assess_constraint_impacts_with_llm(
@@ -815,11 +809,18 @@ def compile_project_semantics_with_llm(
         if impact_provider is not None
         else None
     )
+    from .semantic_graph import build_project_constraint_graph
+
     return LLMSemanticCompilation(
         packet=packet,
         knowledge_hits=final_hits,
         engineering_pattern_hits=final_engineering_hits,
         analysis=analysis,
+        constraint_graph=build_project_constraint_graph(
+            analysis,
+            project_id=packet.project_name,
+            impact_report=impact_report,
+        ),
         constraint_impact=impact_report,
         evidence_checks=audit_llm_evidence(root, packet, analysis),
         metadata=_aggregate_metadata(

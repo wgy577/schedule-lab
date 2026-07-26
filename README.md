@@ -10,6 +10,12 @@ Oracle”，具体排程由确定性 CP-SAT/条件生成器完成，最后由验
 
 > 当前仓库是独立通用工程，不依赖任何既有业务项目或外部调度代码。
 
+> **当前阶段（2026-07-26）**：第一阶段“项目语义理解、次级目标高召回与题库外
+> 提案”已经暂时封板。下一阶段的 P0 是直接改善甘特图/排程：Agent 诊断 Factor、
+> Interaction、算子和局部范围，目标项目原求解器或受控 CP-SAT 生成候选，Oracle
+> 裁决。一般代码优化排在其后。详见[第一阶段收口与第二阶段实施说明](docs/cross_module/STEP1_COMPLETION_AND_AGENTIC_SCHEDULING_STEP2.md)；
+> 更换对话窗口时从[新窗口交接文档](docs/cross_module/NEXT_WINDOW_HANDOFF.md)开始。
+
 ## 核心闭环
 
 ```text
@@ -57,13 +63,21 @@ Oracle”，具体排程由确定性 CP-SAT/条件生成器完成，最后由验
 - 调度语义知识检索：预存 JSP/FSP/HFSP/FJSP 的经典定义、常见变体，以及运输、
   人员、维护、缓冲、换型、能耗、动态事件和数字孪生等工程模式，让 LLM 重点发现
   项目增量；知识先验不替代代码证据。
+- proposed 指标知识：已统一导入 Round 3–6 的 85 个 metric、36 个 diagnostic 和
+  1056 条去重关系；可选影响 Critic 由程序先召回最多 20 项，再让 LLM 做高召回
+  白名单选择并保留 high/medium/low 置信层。不会把整个大题库注入 Prompt，候选也
+  尚未自动进入优化器。
+- 开放世界候选：若代码证据揭示题库外机制，Critic 可分别提出新次级目标和新诊断；
+  新次级目标必须证明同一实例候选可变并绑定可干预决策，所有新项只进入 `proposed`
+  审核池，不绕过计算器、Oracle、实验或人工晋级门。
 - 长期记忆：SQLite 属性图保存经审核关系，L0–L4 FTS5 保存问题族、机制、原始证据
   和实验；外部 PDF/文本默认只进入 `proposed`，不会自动升级为事实。
 - makespan 机制目标：八类确定性测量、同实例候选变化硬门、直接/验证间接控制门，
   以及按实例/状态记录的干预后验；当前独立可运行，尚未控制默认 Agent。
-- 约束影响分析：独立高推理 Critic 分开评估可行性重要度、决策杠杆、目标敏感度
+- 约束影响分析：默认使用 Opus 高召回结构化 Critic，分开评估可行性重要度、决策杠杆、目标敏感度
   和候选区分度；LLM 只选枚举档位，程序固定映射分数，低优化权重不能删除硬约束
-  验证。
+  验证。DeepSeek 暂停承担候选删除、降权或最终审核，影响审核 CLI 会直接拒绝该路由；
+  既有模型基准命令仍可用于历史对照。
 - 四类基准适配：JSP、FSP、FJSP、HFSP，附确定性实例生成器。
 - 调度异构图：工序、作业、资源、阶段及 precedence、resource sequence、
   eligibility、competition、causal edges。
@@ -84,22 +98,29 @@ Oracle”，具体排程由确定性 CP-SAT/条件生成器完成，最后由验
 
 详细架构与持续维护入口：
 
+- [第一阶段收口与第二阶段 Agentic 排程优化实施说明](docs/cross_module/STEP1_COMPLETION_AND_AGENTIC_SCHEDULING_STEP2.md)
+- [新窗口交接文档](docs/cross_module/NEXT_WINDOW_HANDOFF.md)
 - [项目状态与持续路线图](PROJECT_STATUS_AND_ROADMAP.md)
-- [两层项目模块图](PROJECT_MODULE_GRAPH.md)
+- [三层项目模块图](PROJECT_MODULE_GRAPH.md)
 - [可缩放项目模块图](PROJECT_MODULE_GRAPH_INTERACTIVE.html)
 - [分类文档索引](docs/README.md)
-- [系统详细架构](docs/architecture/SYSTEM_ARCHITECTURE.md)
-- [Agent 平台壳实施计划](docs/architecture/AGENT_PLATFORM_WORKPLAN.md)
-- [因果模块实施任务](docs/architecture/CAUSAL_MODULE_WORKPLAN.md)
-- [长期记忆、分层检索与因果机制目标](docs/architecture/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md)
-- [数学公式实现矩阵](docs/architecture/FORMULA_IMPLEMENTATION_MATRIX.md)
-- [原框架逐节追踪](docs/architecture/TRACEABILITY.md)
-- [LLM 项目语义编译器](docs/semantics/LLM_SEMANTIC_COMPILER.md)
-- [LLM 项目语义盲测 Harness](docs/semantics/LLM_SEMANTIC_HARNESS.md)
-- [L2D 多模型对比报告](docs/semantics/L2D_MODEL_COMPARISON_REPORT.md)
-- [L2D 论文—代码人工核验清单](docs/semantics/L2D_PAPER_CODE_HUMAN_VERIFICATION.md)
-- [调度语义知识库与优化影响权重](docs/semantics/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md)
-- [无论文/碎片文档语义学习](docs/semantics/CODE_ONLY_SEMANTIC_LEARNING.md)
+- [跨模块交叉索引](docs/intersections/README.md)
+- [可复用测试资产索引](tests/README.md)
+- [系统详细架构](docs/cross_module/SYSTEM_ARCHITECTURE.md)
+- [Agent 平台壳实施计划](docs/modules/module_b_semantics_memory/AGENT_PLATFORM_WORKPLAN.md)
+- [因果模块实施任务](docs/modules/module_d_diagnosis_causality/CAUSAL_MODULE_WORKPLAN.md)
+- [长期记忆、分层检索与因果机制目标](docs/modules/module_b_semantics_memory/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md)
+- [数学公式实现矩阵](docs/cross_module/FORMULA_IMPLEMENTATION_MATRIX.md)
+- [原框架逐节追踪](docs/cross_module/TRACEABILITY.md)
+- [LLM 项目语义编译器](docs/modules/module_b_semantics_memory/LLM_SEMANTIC_COMPILER.md)
+- [Claude Code 只读代码语义 Skill](docs/modules/module_b_semantics_memory/CLAUDE_CODE_SKILL_INTEGRATION.md)
+- [外部代码理解 Skill 能力调研](docs/modules/module_b_semantics_memory/EXTERNAL_SKILL_PATTERN_REVIEW.md)
+- [LLM 项目语义盲测 Harness](docs/modules/module_b_semantics_memory/LLM_SEMANTIC_HARNESS.md)
+- [L2D 多模型对比报告](docs/modules/module_b_semantics_memory/L2D_MODEL_COMPARISON_REPORT.md)
+- [L2D 论文—代码人工核验清单](docs/modules/module_a_input_evidence/L2D_PAPER_CODE_HUMAN_VERIFICATION.md)
+- [调度语义知识库与优化影响权重](docs/modules/module_b_semantics_memory/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md)
+- [次级指标与诊断项扩充研究任务书](docs/modules/module_d_diagnosis_causality/SECONDARY_METRIC_AND_DIAGNOSTIC_EXPANSION_PLAN.md)
+- [无论文/碎片文档语义学习](docs/modules/module_b_semantics_memory/CODE_ONLY_SEMANTIC_LEARNING.md)
 - [项目架构维护 Skill](.agents/skills/maintain-causal-schedule-lab/SKILL.md)
 
 ## 目录
@@ -108,12 +129,19 @@ Oracle”，具体排程由确定性 CP-SAT/条件生成器完成，最后由验
 causal_schedule_lab/
 ├── configs/                    # 语义 DSL 与实验配置
 ├── PROJECT_STATUS_AND_ROADMAP.md # 当前状态、缺口与后续任务
-├── PROJECT_MODULE_GRAPH.md     # 两层项目结构图
+├── PROJECT_MODULE_GRAPH.md     # 三层项目结构图：大模块、实现细节、真实组件映射
 ├── docs/
-│   ├── architecture/           # 架构、因果、公式、追踪与长期记忆
-│   ├── semantics/              # LLM 语义、知识库与模型核验
-│   ├── experiments/            # 实验协议
-│   └── guides/                 # 接入与操作指南
+│   ├── modules/                # 按 A–H 系统模块归档的专题文档
+│   │   ├── module_a_input_evidence/
+│   │   ├── module_b_semantics_memory/
+│   │   ├── module_c_ir_adapters/
+│   │   ├── module_d_diagnosis_causality/
+│   │   ├── module_e_candidate_generation/
+│   │   ├── module_f_validation_oracles/
+│   │   ├── module_g_acceptance_rollback/
+│   │   └── module_h_experiments_statistics/
+│   ├── cross_module/           # 系统总览、公式矩阵与需求追踪
+│   └── intersections/          # A×B、B×D 等交叉能力索引
 ├── examples/manifests/         # 四类内置演示
 ├── scripts/reproduce_all.sh    # 一键安装、测试和四类 smoke run
 ├── src/causal_schedule_lab/
@@ -122,8 +150,9 @@ causal_schedule_lab/
 │   ├── llm_semantics.py        # LLM 选择题语义解析与严格 JSON
 │   ├── semantic_agent.py       # 分片导航、分批分析、受控复读与短期记忆
 │   ├── semantic_knowledge.py   # JSP/FSP/HFSP/FJSP 知识检索
+│   ├── secondary_metric_knowledge.py # 85 项统一目录、确定性多视图召回与 Token 有界候选包
 │   ├── constraint_impact.py    # 情境化约束优化影响 Critic
-│   ├── knowledge/              # 问题族知识与 makespan 机制目标
+│   ├── knowledge/              # 问题族、机制目标与 proposed 多视图指标知识
 │   ├── storage/                # SQLite 图谱、证据索引与干预记忆
 │   ├── mechanisms.py           # 机制计算、资格门与效应后验
 │   ├── semantic_harness.py     # 论文隐藏标签与代码盲测
@@ -140,7 +169,9 @@ causal_schedule_lab/
 │   ├── validation.py           # 四级 Oracle
 │   ├── experiment_runner.py    # 基准与消融执行
 │   └── statistics.py           # 统计检验
-└── tests/
+└── tests/                      # 已登记、可按模块/能力复用的测试资产
+    ├── README.md
+    └── test_registry.json      # 测试标签唯一事实来源
 ```
 
 ## 安装
@@ -225,7 +256,8 @@ PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
   --output outputs/llm_semantic_compilation.json
 ```
 
-新的分阶段链（默认低成本 MiMo 导航、Anthropic/Opus 强分析）：
+新的分阶段链（默认低成本 MiMo 导航、官方 Claude Code 客户端调用 Opus-5
+并使用项目只读 Skill 做强分析）：
 
 ```bash
 PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
@@ -233,13 +265,17 @@ PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
   --project-root . \
   --env-file .env \
   --navigator-provider-prefix MIMO \
-  --analyst-protocol anthropic \
+  --analyst-protocol claude-code \
+  --claude-code-project-skill \
   --max-rounds-per-batch 3 \
   --max-reads 18 \
   --output outputs/staged_semantic_compilation.json
 ```
 
 建议先加 `--dry-run` 检查哪些非论文文件会进入导航；该模式不调用 API。
+正式运行会实时打印每次调用的模型、阶段、批次、轮次和修复次数，并写入
+`<output>.events.jsonl`。日志不保存 Prompt、响应正文或密钥，可用来判断究竟卡在
+哪一个模型调用；Skill 模式还会记录实际使用过的 `Read/Glob/Grep` 名称和次数。
 
 运行网上公开论文—官方代码盲测案例：
 
@@ -268,7 +304,7 @@ PYTHONPATH=src .venv/bin/python -m causal_schedule_lab.cli \
 ```
 
 Anthropic Messages 兼容中转使用 `--protocol anthropic`。当前五模型实测结论和
-限制见 [对比报告](docs/semantics/L2D_MODEL_COMPARISON_REPORT.md)。
+限制见 [对比报告](docs/modules/module_b_semantics_memory/L2D_MODEL_COMPARISON_REPORT.md)。
 
 ## 接入新项目
 
@@ -282,7 +318,7 @@ Anthropic Messages 兼容中转使用 `--protocol anthropic`。当前五模型�
 5. 先生成反事实数据和 BC 示范，再训练多任务 CIP/闭包模型与短时程策略。
 6. 只有 Full Oracle 合法且词典序严格改善的候选才能更新 incumbent。
 
-详见 [项目适配指南](docs/guides/ADAPTER_GUIDE.md)。
+详见 [项目适配指南](docs/modules/module_c_ir_adapters/ADAPTER_GUIDE.md)。
 
 ## 可复现性与研究边界
 

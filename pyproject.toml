@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "causal-schedule-lab"
-version = "0.5.0"
+version = "0.7.4"
 description = "Domain-independent project-conditioned causal and agentic schedule improvement laboratory"
 requires-python = ">=3.11"
 dependencies = [
@@ -29,7 +29,17 @@ causal-schedule-lab = "causal_schedule_lab.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-causal_schedule_lab = ["knowledge/*.json"]
+causal_schedule_lab = [
+  "knowledge/*.json",
+  "knowledge/secondary_metrics/round3/*.json",
+  "knowledge/secondary_metrics/round3/*.jsonl",
+  "knowledge/secondary_metrics/round4/*.json",
+  "knowledge/secondary_metrics/round4/*.jsonl",
+  "knowledge/secondary_metrics/round5/*",
+  "knowledge/secondary_metrics/round6/*",
+  "knowledge/secondary_metrics/compatibility/*.json",
+  "knowledge/secondary_metrics/compatibility/*.jsonl",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

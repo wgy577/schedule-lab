@@ -1,0 +1,328 @@
+{
+  "mode": "dry-run",
+  "inventory": {
+    "schema_version": "1.0",
+    "project_name": "repository",
+    "files": [
+      {
+        "path": "README.md",
+        "role_hint": "project_document",
+        "size_bytes": 3812,
+        "sha256": "91d350d6a5bccf6f577e09ceda7c6416bd425e7f57a0c8881624068cc7ed5505",
+        "symbols": [],
+        "imports": [],
+        "excerpt": "0001: # FJSP-DRL\n0002: \n0003: This repository is the official implementation of the paper “[Flexible Job Shop Scheduling via Dual Attention Network Based Reinforcement Learning](https://doi.org/10.1109/TNNLS.2023.3306421)”. *IEEE Transactions on Neural Networks and Learning Systems*, 2023.\n0004: \n0005: ## Quick Start\n0006: \n0007: ### requirements\n0008: \n0009: - python $=$ 3.7.11\n0010: - argparse $=$ 1.4.0\n0011: - numpy $=$ 1.21.6\n0012: - ortools $=$ 9.3.10497\n0013: - pandas $=$ 1.3.5\n0014: - torch $=$ 1.11.0+cu113\n0015: - torchaudio $=$ 0.11.0+cu113\n0016: - torchvision $=$ 0.12.0+cu113\n0017: - tqdm $=$ 4.64.0\n0018: \n0019: ### introduction\n0020: \n0021: - `data` saves the instance files including testing instances (in the subfolder `BenchData`, `SD1` and `SD2`) and validation instances (in the subfolder `data_train_vali`) .\n0022: - `model` contains the implementation of the proposed framework.\n0023: - `or_solution` saves the results solved by Google OR-Tools.\n0024: - `test_results`saves the results solved by priority dispatching rules and DRL models.\n0025: - `train_log` saves the training log of models, including information of the reward and validation makespan.\n0026: - `trained_network` saves the trained models.\n0027: - `common_utils.py` contains some useful functions (including the implementation of priority dispatching rules mentioned in the paper) .\n0028: - `data_utils.py` is used for data generation, reading and format conversion.\n0029: - `fjsp_env_same_op_nums.py` and `fjsp_env_various_op_nums.py` are implementations of fjsp environments, describing fjsp instances with the same number of operations and different number of operations, respectively.\n0030: - `ortools_solver.py` is used for solving the instances by Google OR-Tools.\n0031: - `params.py` defines parameters settings.\n0032: - `print_test_result.py` is used for printing the experimental results into an Excel file.\n0033: - `test_heuristic.py` is used for solving the instances by priority dispatching rules.\n0034: - `test_trained_model.py` is used for evaluating the models.\n0035: - `train.py` is used for training.\n0036: "
+      },
+      {
+        "path": "common_utils.py",
+        "role_hint": "source",
+        "size_bytes": 6192,
+        "sha256": "e132030e69206614158febe77386fa2a5336fe57b7ffcd7999c7cf23ebcd3516",
+        "symbols": [
+          "sample_action",
+          "eval_actions",
+          "greedy_select_action",
+          "min_element_index",
+          "max_element_index",
+          "available_mch_list_for_job",
+          "heuristic_select_action",
+          "save_default_params",
+          "nonzero_averaging",
+          "strToSuffix",
+          "setup_seed"
+        ],
+        "imports": [
+          "json",
+          "random",
+          "torch.distributions.categorical",
+          "sys",
+          "numpy",
+          "torch",
+          "copy"
+        ],
+        "excerpt": "0001: import json\n0002: import random\n0003: \n0004: from torch.distributions.categorical import Categorical\n0005: import sys\n0006: import numpy as np\n0007: import torch\n0008: import copy\n0009: \n0010: \"\"\"\n0011:     agent utils\n0012: \"\"\"\n0013: \n0014: \n0015: def sample_action(p):\n0016:     \"\"\"\n0017:         sample an action by the distribution p\n0018:     :param p: this distribution with the probability of choosing each action\n0019:     :return: an action sampled by p\n0020:     \"\"\"\n0021:     dist = Categorical(p)\n0022:     s = dist.sample()  # index\n0023:     return s, dist.log_prob(s)\n0024: \n0025: \n0026: def eval_actions(p, actions):\n0027:     \"\"\"\n0028:     :param p: the policy\n0029:     :param actions: action sequences\n0030:     :return: the log probability of actions and the entropy of p\n0031:     \"\"\"\n0032:     softmax_dist = Categorical(p.squeeze())\n0033:     ret = softmax_dist.log_prob(actions).reshape(-1)\n0034:     entropy = softmax_dist.entropy().mean()\n0035:     return ret, entropy\n0036: \n0037: \n0038: def greedy_select_action(p):\n0039:     _, index = torch.max(p, dim=1)\n0040:     return index\n0041: \n0042: \n0043: def min_element_index(array):\n0044:     \"\"\"\n0045:     :param array: an array with numbers\n0046:     :return: Index set corresponding to the minimum element of the array\n0047:     \"\"\"\n0048:     min_element = np.min(array)\n0049:     candidate = np.where(array == min_element)\n0050:     return candidate\n0051: \n0052: \n0053: def max_element_index(array):\n0054:     \"\"\"\n0055:     :param array: an array with numbers\n0056:     :return: Index set corresponding to the maximum element of the array\n0057:     \"\"\"\n0058:     max_element = np.max(array)\n0059:     candidate = np.where(array == max_element)\n0060:     return candidate\n0061: \n0062: \n0063: def available_mch_list_for_job(chosen_job, env):\n0064:     \"\"\"\n0065:     :param chosen_job: the selected job\n0066:     :param env: the production environment\n0067:     :return: the machines which can immediately process the chosen job\n0068:     \"\"\"\n0069:     mch_state = ~env.candidate_process_relation[0, chosen_job]\n0070:     available_mch_list = np.where(mch_state == True)[0]\n0071:     mch_free_time = env.mch_free_time[0][available_mch_list]\n0086: \n0087: def heuristic_select_action(method, env):\n0088:     \"\"\"\n0089:     :param method: the name of heuristic method\n0090:     :param env: the environment\n0091:     :return: the action selected by the heuristic method\n0092: \n0093:     here are heuristic methods selected for comparison:\n0094: \n0095:     FIFO: First in first out\n0169: \n0170: def save_default_params(confi"
+      },
+      {
+        "path": "data/DataSetExplanation.txt",
+        "role_hint": "data_schema",
+        "size_bytes": 1309,
+        "sha256": "9d05ee2bc74a621c5cd2422d767a6b962e7846c728b23e518a42d42492f011b8",
+        "symbols": [],
+        "imports": [],
+        "excerpt": "0001: -in the first line there are (at least) 2 numbers: the first is the number of jobs and the second the number of machines (the 3rd is not necessary, it is the average number of machines per operation)\n0002: \n0003: -Every row represents one job: the first number is the number of operations of that job, the second number (let's say k>=1) is the number of machines that can process the first operation; then according to k, there are k pairs of numbers (machine,processing time) that specify which are the machines and the processing times; then the data for the second operation and so on...\n0004: \n0005: \n0006: Example: Fisher and Thompson 6x6 instance, alternate name (mt06)\n0007: \n0008: 6   6   1   \n0009: 6   1   3   1   1   1   3   1   2   6   1   4   7   1   6   3   1   5   6   \n0010: 6   1   2   8   1   3   5   1   5   10  1   6   10  1   1   10  1   4   4   \n0011: 6   1   3   5   1   4   4   1   6   8   1   1   9   1   2   1   1   5   7   \n0012: 6   1   2   5   1   1   5   1   3   5   1   4   3   1   5   8   1   6   9   \n0013: 6   1   3   9   1   2   3   1   5   5   1   6   4   1   1   3   1   4   1   \n0014: 6   1   2   3   1   4   3   1   6   9   1   1   10  1   5   4   1   3   1   \n0015: \n0016: first row = 6 jobs and 6 machines 1 machine per operation\n0017: second row: job 1 has 6 operations, the first operation can be processed by 1 machine that is machine 3 with processing time 1."
+      },
+      {
+        "path": "data_utils.py",
+        "role_hint": "source",
+        "size_bytes": 13007,
+        "sha256": "b4424b851c625f3848a6c06e37a4c04d740e35040bad0a9bd53da62f46769c19",
+        "symbols": [
+          "SD2_instance_generator",
+          "matrix_to_text",
+          "text_to_matrix",
+          "load_data_from_files",
+          "pack_data_from_config",
+          "generate_data_to_files",
+          "CaseGenerator",
+          "main"
+        ],
+        "imports": [
+          "numpy",
+          "re",
+          "params",
+          "random",
+          "time",
+          "os",
+          "sys",
+          "common_utils"
+        ],
+        "excerpt": "0001: import numpy as np\n0002: import re\n0003: from params import configs\n0004: import random\n0005: import time\n0006: import os\n0007: import sys\n0008: \n0009: from common_utils import strToSuffix\n0010: \n0011: \n0012: def SD2_instance_generator(config):\n0013:     \"\"\"\n0014:     :param config: a package of parameters\n0015:     :return: a fjsp instance generated by SD2, with\n0016:         job_length : the number of operations in each job (shape [J])\n0017:         op_pt: the processing time matrix with shape [N, M],\n0018:                 where op_pt[i,j] is the processing time of the ith operation\n0019:                 on the jth machine or 0 if $O_i$ can not process on $M_j$\n0020:         op_per_mch : the average number of compatible machines of each operation\n0021:     \"\"\"\n0022:     n_j = config.n_j\n0023:     n_m = config.n_m\n0024:     if config.op_per_job == 0:\n0025:         op_per_job = n_m\n0026:     else:\n0027:         op_per_job = config.op_per_job\n0028: \n0029:     low = config.low\n0030:     high = config.high\n0031:     data_suffix = config.data_suffix\n0032: \n0033:     op_per_mch_min = 1\n0034:     if data_suffix == \"nf\":\n0035:         op_per_mch_max = 1\n0036:     elif data_suffix == \"mix\":\n0062: \n0063: def matrix_to_text(job_length, op_pt, op_per_mch):\n0064:     \"\"\"\n0065:         Convert matrix form of the data into test form\n0066:     :param job_length: the number of operations in each job (shape [J])\n0067:     :param op_pt: the processing time matrix with shape [N, M],\n0068:                 where op_pt[i,j] is the processing time of the ith operation\n0069:                 on the jth machine or 0 if $O_i$ can not process on $M_j$\n0070:     :param op_per_mch: the average number of compatible machines of each operation\n0071:     :return: the standard text form of the instance\n0091: \n0092: def text_to_matrix(text):\n0093:     \"\"\"\n0094:             Convert text form of the data into matrix form\n0095:     :param text: the standard text form of the instance\n0096:     :return:  the matrix form of the instance\n0097:             job_length: the number of operations in each job (shape [J])\n0098:             op_pt: the processing time matrix with shape [N, M],\n0099:                 where op_pt[i,j] is the processing time of the ith operation\n0100:                 on the jth machine or 0 if $O_i$ can not process on $M_j$\n0129: \n0130: def load_data_from_files(directory):\n0131:     \"\"\"\n0132:         load all files within the specified directory\n0133:     :param directory: the directory of files\n0134:     :return: a list of data (matrix form) in the directory\n0135:     "
+      },
+      {
+        "path": "fjsp_env_same_op_nums.py",
+        "role_hint": "environment",
+        "size_bytes": 27954,
+        "sha256": "8e68073798f6688a54afe6198e8b774b67b84635bc01e1aa2a65b05e95df40bf",
+        "symbols": [
+          "EnvState",
+          "FJSPEnvForSameOpNums"
+        ],
+        "imports": [
+          "dataclasses",
+          "numpy",
+          "numpy.ma",
+          "copy",
+          "params",
+          "sys",
+          "torch"
+        ],
+        "excerpt": "0001: from dataclasses import dataclass\n0002: import numpy as np\n0003: import numpy.ma as ma\n0004: import copy\n0005: from params import configs\n0006: import sys\n0007: import torch\n0008: \n0009: \n0010: @dataclass\n0011: class EnvState:\n0012:     \"\"\"\n0013:         state definition\n0014:     \"\"\"\n0015:     fea_j_tensor: torch.Tensor = None\n0016:     op_mask_tensor: torch.Tensor = None\n0017:     fea_m_tensor: torch.Tensor = None\n0018:     mch_mask_tensor: torch.Tensor = None\n0019:     dynamic_pair_mask_tensor: torch.Tensor = None\n0020:     comp_idx_tensor: torch.Tensor = None\n0021:     candidate_tensor: torch.Tensor = None\n0022:     fea_pairs_tensor: torch.Tensor = None\n0023: \n0024:     device = torch.device(configs.device)\n0025: \n0026:     def update(self, fea_j, op_mask, fea_m, mch_mask, dynamic_pair_mask,\n0027:                comp_idx, candidate, fea_pairs):\n0028:         \"\"\"\n0029:             update the state information\n0030:         :param fea_j: input operation feature vectors with shape [sz_b, N, 10]\n0031:         :param op_mask: used for masking nonexistent predecessors/successor\n0032:                         (with shape [sz_b, N, 3])\n0033:         :param fea_m: input operation feature vectors with shape [sz_b, M, 8]\n0034:         :param mch_mask: used for masking attention coefficients (with shape [sz_b, M, M])\n0035:         :param comp_idx: a tensor with shape [sz_b, M, M, J] used for computing T_E\n0036:                     the value of comp_idx[i, k, q, j] (any i) means whether\n0065: \n0066: class FJSPEnvForSameOpNums:\n0067:     \"\"\"\n0068:         a batch of fjsp environments that have the same number of operations\n0069: \n0070:         let E/N/J/M denote the number of envs/operations/jobs/machines\n0071:         Remark: The index of operations has been rearranged in natural order\n0072:         eg. {O_{11}, O_{12}, O_{13}, O_{21}, O_{22}}  <--> {0,1,2,3,4}\n0073: \n0074:         Attributes:"
+      },
+      {
+        "path": "fjsp_env_various_op_nums.py",
+        "role_hint": "environment",
+        "size_bytes": 23935,
+        "sha256": "04da8adb355754c9bdcc0ad1ffd92cf44730067a7b186e08c43ac191785f7ef0",
+        "symbols": [
+          "FJSPEnvForVariousOpNums"
+        ],
+        "imports": [
+          "numpy",
+          "numpy.ma",
+          "copy",
+          "sys",
+          "fjsp_env_same_op_nums"
+        ],
+        "excerpt": "0001: import numpy as np\n0002: import numpy.ma as ma\n0003: import copy\n0004: import sys\n0005: from fjsp_env_same_op_nums import EnvState\n0006: \n0007: \n0008: class FJSPEnvForVariousOpNums:\n0009:     \"\"\"\n0010:         a batch of fjsp environments that have various number of operations\n0011:         Attributes:\n0012: \n0013:     \"\"\"\n0014: \n0015:     def __init__(self, n_j, n_m):\n0016:         self.number_of_jobs = n_j\n0017:         self.number_of_machines = n_m\n0018:         self.old_state = EnvState()\n0019: \n0020:         self.op_fea_dim = 10\n0021:         self.mch_fea_dim = 8\n0022: \n0023:     def set_static_properties(self):\n0024:         \"\"\"\n0025:             define static properties\n0026:         \"\"\"\n0027:         self.multi_env_mch_diag = np.tile(np.expand_dims(np.eye(self.number_of_machines, dtype=bool), axis=0),\n0028:                                           (self.number_of_envs, 1, 1))\n0029: \n0030:         self.env_idxs = np.arange(self.number_of_envs)\n0031:         self.env_job_idx = self.env_idxs.repeat(self.number_of_jobs).reshape(self.number_of_envs, self.number_of_jobs)\n0032: \n0033:         # [E, N]\n0034:         self.mask_dummy_node = np.full(shape=[self.number_of_envs, self.max_number_of_ops],\n0035:                                        fill_value=False, dtype=bool)\n0036: "
+      },
+      {
+        "path": "model/PPO.py",
+        "role_hint": "model",
+        "size_bytes": 9152,
+        "sha256": "e4012da3a72deb05b511d2c364a577238324158235569ebdac2b88c8e169d701",
+        "symbols": [
+          "Memory",
+          "PPO",
+          "PPO_initialize"
+        ],
+        "imports": [
+          "model.main_model",
+          "common_utils",
+          "torch.nn",
+          "torch",
+          "copy",
+          "params",
+          "numpy"
+        ],
+        "excerpt": "0001: from model.main_model import *\n0002: from common_utils import eval_actions\n0003: import torch.nn as nn\n0004: import torch\n0005: from copy import deepcopy\n0006: from params import configs\n0007: import numpy as np\n0008: \n0009: \n0010: class Memory:\n0011:     def __init__(self, gamma, gae_lambda):\n0012:         \"\"\"\n0013:             the memory used for collect trajectories for PPO training\n0014:         :param gamma: discount factor\n0015:         :param gae_lambda: GAE parameter for PPO algorithm\n0016:         \"\"\"\n0017:         self.gamma = gamma\n0018:         self.gae_lambda = gae_lambda\n0019:         # input variables of DANIEL\n0020:         self.fea_j_seq = []  # [N, tensor[sz_b, N, 8]]\n0021:         self.op_mask_seq = []  # [N, tensor[sz_b, N, 3]]\n0022:         self.fea_m_seq = []  # [N, tensor[sz_b, M, 6]]\n0023:         self.mch_mask_seq = []  # [N, tensor[sz_b, M, M]]\n0024:         self.dynamic_pair_mask_seq = []  # [N, tensor[sz_b, J, M]]\n0025:         self.comp_idx_seq = []  # [N, tensor[sz_b, M, M, J]]\n0026:         self.candidate_seq = []  # [N, tensor[sz_b, J]]\n0027:         self.fea_pairs_seq = []  # [N, tensor[sz_b, J]]\n0028: \n0029:         # other variables\n0030:         self.action_seq = []  # action index with shape [N, tensor[sz_b]]\n0031:         self.reward_seq = []  # reward value with shape [N, tensor[sz_b]]\n0032:         self.val_seq = []  # state value with shape [N, tensor[sz_b]]\n0033:         self.done_seq = []  # done flag with shape [N, tensor[sz_b]]\n0034:         self.log_probs = []  # log(p_{\\theta_old}(a_t|s_t)) with shape [N, tensor[sz_b]]\n0035: \n0036:     def clear_memory(self):\n0126: \n0127: class PPO:\n0128:     def __init__(self, config):\n0129:         \"\"\"\n0130:             The implementation of PPO algorithm\n0131:         :param config: a package of parameters\n0132:         \"\"\"\n0133:         self.lr = config.lr\n0134:         self.gamma = config.gamma\n0135:         self.gae_lambda = config.gae_lambda\n0215: \n0216: def PPO_initialize():\n0217:     ppo = PPO(config=configs)\n0218:     return ppo"
+      },
+      {
+        "path": "model/attention_layer.py",
+        "role_hint": "model",
+        "size_bytes": 9517,
+        "sha256": "a6fec1a17592dcb064ca9d60cfe2e90a5da7b0d4891a8fd5cd37d341b6ce98c7",
+        "symbols": [
+          "SingleOpAttnBlock",
+          "MultiHeadOpAttnBlock",
+          "SingleMchAttnBlock",
+          "MultiHeadMchAttnBlock"
+        ],
+        "imports": [
+          "torch",
+          "torch.nn",
+          "torch.nn.functional"
+        ],
+        "excerpt": "0001: import torch\n0002: import torch.nn as nn\n0003: import torch.nn.functional as F\n0004: \n0005: \n0006: class SingleOpAttnBlock(nn.Module):\n0007:     def __init__(self, input_dim, output_dim, dropout_prob):\n0008:         \"\"\"\n0009:             The implementation of Operation Message Attention Block\n0010:         :param input_dim: the dimension of input feature vectors\n0011:         :param output_dim: the dimension of output feature vectors\n0012:         :param dropout_prob: the parameter p for nn.Dropout()\n0013: \n0014:         \"\"\"\n0015:         super(SingleOpAttnBlock, self).__init__()\n0016:         self.in_features = input_dim\n0017:         self.out_features = output_dim\n0018:         self.alpha = 0.2\n0019: \n0020:         self.W = nn.Parameter(torch.empty(size=(input_dim, output_dim)))\n0021:         nn.init.xavier_uniform_(self.W.data, gain=1.414)\n0022:         self.a = nn.Parameter(torch.empty(size=(2 * output_dim, 1)))\n0023:         nn.init.xavier_uniform_(self.a.data, gain=1.414)\n0024: \n0025:         self.leaky_relu = nn.LeakyReLU(self.alpha)\n0026: \n0027:         self.dropout = nn.Dropout(p=dropout_prob)\n0028: \n0029:     def forward(self, h, op_mask):\n0030:         \"\"\"\n0031:         :param h: operation feature vectors with shape [sz_b, N, input_dim]\n0032:         :param op_mask: used for masking nonexistent predecessors/successor\n0033:                         with shape [sz_b, N, 3]\n0034:         :return: output feature vectors with shape [sz_b, N, output_dim]\n0035:         \"\"\"\n0036:         Wh = torch.matmul(h, self.W)\n0059: \n0060: class MultiHeadOpAttnBlock(nn.Module):\n0061:     def __init__(self, input_dim, output_dim, dropout_prob, num_heads, activation, concat=True):\n0062:         \"\"\"\n0063:             The implementation of Operation Message Attention Block with multi-head attention\n0064:         :param input_dim: the dimension of input feature vectors\n0065:         :param output_dim: the dimension of each head's output\n0066:         :param dropout_prob: the parameter p for nn.Dropout()\n0067:         :param num_heads: the number of attention heads\n0068:         :param activation: the activation function used before output\n0106: \n0107: class SingleMchAttnBlock(nn.Module):\n0108:     def __init__(self, node_input_dim, edge_input_dim, output_dim, dropout_prob):\n0109:         \"\"\"\n0110:             The implementation of Machine Message Attention Block\n0111:         :param node_input_dim: the dimension of input node feature vectors\n0112:         :param edge_input_dim: the dimension of input edge feature vectors\n0113:         :param output_dim: the dime"
+      },
+      {
+        "path": "model/main_model.py",
+        "role_hint": "model",
+        "size_bytes": 8257,
+        "sha256": "3922cb49ead09098eb16264e3ed37b31721f6b167412c7d4dfb08065b8e66cff",
+        "symbols": [
+          "DualAttentionNetwork",
+          "DANIEL"
+        ],
+        "imports": [
+          "common_utils",
+          "model.attention_layer",
+          "model.sub_layers",
+          "torch",
+          "torch.nn",
+          "torch.nn.functional"
+        ],
+        "excerpt": "0001: from common_utils import nonzero_averaging\n0002: from model.attention_layer import *\n0003: from model.sub_layers import *\n0004: import torch\n0005: import torch.nn as nn\n0006: import torch.nn.functional as F\n0007: \n0008: \n0009: class DualAttentionNetwork(nn.Module):\n0010:     def __init__(self, config):\n0011:         \"\"\"\n0012:             The implementation of dual attention network (DAN)\n0013:         :param config: a package of parameters\n0014:         \"\"\"\n0015:         super(DualAttentionNetwork, self).__init__()\n0016: \n0017:         self.fea_j_input_dim = config.fea_j_input_dim\n0018:         self.fea_m_input_dim = config.fea_m_input_dim\n0019:         self.output_dim_per_layer = config.layer_fea_output_dim\n0020:         self.num_heads_OAB = config.num_heads_OAB\n0021:         self.num_heads_MAB = config.num_heads_MAB\n0022:         self.last_layer_activate = nn.ELU()\n0023: \n0024:         self.num_dan_layers = len(self.num_heads_OAB)\n0025:         assert len(config.num_heads_MAB) == self.num_dan_layers\n0026:         assert len(self.output_dim_per_layer) == self.num_dan_layers\n0027:         self.alpha = 0.2\n0028:         self.leaky_relu = nn.LeakyReLU(self.alpha)\n0029:         self.dropout_prob = config.dropout_prob\n0030: \n0031:         num_heads_OAB_per_layer = [1] + self.num_heads_OAB\n0032:         num_heads_MAB_per_layer = [1] + self.num_heads_MAB\n0033: \n0034:         # mid_dim = [self.embedding_output_dim] * (self.num_dan_layers - 1)\n0035:         mid_dim = self.output_dim_per_layer[:-1]\n0036: \n0106: \n0107: class DANIEL(nn.Module):\n0108:     def __init__(self, config):\n0109:         \"\"\"\n0110:             The implementation of the proposed learning framework for fjsp\n0111:         :param config: a package of parameters\n0112:         \"\"\"\n0113:         super(DANIEL, self).__init__()\n0114:         device = torch.device(config.device)\n0115: "
+      },
+      {
+        "path": "model/sub_layers.py",
+        "role_hint": "model",
+        "size_bytes": 5031,
+        "sha256": "da05748f0054a9c5657ac16fe5d114956bcbef3e151f2f48812586db5e7051f3",
+        "symbols": [
+          "MLP",
+          "Actor",
+          "Critic"
+        ],
+        "imports": [
+          "torch",
+          "torch.nn",
+          "torch.nn.functional"
+        ],
+        "excerpt": "0001: import torch\n0002: import torch.nn as nn\n0003: import torch.nn.functional as F\n0004: \n0005: class MLP(nn.Module):\n0006:     def __init__(self, num_layers, input_dim, hidden_dim, output_dim):\n0007:         \"\"\"\n0008:             the implementation of multi layer perceptrons (refer to L2D)\n0009:         :param num_layers: number of layers in the neural networks (EXCLUDING the input layer).\n0010:                             If num_layers=1, this reduces to linear model.\n0011:         :param input_dim: dimensionality of input features\n0012:         :param hidden_dim: dimensionality of hidden units at ALL layers\n0013:         :param output_dim:  number of classes for prediction\n0014:         \"\"\"\n0015: \n0016:         super(MLP, self).__init__()\n0017: \n0018:         self.linear_or_not = True  # default is linear model\n0019:         self.num_layers = num_layers\n0020: \n0021:         if num_layers < 1:\n0022:             raise ValueError(\"number of layers should be positive!\")\n0023:         elif num_layers == 1:\n0024:             # Linear model\n0025:             self.linear = nn.Linear(input_dim, output_dim)\n0026:         else:\n0027:             # Multi-layer model\n0028:             self.linear_or_not = False\n0029:             self.linears = torch.nn.ModuleList()\n0030: \n0031:             self.linears.append(nn.Linear(input_dim, hidden_dim))\n0032:             for layer in range(num_layers - 2):\n0033:                 self.linears.append(nn.Linear(hidden_dim, hidden_dim))\n0034:             self.linears.append(nn.Linear(hidden_dim, output_dim))\n0035: \n0036:     def forward(self, x):\n0047: \n0048: class Actor(nn.Module):\n0049:     def __init__(self, num_layers, input_dim, hidden_dim, output_dim):\n0050:         \"\"\"\n0051:             the implementation of Actor network (refer to L2D)\n0052:         :param num_layers: number of layers in the neural networks (EXCLUDING the input layer).\n0053:                             If num_layers=1, this reduces to linear model.\n0054:         :param input_dim: dimensionality of input features\n0055:         :param hidden_dim: dimensionality of hidden units at ALL layers\n0056:         :param output_dim:  number of classes for prediction\n0091: \n0092: class Critic(nn.Module):\n0093:     def __init__(self, num_layers, input_dim, hidden_dim, output_dim):\n0094:         \"\"\"\n0095:             the implementation of Critic network (refer to L2D)\n0096:         :param num_layers: number of layers in the neural networks (EXCLUDING the input layer).\n0097:                             If num_layers=1, this reduces to linear model.\n0098:         :param"
+      },
+      {
+        "path": "ortools_solver.py",
+        "role_hint": "solver",
+        "size_bytes": 11066,
+        "sha256": "24f5b4ba653a4f5b2ceb5c32909cac08dabc22c4e24eaadca468811a2e113a61",
+        "symbols": [
+          "solve_instances",
+          "matrix_to_the_format_for_solving",
+          "fjsp_solver",
+          "SolutionPrinter"
+        ],
+        "imports": [
+          "ortools.sat.python",
+          "numpy",
+          "time",
+          "os",
+          "tqdm",
+          "sys",
+          "params",
+          "data_utils",
+          "collections"
+        ],
+        "excerpt": "0001: from ortools.sat.python import cp_model\n0002: import numpy as np\n0003: import time\n0004: import os\n0005: from tqdm import tqdm\n0006: import sys\n0007: from params import configs\n0008: from data_utils import pack_data_from_config\n0009: import collections\n0010: \n0011: os.environ[\"CUDA_VISIBLE_DEVICES\"] = configs.device_id\n0012: \n0013: \n0014: def solve_instances(config):\n0015:     \"\"\"\n0016:         Solve 'test_data' from 'data_source' using OR-Tools\n0017:         with time limits 'max_solve_time' for each instance,\n0018:         and save the result to './or_solution/{data_source}'\n0019:     :param config: a package of parameters\n0020:     :return:\n0021:     \"\"\"\n0022:     # p = psutil.Process()\n0023:     # p.cpu_affinity(range(config.low, config.high))\n0024: \n0025:     if not os.path.exists(f'./or_solution/{config.data_source}'):\n0026:         os.makedirs(f'./or_solution/{config.data_source}')\n0027: \n0028:     data_list = pack_data_from_config(config.data_source, config.test_data)\n0029: \n0030:     save_direc = f'./or_solution/{config.data_source}'\n0031:     if not os.path.exists(save_direc):\n0032:         os.makedirs(save_direc)\n0033: \n0034:     for data in data_list:\n0035:         dataset = data[0]\n0036:         data_name = data[1]\n0072: \n0073: def matrix_to_the_format_for_solving(job_length, op_pt):\n0074:     \"\"\"\n0075:         Convert matrix form of the data into the format needed by OR-Tools\n0076:     :param job_length: the number of operations in each job (shape [J])\n0077:     :param op_pt: the processing time matrix with shape [N, M],\n0078:                 where op_pt[i,j] is the processing time of the ith operation\n0079:                 on the jth machine or 0 if $O_i$ can not process on $M_j$\n0080:     :return:\n0081:     \"\"\"\n0096: \n0097: def fjsp_solver(jobs, num_machines, time_limits):\n0098:     \"\"\"\n0099:         solve a fjsp instance by OR-Tools\n0100:         (imported from https://github.com/google/or-tools/blob/master/examples/python/flexible_job_shop_sat.py)\n0101:     :param jobs: a list of processing information\n0102:         eg. jobs = [  # task = (processing_time, machine_id)\n0103:                         [  # Job 0\n0104:                             [(3, 0), (1, 1), (5, 2)],  # task 0 with 3 alternatives\n0105:                             [(2, 0), (4, 1), (6, 2)],  # task 1 with 3 alternatives\n0263: \n0264: class SolutionPrinter(cp_model.CpSolverSolutionCallback):\n0265:     \"\"\"\n0266:         Print intermediate solutions.\n0267:     \"\"\"\n0268: \n0269:     def __init__(self):\n0270:         cp_model.CpSolverSolutionCallback.__init__(self)\n0271:  "
+      },
+      {
+        "path": "params.py",
+        "role_hint": "config",
+        "size_bytes": 6813,
+        "sha256": "b51858859f7de5c720a57890e1660f2bc31d2321ba0280e189e7a8f0076ddccb",
+        "symbols": [
+          "str2bool"
+        ],
+        "imports": [
+          "argparse"
+        ],
+        "excerpt": "0001: import argparse\n0002: \n0003: \n0004: def str2bool(v):\n0005:     \"\"\"\n0006:         transform string value to bool value\n0007:     :param v: a string input\n0008:     :return: the bool value\n0009:     \"\"\"\n0010:     if v.lower() in ('yes', 'true', 't', 'y', '1'):\n0011:         return True\n0012:     elif v.lower() in ('no', 'false', 'f', 'n', '0'):\n0013:         return False\n0014:     else:\n0015:         raise argparse.ArgumentTypeError('Unsupported value encountered.')\n0016: \n0017: \n0018: parser = argparse.ArgumentParser(description='Arguments for DANIEL_FJSP')\n0019: # args for device\n0020: parser.add_argument('--device', type=str, default='cuda', help='Device name')\n0021: parser.add_argument('--device_id', type=str, default='0', help='Device id')\n0022: \n0023: # args for file_name\n0024: \n0025: parser.add_argument('--model_suffix', type=str, default='', help='Suffix of the model')\n0026: parser.add_argument('--data_suffix', type=str, default='mix', help='Suffix of the data')\n0027: \n0028: # args for AutoExperiment\n0029: parser.add_argument('--cover_flag', type=str2bool, default=True, help='Whether covering test results of the model')\n0030: parser.add_argument('--cover_data_flag', type=str2bool, default=False, help='Whether covering the generated data')\n0031: parser.add_argument('--cover_heu_flag', type=str2bool, default=False,\n0032:                     help='Whether covering test results of heuristics')\n0033: parser.add_argument('--cover_train_flag', type=str2bool, default=True, help='Whether covering the trained model')\n0034: \n0035: # args for data load\n0036: parser.add_argument('--model_source', type=str, default='SD2', help='Suffix of the data that model trained on')"
+      },
+      {
+        "path": "print_test_result.py",
+        "role_hint": "evaluation",
+        "size_bytes": 7977,
+        "sha256": "9b5c16f2f520484939ddbe657ba6fd0ce16913a56a8bd613a148d41911be0a81",
+        "symbols": [
+          "load_result",
+          "load_solution_by_or",
+          "load_benchmark_solution",
+          "print_test_results_to_excel",
+          "main"
+        ],
+        "imports": [
+          "params",
+          "os",
+          "numpy",
+          "pandas",
+          "time"
+        ],
+        "excerpt": "0001: from params import configs\n0002: import os\n0003: import numpy as np\n0004: import pandas as pd\n0005: import time as time\n0006: \n0007: null_val = np.nan\n0008: str_time = time.strftime(\"%Y%m%d_%H%M%S\", time.localtime(time.time()))\n0009: non_exist_data = []\n0010: winner = []\n0011: \n0012: \n0013: def load_result(source, model_name, data_name):\n0014:     \"\"\"\n0015:         load the testing results.\n0016:     :param source: the source of data\n0017:     :param model_name: the name of model\n0018:     :param data_name: the name of data\n0019:     :return: makespan, average makespan, average time\n0020:     \"\"\"\n0021:     file_path = f'./test_results/{source}/{data_name}/Result_{model_name}_{data_name}.npy'\n0022:     if os.path.exists(file_path):\n0023:         test_result = np.load(file_path)\n0024:         make_span = test_result[:, 0]\n0025:         make_span_mean = np.mean(make_span)\n0026:         time_mean = np.mean(test_result[:, 1])\n0027:         return make_span, make_span_mean, time_mean\n0028:     else:\n0029:         # ++ non_exist_data\n0030:         non_exist_data.append([source, f'Result_{model_name}_{data_name}.npy'])\n0031:         return [], null_val, null_val\n0032: \n0033: \n0034: def load_solution_by_or(source, data_name):\n0035:     \"\"\"\n0036:         load the results solved by OR-Tools\n0037:     :param source: the source of data\n0038:     :param data_name: the name of data\n0039:     :return: makespan, average makespan, average time, optimal percentage\n0040:     \"\"\"\n0041:     file_path = f'./or_solution/{source}/solution_{data_name}.npy'\n0042:     if os.path.exists(file_path):\n0055: \n0056: def load_benchmark_solution(data_name):\n0057:     \"\"\"\n0058:         load the best solutions of benchmark data from files\n0059:     :param data_name: the name of benchmark data\n0060:     :return: makespan, average makespan\n0061:     \"\"\"\n0062:     file_path = f'./data/bench_data/BenchDataSolution.csv'\n0063:     bench_data = pd.read_csv(file_path)\n0064:     make_span = bench_data.loc[bench_data['benchname'] == data_name, 'ub'].values\n0068: \n0069: def print_test_results_to_excel(source, data_list, model_list, file_name=f\"test_{str_time}\"):\n0070:     \"\"\"\n0071:     :param file_name: the name of saved file\n0072:     :param source: the source of data\n0073:     :param data_list: the list of data name\n0074:     :param model_list: the list of model name\n0075:     \"\"\"\n0076:     if not os.path.exists(f'./TestDataToExcel/{source}'):\n0077:         os.makedirs(f'./TestDataToExcel/{source}')\n0198: \n0199: def main():\n0200:     \"\"\"\n0201:         print the testing results (Obj./Gap/Time) t"
+      },
+      {
+        "path": "test_heuristic.py",
+        "role_hint": "evaluation",
+        "size_bytes": 3343,
+        "sha256": "2aab7004cb4e6d4c831e36ee16f3d692e06749f4e58e233e7b821e261aa7c3bb",
+        "symbols": [
+          "test_heuristic_method",
+          "main"
+        ],
+        "imports": [
+          "common_utils",
+          "params",
+          "fjsp_env_same_op_nums",
+          "tqdm",
+          "data_utils",
+          "time",
+          "numpy",
+          "sys",
+          "os"
+        ],
+        "excerpt": "0001: from common_utils import *\n0002: from params import configs\n0003: from fjsp_env_same_op_nums import FJSPEnvForSameOpNums\n0004: from tqdm import tqdm\n0005: from data_utils import pack_data_from_config\n0006: import time\n0007: import numpy as np\n0008: import sys\n0009: import os\n0010: \n0011: os.environ[\"CUDA_VISIBLE_DEVICES\"] = configs.device_id\n0012: \n0013: \n0014: def test_heuristic_method(data_set, heuristic, seed):\n0015:     \"\"\"\n0016:         test one heuristic method on the given data\n0017:     :param data_set:  test data\n0018:     :param heuristic: the name of heuristic method\n0019:     :param seed: seed for testing\n0020:     :return: the test results including the makespan and time\n0021:     \"\"\"\n0022:     setup_seed(seed)\n0023:     result = []\n0024: \n0025:     for i in tqdm(range(len(data_set[0])), file=sys.stdout, desc=\"progress\", colour='blue'):\n0026:         n_j = data_set[0][i].shape[0]\n0027:         n_op, n_m = data_set[1][i].shape\n0028:         env = FJSPEnvForSameOpNums(n_j=n_j, n_m=n_m)\n0029: \n0030:         env.set_initial_data([data_set[0][i]], [data_set[1][i]])\n0031: \n0032:         t1 = time.time()\n0033:         while True:\n0034:             action = heuristic_select_action(heuristic, env)\n0035: \n0036:             _, _, done = env.step(np.array([action]))\n0047: \n0048: def main():\n0049:     \"\"\"\n0050:         test heuristic methods following the config and save the results:\n0051:         here are heuristic methods selected for comparison:\n0052: \n0053:         FIFO: First in first out\n0054:         MOR(or MOPNR): Most operations remaining\n0055:         SPT: Shortest processing time\n0056:         MWKR: Most work remaining"
+      },
+      {
+        "path": "test_trained_model.py",
+        "role_hint": "evaluation",
+        "size_bytes": 6948,
+        "sha256": "ad6a6545952e3d3ce7dc2df7f11dff65d73774f79f0a873177b80569c4797d6a",
+        "symbols": [
+          "test_greedy_strategy",
+          "test_sampling_strategy",
+          "main"
+        ],
+        "imports": [
+          "time",
+          "os",
+          "common_utils",
+          "params",
+          "tqdm",
+          "data_utils",
+          "model.PPO",
+          "fjsp_env_same_op_nums",
+          "torch"
+        ],
+        "excerpt": "0001: import time\n0002: import os\n0003: from common_utils import *\n0004: from params import configs\n0005: from tqdm import tqdm\n0006: from data_utils import pack_data_from_config\n0007: from model.PPO import PPO_initialize\n0008: from common_utils import setup_seed\n0009: from fjsp_env_same_op_nums import FJSPEnvForSameOpNums\n0010: \n0011: os.environ[\"CUDA_VISIBLE_DEVICES\"] = configs.device_id\n0012: import torch\n0013: \n0014: device = torch.device(configs.device)\n0015: \n0016: ppo = PPO_initialize()\n0017: test_time = time.strftime(\"%Y%m%d_%H%M%S\", time.localtime(time.time()))\n0018: \n0019: \n0020: def test_greedy_strategy(data_set, model_path, seed):\n0021:     \"\"\"\n0022:         test the model on the given data using the greedy strategy\n0023:     :param data_set: test data\n0024:     :param model_path: the path of the model file\n0025:     :param seed: the seed for testing\n0026:     :return: the test results including the makespan and time\n0027:     \"\"\"\n0028: \n0029:     test_result_list = []\n0030: \n0031:     setup_seed(seed)\n0032:     ppo.policy.load_state_dict(torch.load(model_path, map_location='cuda'))\n0033:     ppo.policy.eval()\n0034: \n0035:     n_j = data_set[0][0].shape[0]\n0036:     n_op, n_m = data_set[1][0].shape\n0065: \n0066: def test_sampling_strategy(data_set, model_path, sample_times, seed):\n0067:     \"\"\"\n0068:         test the model on the given data using the sampling strategy\n0069:     :param data_set: test data\n0070:     :param model_path: the path of the model file\n0071:     :param seed: the seed for testing\n0072:     :return: the test results including the makespan and time\n0073:     \"\"\"\n0074:     setup_seed(seed)\n0114: \n0115: def main(config, flag_sample):\n0116:     \"\"\"\n0117:         test the trained model following the config and save the results\n0118:     :param flag_sample: whether using the sampling strategy\n0119:     \"\"\"\n0120:     setup_seed(config.seed_test)\n0121:     if not os.path.exists('./test_results'):\n0122:         os.makedirs('./test_results')\n0123: "
+      },
+      {
+        "path": "train.py",
+        "role_hint": "training",
+        "size_bytes": 12635,
+        "sha256": "f75fae2df9195ca9085f56dcbd810279bcf666cb16eb875fbab0a3ddbf65518b",
+        "symbols": [
+          "Trainer",
+          "main"
+        ],
+        "imports": [
+          "common_utils",
+          "params",
+          "tqdm",
+          "data_utils",
+          "fjsp_env_same_op_nums",
+          "fjsp_env_various_op_nums",
+          "copy",
+          "os",
+          "random",
+          "time",
+          "sys",
+          "model.PPO",
+          "torch"
+        ],
+        "excerpt": "0001: from common_utils import *\n0002: from params import configs\n0003: from tqdm import tqdm\n0004: from data_utils import load_data_from_files, CaseGenerator, SD2_instance_generator\n0005: from common_utils import strToSuffix, setup_seed\n0006: from fjsp_env_same_op_nums import FJSPEnvForSameOpNums\n0007: from fjsp_env_various_op_nums import FJSPEnvForVariousOpNums\n0008: from copy import deepcopy\n0009: import os\n0010: import random\n0011: import time\n0012: import sys\n0013: from model.PPO import PPO_initialize\n0014: from model.PPO import Memory\n0015: \n0016: str_time = time.strftime(\"%Y%m%d_%H%M%S\", time.localtime(time.time()))\n0017: os.environ[\"CUDA_VISIBLE_DEVICES\"] = configs.device_id\n0018: import torch\n0019: \n0020: device = torch.device(configs.device)\n0021: \n0022: \n0023: class Trainer:\n0024:     def __init__(self, config):\n0025: \n0026:         self.n_j = config.n_j\n0027:         self.n_m = config.n_m\n0028:         self.low = config.low\n0029:         self.high = config.high\n0030:         self.op_per_job_min = int(0.8 * self.n_m)\n0031:         self.op_per_job_max = int(1.2 * self.n_m)\n0032:         self.data_source = config.data_source\n0033:         self.config = config\n0034:         self.max_updates = config.max_updates\n0035:         self.reset_env_timestep = config.reset_env_timestep\n0036:         self.validate_timestep = config.validate_timestep\n0296: \n0297: def main():\n0298:     trainer = Trainer(configs)\n0299:     trainer.train()\n0300: \n0301: \n0302: if __name__ == '__main__':\n0303:     main()"
+      }
+    ],
+    "excluded_paper_count": 1,
+    "omitted_file_count": 0
+  },
+  "navigatorApiCalled": false,
+  "analystApiCalled": false
+}

@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=A,B,C; capabilities=semantic_compiler,evidence_gate; level=unit; cost=low
 from pathlib import Path
 
 from causal_schedule_lab.models import ClaimStatus

@@ -45,7 +45,10 @@ def load_anthropic_configuration(
 
     api_key = value("ANTHROPIC_AUTH_TOKEN") or value("ANTHROPIC_API_KEY")
     base_url = value("ANTHROPIC_BASE_URL")
-    model = value("CLAUDE_MODEL") or value("ANTHROPIC_MODEL")
+    # Prefer the provider-scoped model.  A separate Claude Code-only relay may
+    # also define CLAUDE_MODEL in the same env file and must not be combined
+    # with ANTHROPIC_BASE_URL / ANTHROPIC_AUTH_TOKEN.
+    model = value("ANTHROPIC_MODEL") or value("CLAUDE_MODEL")
     missing = [
         name
         for name, item in (

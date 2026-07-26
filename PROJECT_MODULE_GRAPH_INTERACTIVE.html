@@ -193,6 +193,7 @@
         <div class="tabs" aria-label="图层选择">
           <button id="macro-tab" type="button" aria-pressed="true">第一层：大模块</button>
           <button id="detail-tab" type="button" aria-pressed="false">第二层：实现细节</button>
+          <button id="pipeline-tab" type="button" aria-pressed="false">第三层：真实组件映射</button>
         </div>
       </div>
       <div class="toolbar" aria-label="视图控制">
@@ -220,85 +221,107 @@
       };
 
       const macro = {
-        width: 2220,
-        height: 830,
+        width: 2660,
+        height: 980,
         groups: [],
         nodes: [
-          ["A", "项目输入与证据", "代码、论文、配置、测试、实例", "active", 60, 270],
-          ["B", "语义理解与知识记忆", "分片导航、分批分析、受控复读、图谱与 L0–L4 证据", "partial", 350, 270],
-          ["C", "统一调度表示", "Problem、Schedule、目标向量", "active", 640, 270],
-          ["D", "诊断与因果机制", "异构图、CIP、机制测量、资格门", "partial", 930, 270],
-          ["E", "Agent 决策与候选生成", "动作 Mask、算子、闭包、局部修复", "partial", 1220, 270],
-          ["F", "求解与多保真验证", "Code、Static、Light、Full Oracle", "active", 1510, 270],
-          ["G", "严格接受或回退", "Full 合法且正式目标严格改善", "active", 1800, 270],
-          ["H", "实验记忆与统计", "干预记录、效应后验、成本与训练数据", "partial", 1220, 580],
-          ["I", "人工 / 领域专家", "语义、约束、Oracle 与最终业务验收", "planned", 350, 55],
-          ["J", "论文 / 代码 / 综述", "知识先验与项目证据来源", "planned", 60, 55],
-          ["K", "领域 Oracle / 仿真", "轨迹、碰撞、人员、数字孪生", "planned", 1510, 55]
+          ["A", "项目输入与证据", "代码/配置/测试/论文/实例；文件角色、AST/调用索引与证据账本", "active", 60, 300],
+          ["B", "语义理解与知识记忆", "低成本导航、三批分析、受控复读、图谱/FTS 与 85/36 题库", "partial", 350, 300],
+          ["C", "统一调度表示", "Manifest、Adapter、Problem/Schedule、目标向量、插件契约", "active", 640, 300],
+          ["D", "诊断与因果机制", "异构图、CIP、次级目标/诊断项、机制与资格门", "partial", 930, 300],
+          ["E", "Agent 决策与候选生成", "Ranker/Mask、算子/闭包/控制、局部搜索与 CP-SAT", "partial", 1220, 300],
+          ["F", "求解与多保真验证", "Code、Static、Light、领域 Oracle、合法性与成本", "active", 1510, 300],
+          ["G", "严格接受或回退", "词典序目标、严格改善、接受 incumbent 或拒绝恢复", "active", 1800, 300],
+          ["H", "实验记忆与统计", "干预、后验、反事实、时间/Token、数据集与审计", "partial", 2090, 300],
+          ["K", "跨模块知识基础设施", "问题族/变体树、工程模式、SQLite/FTS、指标关系库", "active", 350, 570],
+          ["M", "模型与 Harness", "Navigator、Opus Analyst/Critic、只读 Skill、Schema、调用 Trace", "partial", 60, 570],
+          ["P", "项目插件边界", "Adapter、Generator、Validator、Domain Oracle", "active", 930, 570]
         ],
         edges: [
           ["A", "B"], ["B", "C"], ["C", "D"], ["D", "E"], ["E", "F"],
-          ["F", "G"], ["G", "H"], ["H", "B"], ["H", "D"], ["H", "E"],
-          ["I", "B"], ["I", "F"], ["I", "G"], ["J", "B"], ["K", "F"]
+          ["F", "G"], ["G", "H"], ["K", "B"], ["M", "B"], ["P", "C"], ["P", "F"]
         ]
       };
 
       const detailGroups = [
-        ["ga", "A · 输入与证据", 35, 40, 270, 1370],
-        ["gb", "B · 语义与长期记忆", 335, 40, 300, 1370],
-        ["gc", "C · 统一调度表示", 665, 40, 270, 1370],
-        ["gd", "D · 诊断与因果机制", 965, 40, 300, 1370],
-        ["ge", "E · Agent 与候选", 1295, 40, 300, 1370],
-        ["gf", "F · 多保真验证", 1625, 40, 270, 1370],
-        ["gg", "G · 接受与回退", 1925, 40, 270, 1370],
-        ["gh", "H · 实验记忆与统计", 2225, 40, 300, 1370]
+        ["ga", "A · 输入与证据", 35, 40, 270, 2850],
+        ["gb", "B · 语义与长期记忆", 335, 40, 300, 2850],
+        ["gc", "C · 统一调度表示", 665, 40, 270, 2850],
+        ["gd", "D · 诊断与因果机制", 965, 40, 300, 2850],
+        ["ge", "E · Agent 与候选", 1295, 40, 300, 2850],
+        ["gf", "F · 多保真验证", 1625, 40, 270, 2850],
+        ["gg", "G · 接受与回退", 1925, 40, 270, 2850],
+        ["gh", "H · 实验记忆与统计", 2225, 40, 300, 2850]
       ];
 
       function col(group, x, items) {
         return items.map((item, index) => [
-          item[0], item[1], item[2], item[3], x, 115 + index * 135, group
+          item[0], item[1], item[2], item[3], x, 105 + index * 115, group
         ]);
       }
 
       const detail = {
         width: 2560,
-        height: 1460,
+        height: 2920,
         groups: detailGroups,
         nodes: [
           ...col("ga", 60, [
-            ["A1", "Repository Index", "仓库文件、AST 与符号索引", "active"],
-            ["A2", "Paper / Review PDF", "论文和综述进入 proposed 证据层", "partial"],
+            ["A1", "Repository File Inventory", "仓库文本文件清单与预算", "active"],
+            ["A0", "Artifact / Secret Exclusion", "过滤论文、密钥、权重、日志、结果与二进制", "active"],
+            ["A2", "Paper / Review Evidence", "论文和综述只进入 proposed 证据层", "partial"],
             ["A3", "Code / Config / Tests", "项目事实的主要机械证据", "active"],
             ["A4", "Instance / Incumbent", "问题实例与稳定基线排程", "active"],
-            ["A5", "Evidence Packet", "受预算约束的引用证据包", "active"]
+            ["A6", "File Roles + AST Index", "角色、symbols、imports、calls 和摘要", "active"],
+            ["A7", "Hash + Evidence Ledger", "claim、path、symbol/line、直接/推导、置信度", "active"],
+            ["A5", "Budgeted Evidence Packet", "受预算约束且可引用的最终证据包", "active"]
           ]),
           ...col("gb", 370, [
-            ["B0", "Cheap Navigator", "按预算分片建图并合并项目导航", "partial"],
+            ["B8", "Family / Variant Seed", "JSP、FSP、FJSP、HFSP 与工程模式", "active"],
+            ["B12", "Scheduling Taxonomy Tree", "车间调度→问题族→变体；只存本层增量", "active"],
+            ["B15", "Structured Variant / Pattern Router", "后分析按结构化 family/约束/环境/目标激活；未命中回退 classic，不注入兄弟变体", "active"],
+            ["B6", "SQLite Property Graph", "节点、边、作用域、版本、继承与冲突", "active"],
+            ["B7", "L0–L4 FTS5 Index", "分层证据检索与外部文档导入", "partial"],
+            ["B10", "Opus + Read-only Skill + Trace", "项目代码语义 Skill、只读工具与逐调用模型/阶段/错误追踪", "active"],
+            ["B0", "Cheap Sharded Navigator", "低成本模型按预算分片理解仓库", "partial"],
+            ["B19", "Merged ProjectNavigation", "模块、入口、配置、训练、评估、Oracle、优先路径和未知项", "partial"],
+            ["B20", "Three Fixed Batch Specs", "环境/数据；目标/约束；决策/Oracle/未知", "active"],
             ["B1", "Strong Batched Analyst", "三个固定任务批次进行高能力分析", "partial"],
             ["B2", "Evidence Sufficiency MCQ", "先判断证据充分、部分、不足或冲突", "partial"],
-            ["B3", "Controlled AST Re-read", "程序审批跨文件函数复读请求", "partial"],
+            ["B21", "Structured Read Request", "路径、symbol、原因、预期证据、优先级和关联事实", "active"],
+            ["B22", "ProjectCodeIndex", "symbol/import/call/config/validator 关系索引", "active"],
+            ["B3", "Controlled Read Gate", "程序审批根目录、关联、重复、symbol 与读预算", "partial"],
+            ["B23", "Exact Symbol ToolEvidence", "精读 symbol/行区间与同文件 callee，记录 evidence ID", "active"],
             ["B4", "Short-term Memory", "结构化压缩事实、证据 ID、矛盾和未知", "partial"],
+            ["B11", "Claim Gates + Selected-Variant Check", "核心函数深读、六道语义门与所选分支证据核验", "partial"],
             ["B5", "Synthesis + Audit", "最终综合、Schema 修复与引用核验", "partial"],
-            ["B6", "SQLite Property Graph", "节点、边、作用域、版本与冲突", "partial"],
-            ["B7", "L0–L4 FTS5 Index", "分层证据检索与外部文档导入", "partial"],
-            ["B8", "Family / Variant Seed", "JSP、FSP、FJSP、HFSP 与工程模式", "active"],
-            ["B9", "Constraint Impact Critic", "影响档位、候选区分度与安全门", "partial"]
+            ["B13", "Project Constraint Graph", "环境、目标、约束、决策、Oracle、IR 与代码证据", "active"],
+            ["B14", "Graph Views", "核心调度图 + context/validation/evidence/audit overlays", "active"],
+            ["B16", "Unified Metric Knowledge", "85 指标、36 诊断、1056 关系及原 11 项兼容绑定", "active"],
+            ["B17", "Deterministic Multi-view Recall", "问题族硬门、变体/机制/决策排序与缺失 IR 标记", "active"],
+            ["B18", "High-recall Bounded Option Pack", "最多 20 项；置信分层、扩展字段审计与返回 ID 白名单", "active"],
+            ["B24", "Open-world Proposal Gate", "代码证据、候选变化、去重与 proposed-only 晋级边界", "active"],
+            ["B9", "High-recall Opus Impact Critic", "第一阶段入口已暂时封板：高召回影响档位、候选区分度与安全门；审核 CLI 暂停 DeepSeek", "partial"]
           ]),
           ...col("gc", 690, [
             ["C1", "Project Manifest", "adapter、semantics、generator、Oracle", "active"],
-            ["C2", "Adapter / Generator", "项目输入转换与候选生成协议", "active"],
+            ["C2", "Project Adapter", "项目输入转换为统一 IR", "active"],
             ["C3", "Canonical Problem IR", "作业、工序、资源、模式和约束", "active"],
             ["C4", "Schedule + Hash", "可重放排程与完整性签名", "active"],
-            ["C5", "Objective Vector", "makespan 与词典序正式目标", "active"]
+            ["C5", "Objective Vector", "makespan 与词典序正式目标", "active"],
+            ["C6", "Plugin Contract", "Generator、Validator 与 Domain Oracle 接口", "active"]
           ]),
           ...col("gd", 1000, [
             ["D1", "Schedule Graph", "工序、作业、资源、阶段与关系边", "active"],
+            ["D8", "Catalog-selected Secondary Targets", "程序召回后由 LLM 在白名单内选择；不是影响因素", "active"],
+            ["D9", "Four-axis Impact Report", "可行性、决策杠杆、目标敏感度和候选区分度", "partial"],
+            ["D10", "Diagnostic Targets", "资格、下界、Oracle 与 Validator 可信度守门", "active"],
+            ["D12", "Out-of-catalog Proposed Pool", "代码特有新次级目标/诊断；待计算器、实验与人工晋级", "active"],
             ["D2", "CIP = D/R/P/Ω", "诊断点、责任点、路径与闭包", "active"],
             ["D3", "Mechanism Library", "八类 makespan 中间机制", "partial"],
             ["D4", "Deterministic Calculators", "空闲、等待、关键路径、负载等", "partial"],
             ["D5", "Candidate Variation Gate", "同实例候选不变化则退出优化", "partial"],
             ["D6", "Controllability Gate", "direct / verified indirect", "partial"],
-            ["D7", "Mechanism Path", "factor → mechanism → objective", "partial"]
+            ["D7", "Mechanism Path", "第二阶段入口：factor → mechanism → objective；接口存在但尚未形成真实批量干预证据", "partial"]
           ]),
           ...col("ge", 1330, [
             ["E1", "Rule / GNN Ranker", "规则基线与可学习 CIP 排序", "partial"],
@@ -312,7 +335,7 @@
             ["F1", "Code Gate", "语义声明证据完整性", "active"],
             ["F2", "Static Gate", "IR 硬约束与冻结边界", "active"],
             ["F3", "Light Proxy", "低成本代理和风险筛选", "active"],
-            ["F4", "Full Domain Oracle", "完整通用验证与领域插件", "planned"],
+            ["F4", "Domain Full Oracle Plugin", "项目提供的完整领域验证接口", "active"],
             ["F5", "Validity + Cost", "合法性、时间和调用成本", "active"]
           ]),
           ...col("gg", 1960, [
@@ -326,26 +349,79 @@
             ["H2", "Scoped Effect Posterior", "有效率与保守收益后验", "partial"],
             ["H3", "Time / Token / Failure Cost", "联合采集成本", "partial"],
             ["H4", "Counterfactual Controls", "配对因果对照", "partial"],
-            ["H5", "Dataset / Statistics", "训练数据、效应量与多重检验", "partial"]
+            ["H5", "Dataset / Statistics", "训练数据、效应量与多重检验", "partial"],
+            ["H6", "Replay / Audit Artifact", "可重放候选、调用与接受/拒绝记录", "partial"]
           ])
         ],
         edges: [
-          ["A1", "A5"], ["A2", "A5"], ["A3", "A5"],
-          ["A1", "B0"], ["A3", "B0"], ["B0", "B1"], ["B1", "B2"],
-          ["B2", "B3"], ["B3", "B1"], ["B1", "B4"], ["B4", "B1"],
-          ["B1", "B5"], ["B8", "B6"], ["B8", "B7"], ["A2", "B7"],
-          ["B6", "B1"], ["B7", "B1"], ["B5", "B9"],
-          ["A4", "C2"], ["C1", "C2"], ["C2", "C3"], ["C2", "C4"],
-          ["C3", "C5"], ["C4", "C5"],
-          ["C3", "D1"], ["C4", "D1"], ["D1", "D2"], ["B6", "D3"],
-          ["C3", "D4"], ["C4", "D4"], ["D3", "D4"], ["D4", "D5"],
-          ["D5", "D6"], ["D6", "D7"],
+          ["A1", "A0"], ["A0", "A6"], ["A3", "A6"], ["A6", "A7"],
+          ["A2", "A7"], ["A7", "A5"], ["A6", "B0"], ["A5", "B1"],
+          ["B0", "B19"], ["B19", "B1"], ["B20", "B1"], ["B1", "B2"],
+          ["B2", "B21"], ["B21", "B3"], ["B22", "B3"], ["B3", "B23"],
+          ["B23", "B4"], ["B2", "B4"], ["B4", "B1"], ["B4", "B5"],
+          ["B8", "B12"], ["B12", "B15"], ["B15", "B1"],
+          ["B6", "B7"], ["B7", "B1"], ["B1", "B11"], ["B11", "B5"],
+          ["B10", "B1"], ["B5", "B17"], ["B5", "B13"], ["B13", "B14"],
+          ["B16", "B17"], ["B17", "B18"], ["B18", "B9"], ["B9", "B24"],
+          ["B5", "C1"], ["A4", "C2"], ["C1", "C2"], ["C2", "C3"], ["C2", "C4"], ["C3", "C5"], ["C4", "C5"], ["C1", "C6"],
+          ["C3", "D1"], ["C4", "D1"], ["D1", "D2"], ["B6", "D3"], ["B9", "D9"], ["D9", "D8"], ["D9", "D10"], ["B24", "D12"],
+          ["C3", "D4"], ["C4", "D4"], ["D3", "D4"], ["D4", "D5"], ["D5", "D6"], ["D6", "D7"],
           ["D2", "E1"], ["E1", "E2"], ["D7", "E2"], ["E2", "E3"],
           ["E3", "E4"], ["E3", "E5"], ["E4", "E6"], ["E5", "E6"],
-          ["E6", "F1"], ["F1", "F2"], ["F2", "F3"], ["F3", "F4"], ["F4", "F5"],
+          ["E6", "F1"], ["F1", "F2"], ["F2", "F3"], ["F3", "F4"], ["C6", "F4"], ["F4", "F5"],
           ["F5", "G1"], ["G1", "G2"], ["G2", "G3"], ["G2", "G4"],
           ["G3", "H1"], ["G4", "H1"], ["H1", "H2"], ["H1", "H3"],
-          ["H1", "H4"], ["H1", "H5"], ["H2", "E2"], ["H2", "B6"], ["H1", "B7"]
+          ["H1", "H4"], ["H1", "H5"], ["H1", "H6"]
+        ]
+      };
+
+      const pipeline = {
+        width: 3270,
+        height: 990,
+        groups: [
+          ["g3a", "映射 B0–B24 · 语义与知识", 30, 45, 760, 850],
+          ["g3b", "映射 D3–D10/D12 · 诊断与机制", 820, 45, 760, 850],
+          ["g3c", "映射 D1–D2 / E1–E6 · 候选生成", 1610, 45, 760, 850],
+          ["g3d", "映射 F1–F5 / G1–G4 / H1–H6 · 验证与记忆", 2400, 45, 830, 850]
+        ],
+        nodes: [
+          ["B.impl.1", "[B0–B5/B19–B23] Semantic Evidence Chain", "导航地图、三批分析、结构化请求、程序读门、精确证据与短期记忆", "partial", 310, 135, "g3a"],
+          ["B.impl.2", "[B13–B14] Constraint Graph + Views", "项目约束图及核心/context/validation/evidence 视图", "active", 550, 135, "g3a"],
+          ["B.impl.3", "[B8/B12/B15] Family + Variant Knowledge", "问题族知识、继承树和结构化条件路由", "active", 70, 135, "g3a"],
+          ["B.impl.4", "[B9] Constraint Impact Critic", "第一阶段已暂时封板：白名单高召回选择，并受控提出题库外候选", "partial", 550, 360, "g3a"],
+          ["B.impl.5", "[B16] 85/36 Unified Catalog", "Round 3–6、1056 条关系及原 11 项兼容绑定", "active", 70, 360, "g3a"],
+          ["B.impl.6", "[B17–B18] Recall + High-recall MCQ", "多视图排序、缺字段标记、最多 20 项、置信分层与返回 ID 校验", "active", 310, 360, "g3a"],
+          ["B.impl.7", "[B24] Open-world Proposal Gate", "代码证据、候选变化、去重、拒绝记录与 proposed 状态", "active", 550, 585, "g3a"],
+
+          ["D.impl.1", "[D8] Catalog-selected Secondary Targets", "程序召回后由 LLM 白名单选择；不是影响因素", "active", 860, 135, "g3b"],
+          ["D.impl.2", "[D10] Current Diagnostic Targets", "数据、资格、下界、Oracle 与 Validator 守门", "active", 860, 360, "g3b"],
+          ["D.impl.6", "[D9] Four-axis Constraint Impact", "可行性、决策杠杆、目标敏感度和候选区分度", "partial", 1100, 360, "g3b"],
+          ["D.impl.7", "[D12] Out-of-catalog Proposed Pool", "新次级目标/新诊断，仅待审核候选", "active", 1340, 360, "g3b"],
+          ["D.impl.3", "[D3–D4] Mechanisms + Calculators", "机制定义与确定性计算入口", "partial", 860, 585, "g3b"],
+          ["D.impl.4", "[D5–D6] Variation + Control Gates", "候选变化与直接/验证间接可控性资格门", "partial", 1100, 585, "g3b"],
+          ["D.impl.5", "[D7] Factor–Mechanism Path", "第二阶段入口；保存 factor→mechanism→objective 路径接口，不等于已完成因果识别", "partial", 1340, 585, "g3b"],
+
+          ["E.impl.1", "[D1–D2] Schedule Graph + CIP", "当前排程图、诊断点、责任点、路径与闭包", "active", 1650, 135, "g3c"],
+          ["E.impl.2", "[E1–E2] Ranker + Action Mask", "规则/GNN 接口排序与合法动作过滤", "partial", 1890, 135, "g3c"],
+          ["E.impl.3", "[E3–E5] Operators + Search + Generator", "算子、VNS/ALNS/Tabu 与条件候选生成", "partial", 2130, 135, "g3c"],
+          ["E.impl.4", "[E6] Bounded CP-SAT Repair", "闭包外冻结的确定性局部修复", "active", 2130, 360, "g3c"],
+
+          ["V.impl.1", "[F1–F2] Code + Static Gates", "证据门与统一 IR 硬约束验证", "active", 2440, 135, "g3d"],
+          ["V.impl.2", "[F3–F5] Proxy + Domain Oracle + Cost", "轻量代理、项目完整验证接口、合法性和成本记录", "active", 2680, 135, "g3d"],
+          ["V.impl.3", "[G1–G2] Objective + Strict Gate", "词典序正式目标与严格改善判断", "active", 2920, 135, "g3d"],
+          ["V.impl.4", "[G3–G4] Accept / Revert", "接受新 incumbent 或拒绝并恢复", "active", 2920, 360, "g3d"],
+          ["V.impl.5", "[H1–H6] Records + Posterior + Statistics", "干预、成本、反事实、数据集、统计后验与重放审计", "partial", 2920, 585, "g3d"]
+        ],
+        edges: [
+          ["B.impl.1", "B.impl.2"], ["B.impl.1", "B.impl.4"],
+          ["B.impl.3", "B.impl.1"], ["B.impl.5", "B.impl.6"], ["B.impl.6", "B.impl.4"],
+          ["B.impl.4", "D.impl.6"], ["B.impl.4", "B.impl.7"], ["B.impl.7", "D.impl.7"], ["D.impl.6", "D.impl.1"], ["D.impl.6", "D.impl.2"],
+          ["D.impl.3", "D.impl.4"], ["D.impl.4", "D.impl.5"],
+          ["E.impl.1", "E.impl.2"], ["D.impl.5", "E.impl.2"],
+          ["E.impl.2", "E.impl.3"], ["E.impl.3", "E.impl.4"],
+          ["E.impl.4", "V.impl.1"], ["V.impl.1", "V.impl.2"],
+          ["V.impl.2", "V.impl.3"], ["V.impl.3", "V.impl.4"],
+          ["V.impl.4", "V.impl.5"]
         ]
       };
 
@@ -356,8 +432,10 @@
       const detailLine = document.getElementById("detail-line");
       const macroTab = document.getElementById("macro-tab");
       const detailTab = document.getElementById("detail-tab");
-      let mode = new URLSearchParams(location.search).get("view") === "detail"
-        ? "detail"
+      const pipelineTab = document.getElementById("pipeline-tab");
+      const requestedView = new URLSearchParams(location.search).get("view");
+      let mode = ["macro", "detail", "pipeline"].includes(requestedView)
+        ? requestedView
         : "macro";
       let scale = 1;
       let tx = 0;
@@ -367,7 +445,7 @@
       let lastY = 0;
       let selected = null;
 
-      const data = () => mode === "macro" ? macro : detail;
+      const data = () => mode === "macro" ? macro : mode === "detail" ? detail : pipeline;
       const nodeMap = () => new Map(data().nodes.map(n => [n[0], n]));
 
       function applyTransform() {
@@ -388,17 +466,28 @@
           const a = map.get(from);
           const b = map.get(to);
           if (!a || !b) continue;
-          const ax = a[4] + 220;
-          const ay = a[5] + 34;
-          const bx = b[4];
-          const by = b[5] + 34;
+          const aElement = canvas.querySelector(`.node[data-id="${CSS.escape(from)}"]`);
+          const bElement = canvas.querySelector(`.node[data-id="${CSS.escape(to)}"]`);
+          if (!aElement || !bElement) continue;
+          let ax;
+          let ay;
+          let bx;
+          let by;
           let path;
-          if (bx >= ax - 20) {
-            const bend = Math.max(55, (bx - ax) * 0.45);
-            path = `M ${ax} ${ay} C ${ax + bend} ${ay}, ${bx - bend} ${by}, ${bx} ${by}`;
+          if (Math.abs(b[4] - a[4]) < 30) {
+            ax = aElement.offsetLeft + aElement.offsetWidth / 2;
+            ay = aElement.offsetTop + aElement.offsetHeight;
+            bx = bElement.offsetLeft + bElement.offsetWidth / 2;
+            by = bElement.offsetTop;
+            const midY = (ay + by) / 2;
+            path = `M ${ax} ${ay} V ${midY} H ${bx} V ${by}`;
           } else {
-            const lift = Math.min(95, Math.abs(by - ay) * 0.35 + 40);
-            path = `M ${ax} ${ay} C ${ax + 70} ${ay - lift}, ${bx - 70} ${by - lift}, ${bx} ${by}`;
+            ax = aElement.offsetLeft + aElement.offsetWidth;
+            ay = aElement.offsetTop + aElement.offsetHeight / 2;
+            bx = bElement.offsetLeft;
+            by = bElement.offsetTop + bElement.offsetHeight / 2;
+            const midX = (ax + bx) / 2;
+            path = `M ${ax} ${ay} H ${midX} V ${by} H ${bx}`;
           }
           const element = document.createElementNS("http://www.w3.org/2000/svg", "path");
           element.setAttribute("d", path);
@@ -546,17 +635,27 @@
         mode = "macro";
         macroTab.setAttribute("aria-pressed", "true");
         detailTab.setAttribute("aria-pressed", "false");
+        pipelineTab.setAttribute("aria-pressed", "false");
         render();
       });
       detailTab.addEventListener("click", () => {
         mode = "detail";
         macroTab.setAttribute("aria-pressed", "false");
         detailTab.setAttribute("aria-pressed", "true");
+        pipelineTab.setAttribute("aria-pressed", "false");
+        render();
+      });
+      pipelineTab.addEventListener("click", () => {
+        mode = "pipeline";
+        macroTab.setAttribute("aria-pressed", "false");
+        detailTab.setAttribute("aria-pressed", "false");
+        pipelineTab.setAttribute("aria-pressed", "true");
         render();
       });
       window.addEventListener("resize", fitView);
       macroTab.setAttribute("aria-pressed", mode === "macro" ? "true" : "false");
       detailTab.setAttribute("aria-pressed", mode === "detail" ? "true" : "false");
+      pipelineTab.setAttribute("aria-pressed", mode === "pipeline" ? "true" : "false");
       render();
     })();
   </script>

@@ -120,7 +120,7 @@ def _resource_intervals(
     return result
 
 
-def _critical_resource_idle_gap(
+def _critical_resource_internal_idle_time(
     problem: Problem,
     schedule: Schedule,
 ) -> MechanismMeasurement:
@@ -135,7 +135,7 @@ def _critical_resource_idle_gap(
         candidates.append((utilization, busy, resource_id, items))
     if not candidates:
         return MechanismMeasurement(
-            mechanism_id="critical_resource_idle_gap",
+            mechanism_id="critical_resource_internal_idle_time",
             available=False,
             unit="time",
             scope="schedule",
@@ -149,7 +149,7 @@ def _critical_resource_idle_gap(
         for index in range(len(selected) - 1)
     ]
     return MechanismMeasurement(
-        mechanism_id="critical_resource_idle_gap",
+        mechanism_id="critical_resource_internal_idle_time",
         available=True,
         value=sum(gaps) / problem.time_scale,
         unit="time",
@@ -163,7 +163,7 @@ def _critical_resource_idle_gap(
     )
 
 
-def _critical_path_length(
+def _realized_schedule_critical_path_length(
     problem: Problem,
     schedule: Schedule,
 ) -> MechanismMeasurement:
@@ -194,7 +194,7 @@ def _critical_path_length(
                 queue.append(successor)
     if len(topological) != len(nodes):
         return MechanismMeasurement(
-            mechanism_id="critical_path_length",
+            mechanism_id="realized_schedule_critical_path_length",
             available=False,
             unit="time",
             scope="schedule",
@@ -224,7 +224,7 @@ def _critical_path_length(
             terminal = parent[terminal]
             path_length += 1
     return MechanismMeasurement(
-        mechanism_id="critical_path_length",
+        mechanism_id="realized_schedule_critical_path_length",
         available=True,
         value=value,
         unit="time",
@@ -233,7 +233,7 @@ def _critical_path_length(
     )
 
 
-def _critical_operation_waiting(
+def _operation_ready_to_start_waiting_time(
     problem: Problem,
     schedule: Schedule,
 ) -> MechanismMeasurement:
@@ -255,7 +255,7 @@ def _critical_operation_waiting(
         )
         waits.append(max(0, assignment.start - ready))
     return MechanismMeasurement(
-        mechanism_id="critical_operation_waiting",
+        mechanism_id="operation_ready_to_start_waiting_time",
         available=bool(waits),
         value=(sum(waits) / problem.time_scale) if waits else None,
         unit="time",
@@ -268,7 +268,7 @@ def _critical_operation_waiting(
     )
 
 
-def _bottleneck_load_imbalance(
+def _resource_utilization_coefficient_of_variation(
     problem: Problem,
     schedule: Schedule,
 ) -> MechanismMeasurement:
@@ -281,7 +281,7 @@ def _bottleneck_load_imbalance(
         utilizations.append(busy / max(1, schedule.makespan * capacity))
     if len(utilizations) < 2:
         return MechanismMeasurement(
-            mechanism_id="bottleneck_load_imbalance",
+            mechanism_id="resource_utilization_coefficient_of_variation",
             available=False,
             unit="coefficient_of_variation",
             scope="schedule",
@@ -290,7 +290,7 @@ def _bottleneck_load_imbalance(
     mean = fmean(utilizations)
     value = stdev(utilizations) / mean if mean > 0 else 0.0
     return MechanismMeasurement(
-        mechanism_id="bottleneck_load_imbalance",
+        mechanism_id="resource_utilization_coefficient_of_variation",
         available=True,
         value=value,
         unit="coefficient_of_variation",
@@ -338,7 +338,7 @@ def _metadata_sum(
     )
 
 
-def _parallel_capacity_loss(
+def _resource_capacity_idle_rate(
     problem: Problem,
     schedule: Schedule,
 ) -> MechanismMeasurement:
@@ -350,14 +350,14 @@ def _parallel_capacity_loss(
     capacity = schedule.makespan * sum(item.capacity for item in problem.resources)
     if capacity <= 0:
         return MechanismMeasurement(
-            mechanism_id="parallel_capacity_loss",
+            mechanism_id="resource_capacity_idle_rate",
             available=False,
             unit="fraction",
             scope="schedule",
             reason="zero schedule capacity",
         )
     return MechanismMeasurement(
-        mechanism_id="parallel_capacity_loss",
+        mechanism_id="resource_capacity_idle_rate",
         available=True,
         value=max(0.0, capacity - busy) / capacity,
         unit="fraction",
@@ -376,20 +376,20 @@ def measure_mechanisms(
     """Measure every approved makespan mechanism without inventing absent data."""
 
     return (
-        _critical_resource_idle_gap(problem, schedule),
-        _critical_path_length(problem, schedule),
-        _critical_operation_waiting(problem, schedule),
-        _bottleneck_load_imbalance(problem, schedule),
+        _critical_resource_internal_idle_time(problem, schedule),
+        _realized_schedule_critical_path_length(problem, schedule),
+        _operation_ready_to_start_waiting_time(problem, schedule),
+        _resource_utilization_coefficient_of_variation(problem, schedule),
         _metadata_sum(
             problem,
             schedule,
-            mechanism_id="critical_setup_overhead",
+            mechanism_id="total_sequence_dependent_setup_time",
             keys=("setup_time", "setup_duration", "changeover_time"),
         ),
         _metadata_sum(
             problem,
             schedule,
-            mechanism_id="transport_synchronization_delay",
+            mechanism_id="transport_induced_waiting_time",
             keys=(
                 "transport_delay",
                 "synchronization_delay",
@@ -399,10 +399,10 @@ def measure_mechanisms(
         _metadata_sum(
             problem,
             schedule,
-            mechanism_id="blocking_no_wait_loss",
-            keys=("blocking_delay", "no_wait_penalty"),
+            mechanism_id="total_blocking_time",
+            keys=("blocking_delay",),
         ),
-        _parallel_capacity_loss(problem, schedule),
+        _resource_capacity_idle_rate(problem, schedule),
     )
 
 

@@ -1,5 +1,9 @@
+# TEST-TAGS: modules=B; capabilities=llm_provider,reasoning_protocol,retry,cli_model_routing; level=unit; cost=low
 import json
 
+import pytest
+
+from causal_schedule_lab.cli import build_parser, validate_impact_review_route
 from causal_schedule_lab.providers.base import ModelRequest
 from causal_schedule_lab.providers.anthropic_compatible import (
     AnthropicCompatibleProvider,
@@ -11,6 +15,34 @@ from causal_schedule_lab.providers.openai_compatible import (
     ProviderConfiguration,
     load_provider_configuration,
 )
+
+
+def test_staged_impact_review_defaults_to_opus_not_deepseek() -> None:
+    args = build_parser().parse_args(
+        ["compile-semantics-staged", "--project-root", "."]
+    )
+    assert args.impact_protocol == "claude-code"
+    assert args.impact_provider_prefix == "SEED"
+    single_args = build_parser().parse_args(
+        ["compile-semantics-llm", "--project-root", "."]
+    )
+    assert single_args.impact_protocol == "anthropic"
+    assert single_args.impact_provider_prefix == "SEED"
+    with pytest.raises(ValueError, match="temporarily disabled"):
+        validate_impact_review_route("openai", "DEEPSEEK")
+    validate_impact_review_route("claude-code", "DEEPSEEK")
+
+    replay_args = build_parser().parse_args(
+        [
+            "review-constraint-impact",
+            "--semantic-compilation",
+            "saved.json",
+            "--output",
+            "review.json",
+        ]
+    )
+    assert replay_args.protocol == "claude-code"
+    assert replay_args.reasoning_effort == "high"
 
 
 def test_configuration_loads_seed_values_without_exposing_key(tmp_path) -> None:
@@ -257,6 +289,28 @@ def test_anthropic_configuration_and_response(tmp_path) -> None:
     assert "Return exactly one JSON object" in captured["payload"]["system"]
     assert result.response_model == "claude-opus-actual"
     assert result.usage.total_tokens == 17
+
+
+def test_anthropic_configuration_prefers_scoped_model(tmp_path) -> None:
+    env = tmp_path / ".env"
+    env.write_text(
+        "\n".join(
+            (
+                "ANTHROPIC_AUTH_TOKEN=old-relay-token",
+                "ANTHROPIC_BASE_URL=https://old-relay.example",
+                "ANTHROPIC_MODEL=claude-opus-4-8",
+                "TOKEN=claude-code-only-token",
+                "BASE_URL=https://claude-code-relay.example",
+                "CLAUDE_MODEL=claude-opus-5",
+            )
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    configuration = load_anthropic_configuration(env_file=env)
+    assert configuration.base_url == "https://old-relay.example"
+    assert configuration.model == "claude-opus-4-8"
+    assert configuration.api_key == "old-relay-token"
 
 
 def test_opus_48_uses_adaptive_thinking_at_max_effort() -> None:

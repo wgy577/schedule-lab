@@ -1,0 +1,1095 @@
+{
+  "schema_version": "1.0",
+  "comparison_mode": "same_saved_semantics_impact_replay",
+  "source_semantic_compilation": "/Users/guangyuwu/Desktop/causal_schedule_lab/outputs/fjsp_test/fjsp_opus5_staged_semantics.json",
+  "source_semantic_tokens": 67492,
+  "report": {
+    "schema_version": "1.0",
+    "status": "pending_human_review",
+    "project_summary": "FJSP-DRL 官方实现：静态、确定性、离线批量求解，唯一主目标 makespan，决策为逐步 (job,machine) 对；开工时间由 max(job就绪, 机器空闲) 派生不可控。所有硬约束（工艺顺序、机器资格、每工序单次分配、机器互斥）在环境构造式解码中被结构性保证，因此在候选间恒被满足，真正区分候选的是机器选择带来的加工时长差、瓶颈机器负荷与等待/空闲结构。释放时间恒 0 为退化约束。constraint_5 的 non-delay 式动作掩码是项目特有的实现收窄，会改变可达解集，是本项目最具改进杠杆的软性设定。",
+    "impacts": [
+      {
+        "constraint_id": "constraint_1",
+        "role": "feasibility_guard",
+        "context_scope": "classical_family",
+        "feasibility_criticality": "critical",
+        "decision_leverage": "low",
+        "objective_sensitivity": "medium",
+        "candidate_discrimination": "very_low",
+        "controllability": "fixed",
+        "variation_across_candidates": "constant_across_candidates",
+        "validation": "required",
+        "optimization_attention": "deprioritize",
+        "diagnosis_attention": "required",
+        "rationale": "工艺顺序由 candidate 指针与自然序索引结构性保证，任何候选（DRL greedy/sampling、FIFO/MOR/SPT/MWKR、CP-SAT）产出的排程都满足，满足状态本身不区分候选；真正变化的是同一顺序下前驱完工引起的工序间等待量。若项目引入可变工艺路线/装配汇聚或 no-wait，该约束的 decision_leverage 与 candidate_discrimination 会显著升高。hard=true 故必须保留校验。",
+        "knowledge_refs": [
+          "FJSP",
+          "JSP"
+        ],
+        "confidence": "high",
+        "feasibility_score": 1.0,
+        "decision_leverage_score": 0.25,
+        "objective_sensitivity_score": 0.5,
+        "candidate_discrimination_score": 0.1
+      },
+      {
+        "constraint_id": "constraint_2",
+        "role": "decision_lever",
+        "context_scope": "classical_family",
+        "feasibility_criticality": "critical",
+        "decision_leverage": "high",
+        "objective_sensitivity": "high",
+        "candidate_discrimination": "high",
+        "controllability": "direct",
+        "variation_across_candidates": "decision_dependent",
+        "validation": "required",
+        "optimization_attention": "required",
+        "diagnosis_attention": "required",
+        "rationale": "资格集合本身是实例固定的（op_pt!=0），但它定义了可选机器域，候选策略在域内的不同选择直接改变加工时间与机器负荷分布，从而改变 makespan——这是 FJSP 相对 JSP 的核心增量。项目额外存在归一化后 !=0 判定与 OR-Tools 原始 op_pt!=0 的潜在不一致，需要诊断。",
+        "knowledge_refs": [
+          "FJSP"
+        ],
+        "confidence": "high",
+        "feasibility_score": 1.0,
+        "decision_leverage_score": 0.75,
+        "objective_sensitivity_score": 0.75,
+        "candidate_discrimination_score": 0.75
+      },
+      {
+        "constraint_id": "constraint_3",
+        "role": "feasibility_guard",
+        "context_scope": "classical_family",
+        "feasibility_criticality": "critical",
+        "decision_leverage": "low",
+        "objective_sensitivity": "low",
+        "candidate_discrimination": "very_low",
+        "controllability": "fixed",
+        "variation_across_candidates": "constant_across_candidates",
+        "validation": "required",
+        "optimization_attention": "deprioritize",
+        "diagnosis_attention": "required",
+        "rationale": "环境以候选指针 + 恰好 N 步终止结构性保证每工序被调度一次，CP-SAT 侧 AddExactlyOne 等价；所有可行候选同样满足，满足状态不区分候选。若引入可选工序、批分割或重入（同一工序多模式并行），其杠杆会升高。仍需可行性校验以防解码或落盘缺漏。",
+        "knowledge_refs": [
+          "FJSP"
+        ],
+        "confidence": "high",
+        "feasibility_score": 1.0,
+        "decision_leverage_score": 0.25,
+        "objective_sensitivity_score": 0.25,
+        "candidate_discrimination_score": 0.1
+      },
+      {
+        "constraint_id": "constraint_4",
+        "role": "feasibility_guard",
+        "context_scope": "classical_family",
+        "feasibility_criticality": "critical",
+        "decision_leverage": "medium",
+        "objective_sensitivity": "high",
+        "candidate_discrimination": "low",
+        "controllability": "indirect",
+        "variation_across_candidates": "decision_dependent",
+        "validation": "required",
+        "optimization_attention": "consider",
+        "diagnosis_attention": "required",
+        "rationale": "机器容量 1 由 mch_free_time 顺序推进隐式强制，所有候选都满足，故满足状态不区分候选；但受它约束的同机排序与由此产生的机器空闲/队列等待与瓶颈机器负荷在候选间明显不同，这才是对 makespan 敏感的部分。若引入并行容量机器、抢占或插空左移解码，其 decision_leverage 会升高。",
+        "knowledge_refs": [
+          "FJSP"
+        ],
+        "confidence": "high",
+        "feasibility_score": 1.0,
+        "decision_leverage_score": 0.5,
+        "objective_sensitivity_score": 0.75,
+        "candidate_discrimination_score": 0.25
+      },
+      {
+        "constraint_id": "constraint_5",
+        "role": "implementation_only",
+        "context_scope": "project_specific",
+        "feasibility_criticality": "low",
+        "decision_leverage": "high",
+        "objective_sensitivity": "high",
+        "candidate_discrimination": "high",
+        "controllability": "direct",
+        "variation_across_candidates": "decision_dependent",
+        "validation": "not_required",
+        "optimization_attention": "required",
+        "diagnosis_attention": "required",
+        "rationale": "这是项目特有的 non-delay 式动作掩码收窄，不是 FJSP 问题定义的硬约束，因此不需要可行性校验；但它压缩动作空间、可能排除最优延迟排程，而 CP-SAT 参照模型无此限制，直接影响 DRL/启发式与 Oracle 的 gap 结构。放宽或参数化该掩码是当前最直接的改进杠杆之一。",
+        "knowledge_refs": [
+          "FJSP"
+        ],
+        "confidence": "high",
+        "feasibility_score": 0.25,
+        "decision_leverage_score": 0.75,
+        "objective_sensitivity_score": 0.75,
+        "candidate_discrimination_score": 0.75
+      },
+      {
+        "constraint_id": "constraint_6",
+        "role": "fixed_instance_structure",
+        "context_scope": "classical_family",
+        "feasibility_criticality": "medium",
+        "decision_leverage": "very_low",
+        "objective_sensitivity": "very_low",
+        "candidate_discrimination": "very_low",
+        "controllability": "fixed",
+        "variation_across_candidates": "constant_across_candidates",
+        "validation": "required",
+        "optimization_attention": "deprioritize",
+        "diagnosis_attention": "consider",
+        "rationale": "释放时间恒为 0（初始化全 0，两侧模型均无 release date），对所有候选相同且不受决策改变，故优化杠杆极低；但 hard=true，仍须保留可行性检查以防未来实例格式引入非零到达而被静默忽略。若引入动态到达/非零 release/到达事件流，其权重会升到 high。",
+        "knowledge_refs": [
+          "FJSP"
+        ],
+        "confidence": "medium",
+        "feasibility_score": 0.5,
+        "decision_leverage_score": 0.1,
+        "objective_sensitivity_score": 0.1,
+        "candidate_discrimination_score": 0.1
+      }
+    ],
+    "secondary_targets": [
+      {
+        "id": "secondary_1",
+        "catalog_candidate_id": "assignment_processing_penalty",
+        "kind": "machine_selection_processing_time_increment",
+        "statement": "机器选择加工时长机会损失",
+        "measurement_definition": "sum_o (p_{o,a(o)} - min_{m in M_o} p_{o,m})",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "direct",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_3"
+        ],
+        "rationale": "op_pt 提供每工序各机器加工时间，决策 chosen_mch 直接决定实际用时；相对该工序最短可行加工时间的累计超额可从落盘排程直接算出，是机器分配决策最贴近的标量代理。",
+        "confidence": "high"
+      },
+      {
+        "id": "secondary_2",
+        "catalog_candidate_id": "maximum_machine_workload",
+        "kind": "maximum_machine_workload",
+        "statement": "最大机器工作负荷",
+        "measurement_definition": "max_m sum_{o assigned m}(p_o + setup_o)",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_4"
+        ],
+        "rationale": "无 setup 时退化为各机器被分配加工时间之和的最大值，是 makespan 的经典下界成分，受分配决策直接驱动，可对单个候选排程计算。",
+        "confidence": "high"
+      },
+      {
+        "id": "secondary_3",
+        "catalog_candidate_id": "scarce_eligibility_load",
+        "kind": "low_flexibility_operation_machine_load",
+        "statement": "稀缺资格负荷",
+        "measurement_definition": "max_m sum_{o:a(o)=m} p_o / max(|M_o|,1)",
+        "unit": "weighted_time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2"
+        ],
+        "rationale": "process_relation 行和给出每工序资格基数 |M_o|，SD2 生成器会产生柔性不均的工序；把低柔性工序的负荷压在同一机器上易形成瓶颈，该量可由 op_pt 与排程算出。",
+        "confidence": "medium"
+      },
+      {
+        "id": "secondary_4",
+        "catalog_candidate_id": "machine_workload_cv",
+        "kind": "other",
+        "statement": "机器工作负荷变异系数",
+        "measurement_definition": "std_m(L_m) / max(mean_m(L_m),eps)",
+        "unit": "fraction",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_4"
+        ],
+        "rationale": "M 台机器同为一类资源，负荷离散度是分配是否倾斜的标量刻画；与 makespan 非单调，故置信度中等，需候选实验校准。",
+        "confidence": "medium"
+      },
+      {
+        "id": "secondary_5",
+        "catalog_candidate_id": "bottleneck_workload_excess",
+        "kind": "other",
+        "statement": "瓶颈负荷超额",
+        "measurement_definition": "max_m max(0, L_m - target_m)",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_4"
+        ],
+        "rationale": "以平均负荷作为 target_m 时可计算瓶颈机器超额；与 maximum_machine_workload 互补地度量倾斜幅度。target 需程序侧约定，故 availability 为 needs_adapter。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_6",
+        "catalog_candidate_id": "interoperation_wait_total",
+        "kind": "operation_ready_to_start_waiting_time",
+        "statement": "工序间等待总量",
+        "measurement_definition": "sum_o max(0, S_o - R^job_o)",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_4"
+        ],
+        "rationale": "开工时间由 max(candidate_free_time, mch_free_time) 派生，工序实际开工晚于其前驱完工的部分正是排序与分配造成的等待，是 constraint_1 下真正变化的中间机制。",
+        "confidence": "medium"
+      },
+      {
+        "id": "secondary_7",
+        "catalog_candidate_id": "machine_queue_wait_total",
+        "kind": "other",
+        "statement": "机器队列等待总量",
+        "measurement_definition": "sum_o max(0, S_o - max(R^job_o, R^transport_o, R^aux_o))",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4"
+        ],
+        "rationale": "本项目无运输与辅助资源，公式退化为相对 job 就绪时刻的机器排队等待，可从 op_st 与 mch_free_time 轨迹算出；与 secondary_6 数值可能高度相关，需实验去重。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_8",
+        "catalog_candidate_id": "machine_idle_time_total",
+        "kind": "other",
+        "statement": "机器空闲总量",
+        "measurement_definition": "sum_m sum_{k>1} max(0, S_{m,k}-E_{m,k-1})",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4",
+          "constraint_5"
+        ],
+        "rationale": "环境不做插空左移，non-delay 掩码会在机器时间线上留下空隙；同机相邻区间空隙之和可直接由落盘排程计算，是 constraint_5 收窄效应的可观测代理。",
+        "confidence": "medium"
+      },
+      {
+        "id": "secondary_9",
+        "catalog_candidate_id": "critical_resource_internal_idle_time",
+        "kind": "critical_resource_internal_idle_time",
+        "statement": "关键资源内部空闲时间",
+        "measurement_definition": "sum_{m in critical_resources} sum_{k>1} max(0, start[m,k]-end[m,k-1])",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4"
+        ],
+        "rationale": "把负荷最大的机器集合定义为 critical_resources 后可计算其内部空闲；瓶颈机器上的空隙比全局空闲更直接映射到 makespan。critical 集合判定规则需程序侧固定。",
+        "confidence": "medium"
+      },
+      {
+        "id": "secondary_10",
+        "catalog_candidate_id": "resource_capacity_idle_rate",
+        "kind": "resource_capacity_idle_rate",
+        "statement": "资源容量空闲率",
+        "measurement_definition": "(makespan * total_capacity - busy_capacity_time) / (makespan * total_capacity)",
+        "unit": "fraction",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4"
+        ],
+        "rationale": "total_capacity=M、busy_capacity_time=sum(p_o)，其中 sum(p_o) 随机器分配变化，故该比率同时反映分配用时与 makespan 拉长，可对单候选计算。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_11",
+        "catalog_candidate_id": "resource_utilization_coefficient_of_variation",
+        "kind": "resource_utilization_coefficient_of_variation",
+        "statement": "资源利用率变异系数",
+        "measurement_definition": "std(utilization_r for comparable resources r) / max(mean(utilization_r), epsilon)",
+        "unit": "coefficient_of_variation",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_4"
+        ],
+        "rationale": "M 台机器构成单一可比资源族，利用率离散度是负荷均衡的另一刻画；与 machine_workload_cv 口径重叠，保留待实验筛除。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_12",
+        "catalog_candidate_id": "assignment_concentration_hhi",
+        "kind": "other",
+        "statement": "分配集中度 HHI",
+        "measurement_definition": "sum_m (assigned_processing_m / total_assigned_processing)^2",
+        "unit": "fraction",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "hypothesized",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2"
+        ],
+        "rationale": "由各机器被分配加工时间份额算出，度量分配是否集中于少数机器；与 makespan 关系为假设性，置信度低但计算成本极小。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_13",
+        "catalog_candidate_id": "uninterrupted_active_duration_mean",
+        "kind": "other",
+        "statement": "平均连续活跃时长",
+        "measurement_definition": "mean_m mean(length of maximal busy runs on machine m)",
+        "unit": "time",
+        "desired_direction": "increase",
+        "relation_to_primary_objective": "hypothesized",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4",
+          "constraint_5"
+        ],
+        "rationale": "non-delay 构造下机器忙碌段的连续程度反映时间线碎片化；方向在本项目取 increase（更少碎片），属假设性关系，需实验验证。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_14",
+        "catalog_candidate_id": "work_in_process_area",
+        "kind": "other",
+        "statement": "在制品占用面积",
+        "measurement_definition": "integral_0^H WIP(t) dt",
+        "unit": "job_time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "hypothesized",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_6"
+        ],
+        "rationale": "释放时间全 0，WIP 面积退化为各作业完工时间之和相关量，可由排程积分计算；与 makespan 只是弱相关，置信度低。",
+        "confidence": "low"
+      },
+      {
+        "id": "secondary_15",
+        "catalog_candidate_id": "synchronization_wait_total",
+        "kind": "other",
+        "statement": "多资源同步等待总量",
+        "measurement_definition": "sum_o max(0, max_r A_{o,r} - second_max_r A_{o,r})",
+        "unit": "time",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "hypothesized",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_4"
+        ],
+        "rationale": "项目只有机器一类资源（无工人/工装），公式退化为 job 就绪与机器就绪两者之差，信息量与 secondary_6/7 重叠；仅在引入第二类资源的变体下才具备独立价值，故置信度低。",
+        "confidence": "low"
+      }
+    ],
+    "novel_secondary_targets": [
+      {
+        "id": "novel_secondary_1",
+        "provisional_name": "non_delay掩码剔除对数量",
+        "measurement_definition": "对一条候选排程的构造轨迹，累加每一步被 pair_free_time > next_schedule_time 条件（而非资格条件 candidate_pt==0、也非 mask 屏蔽的已完成 job）额外屏蔽掉的 (job,machine) 可行对数量：sum_t |{(j,m): candidate_pt[t,j,m]!=0 and mask[t,j]==False and pair_free_time[t,j,m] > next_schedule_time[t]}|",
+        "unit": "count",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "direct",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_5"
+        ],
+        "evidence_refs": [
+          "fjsp_env_same_op_nums.py::initial_vars",
+          "common_utils.py::available_mch_list_for_job",
+          "ortools_solver.py::fjsp_solver"
+        ],
+        "catalog_gap_reason": "目录候选均为对最终排程的时间/负荷标量，没有任何指标度量构造式解码过程中被实现性收窄剔除的动作空间规模，而这正是本项目相对 CP-SAT 参照模型的独有差异来源。",
+        "rationale": "该量刻画 non-delay 收窄的强度：剔除越多，可达解集越小、DRL 与 CP-SAT 的 gap 越可能由表示而非策略造成，可用于指导是否放宽掩码以改进 makespan。",
+        "confidence": "medium",
+        "promotion_status": "proposed"
+      },
+      {
+        "id": "novel_secondary_2",
+        "provisional_name": "归一化资格判定漂移工序数",
+        "measurement_definition": "统计使 (normalized_op_pt[o,m] != 0) 与 (原始 op_pt[o,m] != 0) 判定结果不一致的 (工序,机器) 对数量，按实例求和：|{(o,m): (op_pt[o,m]!=0) XOR (normalized_pt[o,m]!=0)}|",
+        "unit": "count",
+        "desired_direction": "decrease",
+        "relation_to_primary_objective": "mediated",
+        "controllability": "indirect",
+        "availability": "needs_adapter",
+        "source_constraint_ids": [
+          "constraint_2"
+        ],
+        "evidence_refs": [
+          "fjsp_env_same_op_nums.py::set_initial_data",
+          "ortools_solver.py::matrix_to_the_format_for_solving"
+        ],
+        "catalog_gap_reason": "目录中的 scarce_eligibility_load 等指标假定资格集合唯一确定，无法表达环境侧与 Oracle 侧资格集合规模差异这一项目特有的可标量化机制。",
+        "rationale": "若批内 min-max 归一化把非零加工时间压成 0（或反之），环境可选机器域与 CP-SAT 域不同，会系统性偏移 gap；该漂移量大小直接影响 makespan 比较的可解释性。注意其同时具诊断性质，此处作为可标量化机制提案。",
+        "confidence": "low",
+        "promotion_status": "proposed"
+      }
+    ],
+    "novel_diagnostic_targets": [
+      {
+        "id": "novel_diagnostic_1",
+        "provisional_name": "环境与OR-Tools资格集合一致性检查",
+        "check": "对同一实例分别导出环境侧 process_relation（由归一化后加工时间 !=0 得到）与 ortools_solver 侧由原始 op_pt!=0 构造的候选机器列表，逐 (工序,机器) 比对布尔矩阵，任何不一致均报告并计数。",
+        "source_constraint_ids": [
+          "constraint_2"
+        ],
+        "evidence_refs": [
+          "fjsp_env_same_op_nums.py::set_initial_data",
+          "ortools_solver.py::matrix_to_the_format_for_solving",
+          "data_utils.py::SD2_instance_generator"
+        ],
+        "catalog_gap_reason": "固定的 eligibility_integrity 枚举只检查所选机器是否在资格集合内，不检查两个求解路径所用资格集合本身是否相同。",
+        "rationale": "若两侧资格集合不同，DRL 与 Oracle 实际在解不同问题，gap 数值失去意义，会污染所有候选比较。",
+        "confidence": "medium",
+        "promotion_status": "proposed"
+      },
+      {
+        "id": "novel_diagnostic_2",
+        "provisional_name": "CP-SAT求解状态与时限终止审计",
+        "check": "对每个实例记录 solver.StatusName() 与 WallTime，标记 status 非 OPTIMAL（含 FEASIBLE/UNKNOWN）或 WallTime 接近 1800s 的实例，并在 gap 汇总中单列这些实例。",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_4"
+        ],
+        "evidence_refs": [
+          "ortools_solver.py::fjsp_solver"
+        ],
+        "catalog_gap_reason": "oracle_reference_validity 枚举无法表达“未检查求解状态且带 1800s 时限”这一具体实现缺口及其按实例分层的审计口径。",
+        "rationale": "未检查状态时会把时限内的次优或无解结果当作最优参照，使 gap 被系统性低估或出现负 gap，直接误导对候选策略优劣的判断。",
+        "confidence": "high",
+        "promotion_status": "proposed"
+      },
+      {
+        "id": "novel_diagnostic_3",
+        "provisional_name": "缺失独立排程可行性校验器",
+        "check": "为落盘排程新增独立校验器：逐作业检查工序开工不早于前驱完工、逐机器检查同机区间不重叠、检查每工序恰被调度一次且所选机器在原始资格集合内、检查 makespan 等于所有完工时间最大值。",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_3",
+          "constraint_4",
+          "constraint_6"
+        ],
+        "evidence_refs": [
+          "fjsp_env_same_op_nums.py::initial_vars",
+          "fjsp_env_same_op_nums.py::set_initial_data",
+          "ortools_solver.py::fjsp_solver"
+        ],
+        "catalog_gap_reason": "validator_coverage 枚举无法说明本仓库只落盘 [makespan, time]、完全没有排程级校验器这一具体缺口与需补齐的检查清单。",
+        "rationale": "所有硬约束目前仅靠环境解码隐式保证，一旦解码或掩码逻辑被修改（例如放宽 constraint_5、启用插空左移），不可行排程会以更低 makespan 的形式静默胜出。",
+        "confidence": "high",
+        "promotion_status": "proposed"
+      },
+      {
+        "id": "novel_diagnostic_4",
+        "provisional_name": "完工下界shaping与真实makespan一致性",
+        "check": "在 gamma=1 下核对每个 episode 的累计回报 + init_quality 是否等于终态 max(op_ct_lb)，并比较该下界与最终 current_makespan 的差值分布；若下界在终态未收敛到真实 makespan 则报告。",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_4"
+        ],
+        "evidence_refs": [
+          "fjsp_env_same_op_nums.py::initial_vars",
+          "fjsp_env_same_op_nums.py::set_initial_data"
+        ],
+        "catalog_gap_reason": "objective_lower_bound_fidelity 枚举未涵盖“奖励为下界差分且以 -init_quality 为回报初值”这一训练机制与主目标数值等价性的具体核对方式。",
+        "rationale": "若下界在终态不等于真实 makespan，训练信号与评测目标错位，选模会偏向下界友好而非 makespan 最优的策略。",
+        "confidence": "medium",
+        "promotion_status": "proposed"
+      }
+    ],
+    "novel_candidate_rejections": [],
+    "diagnostic_targets": [
+      {
+        "id": "diagnostic_1",
+        "kind": "eligibility_integrity",
+        "statement": "所有已选机器都属于对应工序由原始 op_pt!=0 定义的资格集合",
+        "check": "逐工序检查 selected_machine 满足 op_pt[o, selected_machine] != 0；环境侧另可复核 reverse_process_relation 断言未被触发（该断言当前以 sys.exit() 终止，应改为可汇总报告）",
+        "source_constraint_ids": [
+          "constraint_2",
+          "constraint_3"
+        ],
+        "rationale": "这是可行性与解析完整性校验，不是待最小化指标；违反则整条排程无效，makespan 比较无意义。"
+      },
+      {
+        "id": "diagnostic_2",
+        "kind": "oracle_reference_validity",
+        "statement": "OR-Tools CP-SAT 参照解在同约束同目标下确实为可信参照",
+        "check": "核对 CP-SAT 模型仅含优先/资格/互斥约束且目标为 Minimize(makespan)，同时记录求解状态与是否触及 1800s 时限；对未证明最优的实例不得直接用作 gap 分母",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_2",
+          "constraint_3",
+          "constraint_4"
+        ],
+        "rationale": "参照解有效性只用于校验 gap 的可信度，不属于优化次级目标；参照不可靠会同时扭曲所有候选的评价。"
+      },
+      {
+        "id": "diagnostic_3",
+        "kind": "validator_coverage",
+        "statement": "当前仓库缺少独立排程可行性校验器，评测仅落盘 [makespan, time]",
+        "check": "确认评测流程是否对每条输出排程执行工艺顺序、同机不重叠、每工序恰一次、资格集合四项检查；缺失则记为覆盖不足",
+        "source_constraint_ids": [
+          "constraint_1",
+          "constraint_3",
+          "constraint_4",
+          "constraint_6"
+        ],
+        "rationale": "没有校验覆盖时，硬约束违反只能靠环境实现自证；这会掩盖解码层错误，属校验问题而非优化目标。"
+      },
+      {
+        "id": "diagnostic_4",
+        "kind": "other",
+        "statement": "释放时间恒为 0 的退化假设在实例装载后仍然成立",
+        "check": "装载后断言 candidate_free_time 与 mch_free_time 初值全为 0，且实例格式中不存在被忽略的非零 release 字段",
+        "source_constraint_ids": [
+          "constraint_6"
+        ],
+        "rationale": "该 hard 约束优化杠杆极低但仍须校验：若未来实例带非零到达时间而被静默忽略，会产出不可行排程。"
+      }
+    ],
+    "excluded_non_scheduling_items": [
+      "论文 IEEE TNNLS 2023 的性能主张与对比算法（DRL 基线、启发式规则的相对优劣）属 evaluation_only",
+      "训练硬件、训练轮数与运行时间统计",
+      "评测落盘的 time 字段与 gap 计算口径（评价指标，非调度约束）",
+      "CP-SAT 1800s 时限（求解器配置，非问题硬约束）",
+      "benchmark 数据集来源与 SD2 生成器参数设置（实例结构生成，非调度约束）"
+    ],
+    "unresolved_questions": [
+      "环境批内 min-max 归一化是否真的可能把非零加工时间压为 0，从而与 OR-Tools 侧原始 op_pt!=0 的资格集合产生实际差异？需在真实实例上核对。",
+      "放宽 constraint_5 的 non-delay 掩码（允许延迟排程）后可达解集扩大多少、是否真的能缩小与 CP-SAT 的 gap，本步骤未做任何候选扰动实验，仅为先验判断。",
+      "critical_resource_internal_idle_time 中 critical_resources 的判定规则（负荷最大机器、Top-k 还是超过阈值）需程序侧固定，否则该指标不可复现。",
+      "FJSPEnvForVariousOpNums 的掩码与终止逻辑是否与 SameOpNums 完全一致，未提供其独立证据键，可能影响上述指标在变长实例上的可计算性。"
+    ],
+    "overall_confidence": "medium",
+    "assessment_kind": "structured_llm_prior",
+    "empirically_validated": false,
+    "provider": "replay-constraint-impact-opus",
+    "requested_model": "claude-opus-5",
+    "response_model": "claude-opus-5",
+    "usage": {
+      "input_tokens": 21,
+      "output_tokens": 9029,
+      "total_tokens": 9050
+    },
+    "latency_seconds": 127.96590362500137,
+    "metric_recall": {
+      "catalog_version": "round3+round4+round5+round6+legacy11-v1",
+      "catalog_metric_count": 85,
+      "eligible_before_limit": 15,
+      "options": [
+        {
+          "candidate_id": "assignment_processing_penalty",
+          "canonical_name": "机器选择加工时长机会损失",
+          "canonical_role": "secondary_metric",
+          "formula": "sum_o (p_{o,a(o)} - min_{m in M_o} p_{o,m})",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 26.5,
+          "matched_views": [
+            "decision:machine_assignment",
+            "mechanism:flexibility",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "eligible_machines",
+            "processing_time_matrix",
+            "machine_assignment",
+            "eligible_machine_set",
+            "processing_time_by_machine",
+            "assigned_machine"
+          ],
+          "missing_ir_fields": [
+            "eligible_machines",
+            "processing_time_matrix",
+            "machine_assignment",
+            "eligible_machine_set",
+            "processing_time_by_machine",
+            "assigned_machine"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=['machine_eligibility']; views=['decision:machine_assignment', 'mechanism:flexibility', 'problem_family:FJSP']; missing_ir=['eligible_machines', 'processing_time_matrix', 'machine_assignment', 'eligible_machine_set', 'processing_time_by_machine', 'assigned_machine']"
+        },
+        {
+          "candidate_id": "scarce_eligibility_load",
+          "canonical_name": "稀缺资格负荷",
+          "canonical_role": "secondary_metric",
+          "formula": "max_m sum_{o:a(o)=m} p_o / max(|M_o|,1)",
+          "unit": "weighted_time",
+          "desired_direction": "decrease",
+          "score": 26.5,
+          "matched_views": [
+            "decision:machine_assignment",
+            "mechanism:flexibility",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_assignment",
+            "processing_time",
+            "eligibility_cardinality",
+            "eligible_machine_set",
+            "assigned_machine"
+          ],
+          "missing_ir_fields": [
+            "machine_assignment",
+            "processing_time",
+            "eligibility_cardinality",
+            "eligible_machine_set",
+            "assigned_machine"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=['machine_eligibility']; views=['decision:machine_assignment', 'mechanism:flexibility', 'problem_family:FJSP']; missing_ir=['machine_assignment', 'processing_time', 'eligibility_cardinality', 'eligible_machine_set', 'assigned_machine']"
+        },
+        {
+          "candidate_id": "maximum_machine_workload",
+          "canonical_name": "最大机器工作负荷",
+          "canonical_role": "secondary_metric",
+          "formula": "max_m sum_{o assigned m}(p_o + setup_o)",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 24.5,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:bottleneck_workload",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_assignment",
+            "processing_time",
+            "setup_time",
+            "operation_machine",
+            "sequence_dependent_setup_time"
+          ],
+          "missing_ir_fields": [
+            "machine_assignment",
+            "processing_time",
+            "setup_time",
+            "operation_machine",
+            "sequence_dependent_setup_time"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:bottleneck_workload', 'problem_family:FJSP']; missing_ir=['machine_assignment', 'processing_time', 'setup_time', 'operation_machine', 'sequence_dependent_setup_time']"
+        },
+        {
+          "candidate_id": "assignment_concentration_hhi",
+          "canonical_name": "分配集中度 HHI",
+          "canonical_role": "experimental_feature",
+          "formula": "sum_m (assigned_processing_m / total_assigned_processing)^2",
+          "unit": "fraction",
+          "desired_direction": "decrease",
+          "score": 24.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "mechanism:flexibility",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_loads",
+            "capacity_normalization",
+            "assigned_resource",
+            "assigned_processing_time"
+          ],
+          "missing_ir_fields": [
+            "machine_loads",
+            "capacity_normalization",
+            "assigned_resource",
+            "assigned_processing_time"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=['machine_eligibility']; views=['decision:machine_assignment', 'mechanism:flexibility', 'problem_family:FJSP']; missing_ir=['machine_loads', 'capacity_normalization', 'assigned_resource', 'assigned_processing_time']"
+        },
+        {
+          "candidate_id": "machine_workload_cv",
+          "canonical_name": "机器工作负荷变异系数",
+          "canonical_role": "secondary_metric",
+          "formula": "std_m(L_m) / max(mean_m(L_m),eps)",
+          "unit": "fraction",
+          "desired_direction": "decrease",
+          "score": 24.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:bottleneck_workload",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_loads",
+            "machine_stage",
+            "epsilon",
+            "machine_workload_vector"
+          ],
+          "missing_ir_fields": [
+            "machine_loads",
+            "machine_stage",
+            "epsilon",
+            "machine_workload_vector"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:bottleneck_workload', 'problem_family:FJSP']; missing_ir=['machine_loads', 'machine_stage', 'epsilon', 'machine_workload_vector']"
+        },
+        {
+          "candidate_id": "interoperation_wait_total",
+          "canonical_name": "工序间等待总量",
+          "canonical_role": "secondary_metric",
+          "formula": "sum_o max(0, S_o - R^job_o)",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 23.5,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:waiting",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "operation_start",
+            "job_predecessor_completion",
+            "job_release",
+            "operation_id",
+            "job_precedence",
+            "operation_end"
+          ],
+          "missing_ir_fields": [
+            "operation_start",
+            "job_predecessor_completion",
+            "job_release",
+            "operation_id",
+            "job_precedence",
+            "operation_end"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:waiting', 'problem_family:FJSP']; missing_ir=['operation_start', 'job_predecessor_completion', 'job_release', 'operation_id', 'job_precedence', 'operation_end']"
+        },
+        {
+          "candidate_id": "bottleneck_workload_excess",
+          "canonical_name": "瓶颈负荷超额",
+          "canonical_role": "secondary_metric",
+          "formula": "max_m max(0, L_m - target_m)",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 23.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:bottleneck_workload",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_loads",
+            "capacity_targets",
+            "machine_workload_vector",
+            "target_workload_by_machine"
+          ],
+          "missing_ir_fields": [
+            "machine_loads",
+            "capacity_targets",
+            "machine_workload_vector",
+            "target_workload_by_machine"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:bottleneck_workload', 'problem_family:FJSP']; missing_ir=['machine_loads', 'capacity_targets', 'machine_workload_vector', 'target_workload_by_machine']"
+        },
+        {
+          "candidate_id": "machine_queue_wait_total",
+          "canonical_name": "机器队列等待总量",
+          "canonical_role": "secondary_metric",
+          "formula": "sum_o max(0, S_o - max(R^job_o, R^transport_o, R^aux_o))",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 23.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:waiting",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "operation_start",
+            "job_ready",
+            "transport_ready",
+            "auxiliary_ready",
+            "machine_assignment",
+            "machine_ready_time",
+            "transport_ready_time",
+            "aux_resource_ready_time"
+          ],
+          "missing_ir_fields": [
+            "operation_start",
+            "job_ready",
+            "transport_ready",
+            "auxiliary_ready",
+            "machine_assignment",
+            "machine_ready_time",
+            "transport_ready_time",
+            "aux_resource_ready_time"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:waiting', 'problem_family:FJSP']; missing_ir=['operation_start', 'job_ready', 'transport_ready', 'auxiliary_ready', 'machine_assignment', 'machine_ready_time', 'transport_ready_time', 'aux_resource_ready_time']"
+        },
+        {
+          "candidate_id": "synchronization_wait_total",
+          "canonical_name": "多资源同步等待总量",
+          "canonical_role": "secondary_metric",
+          "formula": "sum_o max(0, max_r A_{o,r} - second_max_r A_{o,r})",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 23.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:waiting",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "required_resources",
+            "resource_available_times",
+            "operation_start",
+            "resource_ready_time_by_type",
+            "required_resource_set"
+          ],
+          "missing_ir_fields": [
+            "required_resources",
+            "resource_available_times",
+            "operation_start",
+            "resource_ready_time_by_type",
+            "required_resource_set"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:waiting', 'problem_family:FJSP']; missing_ir=['required_resources', 'resource_available_times', 'operation_start', 'resource_ready_time_by_type', 'required_resource_set']"
+        },
+        {
+          "candidate_id": "uninterrupted_active_duration_mean",
+          "canonical_name": "平均连续活跃时长",
+          "canonical_role": "experimental_feature",
+          "formula": "mean_m mean(length of maximal busy runs on machine m)",
+          "unit": "time",
+          "desired_direction": "context_dependent",
+          "score": 21.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "mechanism:bottleneck_workload",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_busy_intervals",
+            "gap_tolerance"
+          ],
+          "missing_ir_fields": [
+            "machine_busy_intervals",
+            "gap_tolerance"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "survey_map",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'mechanism:bottleneck_workload', 'problem_family:FJSP']; missing_ir=['machine_busy_intervals', 'gap_tolerance']"
+        },
+        {
+          "candidate_id": "critical_resource_internal_idle_time",
+          "canonical_name": "关键资源内部空闲时间",
+          "canonical_role": "secondary_metric",
+          "formula": "sum_{m in critical_resources} sum_{k>1} max(0, start[m,k]-end[m,k-1])",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 20.5,
+          "matched_views": [
+            "mechanism:critical_structure"
+          ],
+          "required_ir_fields": [
+            "critical_resource_ids",
+            "operation_start",
+            "operation_end",
+            "machine_assignment"
+          ],
+          "missing_ir_fields": [
+            "critical_resource_ids",
+            "operation_start",
+            "operation_end",
+            "machine_assignment"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['mechanism:critical_structure']; missing_ir=['critical_resource_ids', 'operation_start', 'operation_end', 'machine_assignment']"
+        },
+        {
+          "candidate_id": "resource_capacity_idle_rate",
+          "canonical_name": "资源容量空闲率",
+          "canonical_role": "secondary_metric",
+          "formula": "(makespan * total_capacity - busy_capacity_time) / (makespan * total_capacity)",
+          "unit": "fraction",
+          "desired_direction": "decrease",
+          "score": 20.5,
+          "matched_views": [
+            "mechanism:bottleneck_workload"
+          ],
+          "required_ir_fields": [
+            "resource_capacity",
+            "busy_capacity_time",
+            "makespan"
+          ],
+          "missing_ir_fields": [
+            "resource_capacity",
+            "busy_capacity_time"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['mechanism:bottleneck_workload']; missing_ir=['resource_capacity', 'busy_capacity_time']"
+        },
+        {
+          "candidate_id": "resource_utilization_coefficient_of_variation",
+          "canonical_name": "资源利用率变异系数",
+          "canonical_role": "secondary_metric",
+          "formula": "std(utilization_r for comparable resources r) / max(mean(utilization_r), epsilon)",
+          "unit": "coefficient_of_variation",
+          "desired_direction": "decrease",
+          "score": 20.5,
+          "matched_views": [
+            "mechanism:bottleneck_workload"
+          ],
+          "required_ir_fields": [
+            "resource_family",
+            "busy_time",
+            "schedule_horizon"
+          ],
+          "missing_ir_fields": [
+            "resource_family",
+            "busy_time",
+            "schedule_horizon"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['mechanism:bottleneck_workload']; missing_ir=['resource_family', 'busy_time', 'schedule_horizon']"
+        },
+        {
+          "candidate_id": "machine_idle_time_total",
+          "canonical_name": "机器空闲总量",
+          "canonical_role": "experimental_feature",
+          "formula": "sum_m sum_{k>1} max(0, S_{m,k}-E_{m,k-1})",
+          "unit": "time",
+          "desired_direction": "decrease",
+          "score": 19.0,
+          "matched_views": [
+            "decision:machine_assignment",
+            "decision:machine_sequence",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "machine_sequences",
+            "interval_start",
+            "interval_end",
+            "calendar_unavailability",
+            "machine_sequence",
+            "operation_end"
+          ],
+          "missing_ir_fields": [
+            "machine_sequences",
+            "interval_start",
+            "interval_end",
+            "calendar_unavailability",
+            "machine_sequence",
+            "operation_end"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:machine_assignment', 'decision:machine_sequence', 'problem_family:FJSP']; missing_ir=['machine_sequences', 'interval_start', 'interval_end', 'calendar_unavailability', 'machine_sequence', 'operation_end']"
+        },
+        {
+          "candidate_id": "work_in_process_area",
+          "canonical_name": "在制品占用面积",
+          "canonical_role": "experimental_feature",
+          "formula": "integral_0^H WIP(t) dt",
+          "unit": "job_time",
+          "desired_direction": "context_dependent",
+          "score": 16.0,
+          "matched_views": [
+            "decision:job_sequence",
+            "problem_family:FJSP"
+          ],
+          "required_ir_fields": [
+            "job_release_time",
+            "job_completion_time",
+            "wip_event_log",
+            "schedule_horizon"
+          ],
+          "missing_ir_fields": [
+            "job_release_time",
+            "job_completion_time",
+            "wip_event_log",
+            "schedule_horizon"
+          ],
+          "availability": "needs_adapter_or_evidence",
+          "evidence_grade": "project_formula_defined",
+          "reason": "family=['FJSP']; variant=[]; views=['decision:job_sequence', 'problem_family:FJSP']; missing_ir=['job_release_time', 'job_completion_time', 'wip_event_log', 'schedule_horizon']"
+        }
+      ],
+      "batches": [
+        [
+          "assignment_processing_penalty",
+          "scarce_eligibility_load",
+          "maximum_machine_workload",
+          "assignment_concentration_hhi",
+          "machine_workload_cv",
+          "interoperation_wait_total",
+          "bottleneck_workload_excess",
+          "machine_queue_wait_total",
+          "synchronization_wait_total",
+          "uninterrupted_active_duration_mean"
+        ],
+        [
+          "critical_resource_internal_idle_time",
+          "resource_capacity_idle_rate",
+          "resource_utilization_coefficient_of_variation",
+          "machine_idle_time_total",
+          "work_in_process_area"
+        ]
+      ],
+      "prompt_character_estimate": 5031,
+      "context_fingerprint": "0e3eb545e0b0f412906e2dda6af4676deeb39d6cb47aca0f9dfc630b0a55e951"
+    },
+    "schema_normalizations": [],
+    "schema_extensions": [],
+    "safety_overrides": []
+  }
+}

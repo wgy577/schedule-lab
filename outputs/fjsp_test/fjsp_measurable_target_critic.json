@@ -1,0 +1,329 @@
+{
+  "schema_version": "1.0",
+  "status": "pending_human_review",
+  "project_summary": "FJSP-DRL 是静态、确定性、离线的柔性作业车间调度实现：实例一次性装载（job_length[J]、op_pt[N,M]），唯一主目标是最小化 makespan，可修改决策只有两项——每步选哪个 job 的候选工序（决定同机排序）与选哪台兼容机器（决定加工时长），开工时间由 max(作业就绪, 机器空闲) 派生、不可控。所有候选求解器（DRL greedy/sampling、FIFO/MOR/SPT/MWKR、OR-Tools CP-SAT）面对完全相同的 precedence / eligibility / exactly-once / no-overlap 硬约束集合，且释放时间恒为 0，因此这些硬约束的“满足与否”对候选没有区分力，真正区分候选的是它们诱导出的中间量（机器选择的加工时间增量、机器负荷分布、机器内部空闲、工序就绪后等待）。本项目最具改进杠杆的是非问题定义的实现级收窄：环境把动作掩码限制为在 next_schedule_time 即可开工的 (job,machine) 对（近似 non-delay），OR-Tools 参照模型不含该限制，二者构成可直接量化的可行域差。另一项目风险是加工时间批内 min-max 归一化后仍以 !=0 判定资格，可能与原始 op_pt!=0 的资格集合不一致。以下权重基于上述项目条件，而非文献典型值；本步骤只给出结构化专家先验，未做任何候选扰动、反事实或 Oracle 回放验证。",
+  "impacts": [
+    {
+      "constraint_id": "constraint_1",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "low",
+      "objective_sensitivity": "high",
+      "candidate_discrimination": "low",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "consider",
+      "diagnosis_attention": "required",
+      "rationale": "工艺顺序由实例给定且不可修改：环境用 candidate 指针 + job_first/last_op_id 结构性强制，任何构造出的候选日程都恒满足，因此“是否满足”不能区分候选。真正随决策变化的是它诱导的松弛量——工序前驱完工后到实际开工的等待（start - predecessor_end）以及最长作业链对 makespan 下界的支配作用，所以 objective_sensitivity 高而 decision_leverage/candidate_discrimination 低。hard=true，可行性检查不得省略：独立校验器必须逐工序检查 start >= 前驱 end，并检查 candidate 指针推进未跳过或重复工序。若项目引入 no-wait/blocking、重入路线或工序间运输时间，precedence 会把局部排序放大为跨机传播，此时 decision_leverage 与 candidate_discrimination 都会显著升高。",
+      "knowledge_refs": [
+        "FJSP",
+        "JSP",
+        "jsp_no_wait_blocking"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.25,
+      "objective_sensitivity_score": 0.75,
+      "candidate_discrimination_score": 0.25
+    },
+    {
+      "constraint_id": "constraint_2",
+      "role": "decision_lever",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "critical",
+      "objective_sensitivity": "high",
+      "candidate_discrimination": "high",
+      "controllability": "direct",
+      "variation_across_candidates": "mixed",
+      "validation": "required",
+      "optimization_attention": "required",
+      "diagnosis_attention": "required",
+      "rationale": "资格集合本身是外生实例结构（op_pt!=0 导出的 process_relation），对所有候选相同；但它界定了 decision_2（chosen_mch = action % M）的可行域，而同一工序在不同兼容机器上加工时间不同，因此候选之间真正变化的是“在资格集合内选了哪台机器”及其可计算后果：机器选择加工时间增量 sum(p[o,m_sel]-min_{m∈elig}p[o,m])、最大机器工作负荷、低柔性工序的机器负荷。据此 candidate_discrimination 记为 high，指的是被诱导的分配结果而非满足状态。hard=true 必须校验：环境有 reverse_process_relation 断言 + dynamic_pair_mask 双重强制，但仓库无独立排程校验器，且加工时间在环境内做批内 min-max 归一化后仍以 !=0 判资格——归一化可能把最小正加工时间映射为 0，与 OR-Tools 使用的原始 op_pt!=0 资格集合产生不一致，这是必须先排除的项目级风险。若柔性度改变（部分柔性 vs 完全柔性），该约束的 decision_leverage 仍高但区分力来源会从“瓶颈工序唯一可选机”转向“大候选集内的时间权衡”。",
+      "knowledge_refs": [
+        "FJSP",
+        "partial_total_fjsp"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 1.0,
+      "objective_sensitivity_score": 0.75,
+      "candidate_discrimination_score": 0.75
+    },
+    {
+      "constraint_id": "constraint_3",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "low",
+      "objective_sensitivity": "low",
+      "candidate_discrimination": "very_low",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "deprioritize",
+      "diagnosis_attention": "consider",
+      "rationale": "FJSP 文献常把 choice_binding 列为 critical 杠杆，但在本项目它被构造式 MDP 结构性消解：每步消耗一个候选工序、op_scheduled_flag 记录、恰好 N 步终止，任何 rollout 都自动“每工序恰好一次、恰好一台机器”，不存在可调的模式选择维度（无 lot-splitting、无多模式、无可选工序）。因此对当前候选集（DRL/PDR/CP-SAT）该约束的满足状态完全相同，decision_leverage 与 candidate_discrimination 低；这不等于可以删除检查——hard=true 故 validation=required，独立校验器必须验证已调度工序数 == N、无重复调度、每工序恰有一台机器区间（OR-Tools 侧对应 AddExactlyOne(l_presences)）。若引入多模式/可选工序/批量拆分/工序外包等变体，或改用允许部分解的解码器，该约束会立刻变成高杠杆的决策维度。",
+      "knowledge_refs": [
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.25,
+      "objective_sensitivity_score": 0.25,
+      "candidate_discrimination_score": 0.1
+    },
+    {
+      "constraint_id": "constraint_4",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "high",
+      "objective_sensitivity": "critical",
+      "candidate_discrimination": "high",
+      "controllability": "indirect",
+      "variation_across_candidates": "decision_dependent",
+      "validation": "required",
+      "optimization_attention": "required",
+      "diagnosis_attention": "required",
+      "rationale": "单位容量互斥是 decision_1（同机排序）产生 makespan 差异的主要耦合通道：环境以 mch_free_time 顺序推进隐式强制，所有候选都恒满足，故不能声称满足状态可区分候选。随决策变化的是被它诱导的中间量——瓶颈机内部空闲（相邻工序 start[i+1]-end[i] 的正值和）、机器排队导致的工序就绪后等待、以及最大机器负荷对应的完工时刻。注意本项目额外限制了机器时间轴只能顺序追加（不做插空左移），因此排序错误产生的机器内部空闲无法后验修复，objective_sensitivity 记为 critical。hard=true，校验器必须对每台机器检查区间两两不重叠且加工连续不可抢占。若引入顺序相关 setup 或维护窗口，排序对实际占用时长的影响会进一步放大。",
+      "knowledge_refs": [
+        "FJSP",
+        "JSP",
+        "fjsp_setup_maintenance"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.75,
+      "objective_sensitivity_score": 1.0,
+      "candidate_discrimination_score": 0.75
+    },
+    {
+      "constraint_id": "constraint_5",
+      "role": "implementation_only",
+      "context_scope": "project_specific",
+      "feasibility_criticality": "none",
+      "decision_leverage": "critical",
+      "objective_sensitivity": "high",
+      "candidate_discrimination": "high",
+      "controllability": "direct",
+      "variation_across_candidates": "mixed",
+      "validation": "not_required",
+      "optimization_attention": "required",
+      "diagnosis_attention": "required",
+      "rationale": "这不是 FJSP 问题定义的约束，而是环境端的构造式收窄：pair_free_time > next_schedule_time 的对被并入 dynamic_pair_mask（近似 non-delay），启发式基线在 common_utils.available_mch_list_for_job 中有等价过滤，而 OR-Tools 参照模型不含该限制。放松它不会破坏任何可行性（precedence/eligibility/no-overlap 仍独立强制，且 next_schedule_time 由可行对导出，掩码不会为空），故 feasibility_criticality=none、validation 非必需。但它是本项目最直接可改的可行域开关：对同一策略开/关该过滤即可做成对实验，量化 restricted_decoder_makespan_gap；同时它使 DRL/PDR 候选与 CP-SAT 候选处在不同解空间上，当前报告的 gap 中混入了解码器受限项，属于跨候选不可比的系统性偏差，因此 decision_leverage 记为 critical、candidate_discrimination 记为 high（变化的是可达解集与各候选的解码规则，而非某个硬约束的满足状态）。本条为先验判断，尚未通过任何扰动或回放实验证实其对 makespan 的实际损失量。",
+      "knowledge_refs": [
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 0.0,
+      "decision_leverage_score": 1.0,
+      "objective_sensitivity_score": 0.75,
+      "candidate_discrimination_score": 0.75
+    },
+    {
+      "constraint_id": "constraint_6",
+      "role": "fixed_instance_structure",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "low",
+      "decision_leverage": "very_low",
+      "objective_sensitivity": "very_low",
+      "candidate_discrimination": "very_low",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "deprioritize",
+      "diagnosis_attention": "consider",
+      "rationale": "释放时间在本项目退化为常量 0：candidate_free_time/mch_free_time/next_schedule_time 全零初始化，OR-Tools 变量域自 0 起，无到达事件。该参数固定、对所有候选相同、且不受任何决策改变，故三项优化相关档位均为 very_low。仍然 hard=true，validation=required：校验器需检查所有 start >= 0 且首工序不早于 0 开工，这是防止解析/归一化错误产生负时间的廉价保护，低优化杠杆不等于删除可行性检查。升权条件：若项目扩展为 dynamic FJSP（新作业到达、滚动重调度）或引入非零 release date / 交期，释放时间会成为高杠杆的状态参数并改变动作掩码语义；输入证据置信度为 medium（仅由初始化全零推断，未穷举 FJSPEnvForVariousOpNums 与所有数据解析路径）。",
+      "knowledge_refs": [
+        "JSP",
+        "jsp_release_dates_dynamic",
+        "dynamic_fjsp"
+      ],
+      "confidence": "medium",
+      "feasibility_score": 0.25,
+      "decision_leverage_score": 0.1,
+      "objective_sensitivity_score": 0.1,
+      "candidate_discrimination_score": 0.1
+    }
+  ],
+  "secondary_targets": [
+    {
+      "id": "secondary_1",
+      "kind": "machine_selection_processing_time_increment",
+      "statement": "机器分配相对该工序最快兼容机器的加工时间超额总量",
+      "measurement_definition": "sum_{o=1..N} ( true_op_pt[o, m_selected(o)] - min_{m: op_pt[o,m]!=0} true_op_pt[o,m] )，使用原始（未归一化）加工时间矩阵，对单个候选日程可直接计算；可另报均值 = 该和 / N",
+      "unit": "time (原始加工时间单位)",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "direct",
+      "availability": "computable",
+      "source_constraint_ids": [
+        "constraint_2"
+      ],
+      "rationale": "把 decision_2（机器分配）拆成标准可计算调度量而非“分配质量”。它由资格集合与实际选择共同决定，是候选之间最直接可比的分配代价。方向为减小，但与 makespan 只是中介关系：为避免瓶颈机拥塞而选较慢机器有时反而更优，因此不得在本步骤声称它是真实影响因子，需后续成对实验校准。"
+    },
+    {
+      "id": "secondary_2",
+      "kind": "maximum_machine_workload",
+      "statement": "单台机器承担的总加工时间的最大值（工作负荷上界）",
+      "measurement_definition": "max_{m=1..M} sum_{o: m_selected(o)=m} true_op_pt[o,m]，对单个候选日程可计算",
+      "unit": "time (原始加工时间单位)",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "indirect",
+      "availability": "computable",
+      "source_constraint_ids": [
+        "constraint_2",
+        "constraint_4"
+      ],
+      "rationale": "该量是 makespan 的一个经典下界成分，且与 secondary_1 通常冲突（把工序推给最快机器会抬高其负荷），两者一起才能刻画分配层的权衡。它由 no_overlap（单位容量）赋予意义：负荷最大的机器决定其时间轴至少需要多长。仍为中介量，非已验证的因果因子。"
+    },
+    {
+      "id": "secondary_3",
+      "kind": "critical_resource_internal_idle_time",
+      "statement": "负荷最大机器（瓶颈机）时间轴上的可消除内部空闲总量",
+      "measurement_definition": "取 m* = argmax_m 机器总加工时间；把 m* 上的工序按 start 排序，计算 sum_i max(0, start[i+1] - end[i]) 再加上 start[first] - 0；不计最后一道工序完工之后的时间",
+      "unit": "time (原始加工时间单位)",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "indirect",
+      "availability": "needs_adapter",
+      "source_constraint_ids": [
+        "constraint_4",
+        "constraint_5"
+      ],
+      "rationale": "环境只顺序追加 mch_free_time、不做插空左移，瓶颈机上的空隙一旦产生就无法回填，是排序决策的可测后果。需要一个适配器把 env 的 op_ct/true_op_pt/机器分配导出为每机区间列表（当前评测只落盘 [makespan, time]）。它与 secondary_2 相加约等于瓶颈机的完工时刻，可用于分解 makespan 但本身不等于 makespan。"
+    },
+    {
+      "id": "secondary_4",
+      "kind": "operation_ready_to_start_waiting_time",
+      "statement": "工序在其作业前驱完工后到实际开工之间的等待时间总量",
+      "measurement_definition": "sum_{o=1..N} ( start[o] - ready[o] )，其中 ready[o] = 同作业前驱工序的 end（首工序取 0）；等价于所有工序因等待机器空闲而滞留的时间之和",
+      "unit": "time (原始加工时间单位)",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "indirect",
+      "availability": "needs_adapter",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_4"
+      ],
+      "rationale": "precedence 的满足状态对所有候选相同，真正变化的是它诱导的松弛量：开工时间由 max(candidate_free_time, mch_free_time) 派生，因此该等待总量恰好度量“作业已就绪但机器被占”的排队压力，是 precedence 与 no_overlap 耦合的可计算标量。需要适配器导出每工序 start/end。注意减小该量不必然减小 makespan（可能只是把等待转移到非关键路径），故为中介目标。"
+    },
+    {
+      "id": "secondary_5",
+      "kind": "restricted_decoder_makespan_gap",
+      "statement": "non-delay 动作掩码收窄相对放松掩码所损失的 makespan",
+      "measurement_definition": "成对实验：固定实例、策略与随机种子，makespan(开启 pair_free_time>next_schedule_time 过滤) - makespan(关闭该过滤、仅保留 precedence/eligibility/no-overlap 掩码)；对实例集报均值与非零比例；也可用同实例的 CP-SAT 最优/最好界做上界参照",
+      "unit": "time (原始加工时间单位)，或相对差百分比 %",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "direct",
+      "controllability": "direct",
+      "availability": "needs_adapter",
+      "source_constraint_ids": [
+        "constraint_5"
+      ],
+      "rationale": "constraint_5 是本项目唯一可直接开关的实现级可行域限制，且 OR-Tools 参照模型不含它，当前 gap 指标混入了该项偏差。该量是成对可计算的 makespan 差值而非 makespan 水平本身，用于把“解码器受限损失”从“策略质量”中分离。需要在环境中加入放松掩码的开关（适配器）。此处仅为先验假设，尚未测得其数值。"
+    },
+    {
+      "id": "secondary_6",
+      "kind": "low_flexibility_operation_machine_load",
+      "statement": "低柔性工序（兼容机器数最少的一档）在各机器上形成的最大负荷",
+      "measurement_definition": "先按 |{m: op_pt[o,m]!=0}| 取实例内最小的一档（例如 |elig| 等于实例最小值，或位于最小的 25% 分位）记为集合 L；再计算 max_{m} sum_{o∈L, m_selected(o)=m} true_op_pt[o,m]",
+      "unit": "time (原始加工时间单位)",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "indirect",
+      "availability": "computable",
+      "source_constraint_ids": [
+        "constraint_2",
+        "constraint_4"
+      ],
+      "rationale": "部分柔性下，可选机器少的工序几乎没有回旋余地，若高柔性工序抢占了它们唯一能用的机器就会形成结构性瓶颈。该量把资格集合大小这一实例结构与实际分配结合成可计算标量，可用于检验“为低柔性工序预留机器”这类策略假设，但因果效应仍待成对实验验证。"
+    }
+  ],
+  "diagnostic_targets": [
+    {
+      "id": "diagnostic_1",
+      "kind": "eligibility_integrity",
+      "statement": "环境实际使用的机器资格集合与原始 op_pt!=0 导出的资格集合一致，且每道工序被指派到其资格集合内的机器",
+      "check": "(a) 逐工序检查 m_selected(o) ∈ {m: 原始 op_pt[o,m] != 0}；(b) 对每个实例比较归一化后矩阵推出的 (normalized_op_pt != 0) 与原始 (op_pt != 0) 的布尔矩阵是否逐元素相等，重点检查批内 min-max 归一化是否把最小正加工时间映射为 0 而误删资格；(c) 比较环境资格矩阵与 ortools_solver.matrix_to_the_format_for_solving 生成的候选机器列表是否同集合",
+      "source_constraint_ids": [
+        "constraint_2"
+      ],
+      "rationale": "这是可行性与实例解析一致性校验，不是待最小化指标。若环境与 OR-Tools 使用了不同资格集合，则 gap 指标失去可比性，所有后续权重结论都需重估，因此应在任何优化实验之前先行排除。"
+    },
+    {
+      "id": "diagnostic_2",
+      "kind": "validator_coverage",
+      "statement": "仓库缺少独立于环境的排程可行性校验器，需补齐覆盖全部 hard 约束的检查",
+      "check": "对导出的 (op, machine, start, end) 四元组独立验证：start >= 0（constraint_6）；end - start == 原始 op_pt[o,m]（不可抢占、加工连续）；同作业相邻工序 start >= 前驱 end（constraint_1）；同机器任意两区间不重叠（constraint_4）；已调度工序集合恰为全部 N 道且每道恰一台机器（constraint_3）；机器属于资格集合（constraint_2）",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_2",
+        "constraint_3",
+        "constraint_4",
+        "constraint_6"
+      ],
+      "rationale": "当前可行性只由环境自身的指针/掩码结构隐式保证，且评测仅落盘 [makespan, time]，无法在环境被修改（例如放松 constraint_5 的掩码）后再次确认解仍可行。所有 hard=true 约束的 validation=required 必须落在这个独立校验器上，而不是复用被测环境自身的逻辑。"
+    },
+    {
+      "id": "diagnostic_3",
+      "kind": "oracle_reference_validity",
+      "statement": "OR-Tools CP-SAT 参照解的求解状态与界未被检查，gap 分母可能不是可信参照",
+      "check": "记录并断言每个实例的 solver.StatusName() ∈ {OPTIMAL, FEASIBLE}；对 FEASIBLE 同时记录 solver.BestObjectiveBound() 与 1800s 时限是否触发；对 UNKNOWN/INFEASIBLE 的实例从 gap 统计中剔除或单独报告；抽样用 diagnostic_2 的校验器回放 CP-SAT 解确认其可行",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_2",
+        "constraint_3",
+        "constraint_4"
+      ],
+      "rationale": "Oracle 有效性属于校验维度而非优化次级目标。若未区分最优解与 1800s 截断的可行解，报告的 gap 会同时包含策略差距与 Oracle 未收敛量，无法据此判断任何调度改动的效果。"
+    },
+    {
+      "id": "diagnostic_4",
+      "kind": "objective_lower_bound_fidelity",
+      "statement": "奖励 shaping 所用的完工下界 op_ct_lb 是否为真实下界且随步推进单调，与 gamma=1 下累计回报同 makespan 的等价关系是否成立",
+      "check": "在整段 episode 上断言 max(op_ct_lb(s_t)) <= 最终 makespan 对所有 t 成立；断言 max(op_ct_lb) 关于 t 非递减；检查 sum_t reward_t + init_quality 是否等于 -最终 makespan（gamma=1）；对已调度工序确认 lb 等于其真实完工时间",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_2",
+        "constraint_4"
+      ],
+      "rationale": "下界保真度是训练信号的正确性校验，不是可优化的调度目标。若 lb 曾超过最终 makespan 或非单调，reward = C_LB(s_t) - C_LB(s_{t+1}) 会给出与 makespan 不一致的梯度信号，属于需要先排除的机制性缺陷。"
+    }
+  ],
+  "excluded_non_scheduling_items": [
+    "论文中的对比算法与基线选择、以及作者关于性能优于对比方法的主张——属于 evaluation_only，不是调度硬约束",
+    "OR-Tools CP-SAT 的 1800s 求解时限与求解器参数——评测配置，不是问题定义的时间约束",
+    "评测落盘的求解墙钟时间 time 与 gap 计算方式——评测指标，不进入调度可行性",
+    "SD1/SD2 实例生成器设置与公开 benchmark 数据集划分——实验实例来源，不是运行期约束",
+    "训练超参数（gamma=1、reward shaping R_t = C_LB(s_t) - C_LB(s_{t+1})、episode 回报初值 -init_quality、验证选模策略）——训练机制，objective_2 已声明其非独立调度目标",
+    "训练/推理硬件与批量维度 E（并行实例批）——工程实现，不是调度语义",
+    "加工时间批内 min-max 归一化本身作为网络输入预处理——建模实现细节（其对资格判定的副作用已作为 diagnostic_1 保留）",
+    "检索先验中未被项目证据支持的变体：运输/AGV、工人双资源、setup/维护、随机与鲁棒、分布式多工厂——仅为检索命中的术语先验，SemanticAnalysis 未提供任何项目证据"
+  ],
+  "unresolved_questions": [
+    "加工时间批内 min-max 归一化后仍以 !=0 判定机器资格：是否存在实例使某台机器的最小正加工时间被归一化为 0，从而环境资格集合小于 OR-Tools 使用的原始资格集合？这会同时影响 constraint_2 的权重与全部 gap 数字，需先由 diagnostic_1 判定。",
+    "constraint_5 的 non-delay 收窄在当前使用的实例族（SD1/SD2 与公开 benchmark）上排除最优解的频率与幅度未知；需用 secondary_5 的成对实验（同策略同种子、开/关过滤）测量，本步骤仅给出先验判断。",
+    "FJSPEnvForVariousOpNums 是否与 FJSPEnvForSameOpNums 施加完全相同的掩码逻辑（尤其是 pair_free_time > next_schedule_time 过滤与 reverse_process_relation 断言）？现有证据主要来自 same_op_nums 环境。",
+    "启发式基线 available_mch_list_for_job 的过滤规则与 DRL 环境掩码是否严格等价？若不等价，PDR 与 DRL 候选处在不同可行域上，二者的 makespan 比较需要重新界定。",
+    "释放时间恒为 0 的结论置信度为 medium（由初始化全零推断）；需确认所有数据解析路径（文本解析与生成器）都不会写入非零就绪时间。",
+    "环境只顺序追加 mch_free_time、不做插空左移：这是 constraint_4 的实现方式还是额外收窄？若允许左移插空（active schedule 解码），secondary_3 的可消除空闲能否真正被回收，需要单独实验确认。"
+  ],
+  "overall_confidence": "medium",
+  "assessment_kind": "structured_llm_prior",
+  "empirically_validated": false,
+  "provider": "measurable-target-critic-opus",
+  "requested_model": "claude-opus-5",
+  "response_model": "claude-opus-5",
+  "usage": {
+    "input_tokens": 21,
+    "output_tokens": 14770,
+    "total_tokens": 14791
+  },
+  "latency_seconds": 208.73605937499815
+}

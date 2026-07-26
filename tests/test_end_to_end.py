@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=C,E,F,G; capabilities=controller,end_to_end,rollback; level=system; cost=medium
 from pathlib import Path
 
 from causal_schedule_lab.agent import MaskedPPOAgent

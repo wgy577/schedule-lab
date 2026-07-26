@@ -11,11 +11,14 @@ import torch
 from .agent import MaskedPPOAgent
 from .audit import load_records
 from .cip import CausalCoreDiscoverer
+from .constraint_impact import assess_constraint_impacts_with_llm
 from .controller import AgenticImprovementController
 from .dataset import pairwise_ranking_labels, record_to_training_row
 from .experiments import build_control_plan
 from .graph import build_scheduling_graph
 from .llm_semantics import (
+    RepositoryEvidencePacket,
+    SemanticAnalysis,
     build_repository_evidence_packet,
     choice_library,
     compile_project_semantics_with_llm,
@@ -43,10 +46,15 @@ from .providers.anthropic_compatible import (
     AnthropicCompatibleProvider,
     load_anthropic_configuration,
 )
+from .providers.claude_code_cli import (
+    ClaudeCodeCLIProvider,
+    load_claude_code_configuration,
+)
 from .providers.openai_compatible import (
     OpenAICompatibleProvider,
     load_provider_configuration,
 )
+from .providers.tracing import LLMRunTrace
 from .validation import MultiFidelityValidator, schedule_hash
 
 
@@ -74,6 +82,16 @@ def _write(payload: Any, path: str | Path) -> Path:
         encoding="utf-8",
     )
     return target
+
+
+def validate_impact_review_route(protocol: str, provider_prefix: str) -> None:
+    """Temporarily prevent a conservative model from gating metric discovery."""
+
+    if protocol == "openai" and provider_prefix.strip().upper() == "DEEPSEEK":
+        raise ValueError(
+            "DeepSeek is temporarily disabled for constraint-impact review; "
+            "use Opus via anthropic or claude-code"
+        )
 
 
 def _evidence_root(context: ProjectContext) -> Path:
@@ -203,6 +221,10 @@ def cmd_compile_semantics_llm(args: argparse.Namespace) -> None:
     provider = OpenAICompatibleProvider(configuration)
     impact_provider = None
     if args.assess_constraint_impact:
+        validate_impact_review_route(
+            args.impact_protocol,
+            args.impact_provider_prefix,
+        )
         if args.impact_protocol == "anthropic":
             impact_provider = AnthropicCompatibleProvider(
                 load_anthropic_configuration(
@@ -261,7 +283,9 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
         print(f"wrote {_write(payload, output)}")
         return
 
-    navigator = OpenAICompatibleProvider(
+    trace_path = args.event_log or f"{output}.events.jsonl"
+    trace = LLMRunTrace(trace_path)
+    navigator_base = OpenAICompatibleProvider(
         load_provider_configuration(
             env_file=args.env_file,
             prefix=args.navigator_provider_prefix,
@@ -270,8 +294,23 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
         ),
         provider_name="semantic-navigator",
     )
-    if args.analyst_protocol == "anthropic":
-        analyst = AnthropicCompatibleProvider(
+    navigator = trace.wrap(navigator_base, label="navigator")
+    if args.analyst_protocol == "claude-code":
+        analyst_base = ClaudeCodeCLIProvider(
+            load_claude_code_configuration(
+                env_file=args.env_file,
+                timeout_seconds=args.timeout,
+                max_budget_usd=args.claude_code_max_budget_usd,
+                base_url_override=args.claude_code_base_url,
+                enable_project_skill=args.claude_code_project_skill,
+                enable_read_tools=args.claude_code_read_mode == "claude",
+                skill_name=args.claude_code_skill_name,
+                read_budget=args.claude_code_read_budget,
+            ),
+            provider_name="semantic-analyst-opus",
+        )
+    elif args.analyst_protocol == "anthropic":
+        analyst_base = AnthropicCompatibleProvider(
             load_anthropic_configuration(
                 env_file=args.env_file,
                 timeout_seconds=args.timeout,
@@ -280,7 +319,7 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
             provider_name="semantic-analyst",
         )
     else:
-        analyst = OpenAICompatibleProvider(
+        analyst_base = OpenAICompatibleProvider(
             load_provider_configuration(
                 env_file=args.env_file,
                 prefix=args.analyst_provider_prefix,
@@ -289,10 +328,29 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
             ),
             provider_name="semantic-analyst",
         )
+    analyst = trace.wrap(analyst_base, label="analyst")
     impact_provider = None
     if args.assess_constraint_impact:
-        if args.impact_protocol == "anthropic":
-            impact_provider = AnthropicCompatibleProvider(
+        validate_impact_review_route(
+            args.impact_protocol,
+            args.impact_provider_prefix,
+        )
+        if args.impact_protocol == "claude-code":
+            impact_base = ClaudeCodeCLIProvider(
+                load_claude_code_configuration(
+                    env_file=args.env_file,
+                    timeout_seconds=args.timeout,
+                    max_budget_usd=args.claude_code_max_budget_usd,
+                    base_url_override=args.claude_code_base_url,
+                    enable_project_skill=args.claude_code_project_skill,
+                    enable_read_tools=args.claude_code_read_mode == "claude",
+                    skill_name=args.claude_code_skill_name,
+                    read_budget=args.claude_code_read_budget,
+                ),
+                provider_name="staged-constraint-impact-opus",
+            )
+        elif args.impact_protocol == "anthropic":
+            impact_base = AnthropicCompatibleProvider(
                 load_anthropic_configuration(
                     env_file=args.env_file,
                     timeout_seconds=args.timeout,
@@ -301,7 +359,7 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
                 provider_name="staged-constraint-impact-critic",
             )
         else:
-            impact_provider = OpenAICompatibleProvider(
+            impact_base = OpenAICompatibleProvider(
                 load_provider_configuration(
                     env_file=args.env_file,
                     prefix=args.impact_provider_prefix,
@@ -310,6 +368,11 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
                 ),
                 provider_name="staged-constraint-impact-critic",
             )
+        impact_provider = trace.wrap(impact_base, label="impact")
+    print(
+        f"LLM event log: {Path(trace_path).expanduser().resolve()}",
+        flush=True,
+    )
     result = compile_project_semantics_staged(
         project_root,
         navigator_provider=navigator,
@@ -322,6 +385,8 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
         memory_database=args.memory_database,
         impact_provider=impact_provider,
         impact_max_output_tokens=args.impact_max_output_tokens,
+        analyst_reasoning_effort=args.analyst_reasoning_effort,
+        impact_reasoning_effort=args.impact_reasoning_effort,
     )
     target = _write(result.model_dump(mode="json"), output)
     print(
@@ -330,7 +395,79 @@ def cmd_compile_semantics_staged(args: argparse.Namespace) -> None:
         f"approved_reads={result.metadata.approved_reads}; "
         f"rejected_reads={result.metadata.rejected_reads}; "
         f"evidence_pass_rate={result.final.evidence_pass_rate:.3f}; "
-        f"review_status={result.review_status}"
+        f"review_status={result.review_status}; event_log={trace_path}"
+    )
+
+
+def cmd_review_constraint_impact(args: argparse.Namespace) -> None:
+    """Re-run only the impact/metric critic over a saved semantic extraction."""
+
+    source = Path(args.semantic_compilation).expanduser().resolve()
+    saved = json.loads(source.read_text(encoding="utf-8"))
+    analysis = SemanticAnalysis.model_validate(saved["final"]["analysis"])
+    packet = RepositoryEvidencePacket.model_validate(saved["final"]["packet"])
+    source_semantic_tokens = int(saved.get("metadata", {}).get("total_tokens", 0))
+    validate_impact_review_route(args.protocol, args.provider_prefix)
+    if args.protocol == "claude-code":
+        base_provider = ClaudeCodeCLIProvider(
+            load_claude_code_configuration(
+                env_file=args.env_file,
+                timeout_seconds=args.timeout,
+                max_budget_usd=args.claude_code_max_budget_usd,
+                base_url_override=args.claude_code_base_url,
+                enable_project_skill=False,
+                enable_read_tools=False,
+            ),
+            provider_name="replay-constraint-impact-opus",
+        )
+    elif args.protocol == "anthropic":
+        base_provider = AnthropicCompatibleProvider(
+            load_anthropic_configuration(
+                env_file=args.env_file,
+                timeout_seconds=args.timeout,
+                max_attempts=args.max_attempts,
+            ),
+            provider_name="replay-constraint-impact-critic",
+        )
+    else:
+        base_provider = OpenAICompatibleProvider(
+            load_provider_configuration(
+                env_file=args.env_file,
+                prefix=args.provider_prefix,
+                timeout_seconds=args.timeout,
+                max_attempts=args.max_attempts,
+            ),
+            provider_name="replay-constraint-impact-critic",
+        )
+    trace_path = args.event_log or f"{args.output}.events.jsonl"
+    provider = LLMRunTrace(trace_path).wrap(base_provider, label="impact-replay")
+    knowledge = SchedulingKnowledgeBase.load(args.knowledge_base)
+    knowledge_hits, engineering_hits = knowledge.retrieve_conditioned_on_analysis(
+        analysis,
+        top_k=4,
+    )
+    report = assess_constraint_impacts_with_llm(
+        analysis,
+        knowledge_hits,
+        provider=provider,
+        engineering_hits=engineering_hits,
+        max_output_tokens=args.max_output_tokens,
+        thinking_mode="enabled",
+        reasoning_effort=args.reasoning_effort,
+    )
+    payload = {
+        "schema_version": "1.0",
+        "comparison_mode": "same_saved_semantics_impact_replay",
+        "source_semantic_compilation": str(source),
+        "source_semantic_tokens": source_semantic_tokens,
+        "report": report.model_dump(mode="json"),
+    }
+    target = _write(payload, args.output)
+    print(
+        f"wrote {target}; model={report.response_model or report.requested_model}; "
+        f"options={len(report.metric_recall.options)}; "
+        f"selected={len(report.secondary_targets)}; "
+        f"critic_tokens={report.usage.total_tokens}; event_log={trace_path}"
     )
 
 
@@ -627,6 +764,15 @@ def cmd_memory_status(args: argparse.Namespace) -> None:
         _write(payload, args.output)
 
 
+def cmd_memory_taxonomy(args: argparse.Namespace) -> None:
+    memory = HierarchicalMemory.open(args.database)
+    profile = memory.resolve_taxonomy(args.node, scope=args.family)
+    payload = profile.model_dump(mode="json")
+    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    if args.output:
+        _write(payload, args.output)
+
+
 def cmd_measure_mechanisms(args: argparse.Namespace) -> None:
     context = load_project(args.project)
     payload = {
@@ -692,8 +838,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     llm_compiler.add_argument(
         "--impact-provider-prefix",
-        default="DEEPSEEK",
-        help="OpenAI-compatible provider prefix when impact protocol is openai",
+        default="SEED",
+        help="OpenAI-compatible provider prefix when impact protocol is openai; DeepSeek is opt-in only",
     )
     llm_compiler.add_argument(
         "--impact-max-output-tokens",
@@ -719,8 +865,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     staged.add_argument(
         "--analyst-protocol",
-        choices=["openai", "anthropic"],
-        default="anthropic",
+        choices=["openai", "anthropic", "claude-code"],
+        default="claude-code",
         help="high-capability provider protocol for batched analysis and synthesis",
     )
     staged.add_argument(
@@ -748,20 +894,105 @@ def build_parser() -> argparse.ArgumentParser:
     staged.add_argument(
         "--assess-constraint-impact",
         action="store_true",
-        help="run an independent high-reasoning critic after final synthesis",
+        help="run an independent structured-choice critic after final synthesis",
     )
     staged.add_argument(
         "--impact-protocol",
-        choices=["openai", "anthropic"],
-        default="anthropic",
+        choices=["openai", "anthropic", "claude-code"],
+        default="claude-code",
+        help="high-recall impact review provider; defaults to Opus through Claude Code",
     )
-    staged.add_argument("--impact-provider-prefix", default="DEEPSEEK")
+    staged.add_argument(
+        "--impact-provider-prefix",
+        default="SEED",
+        help="provider prefix only when impact protocol is openai; DeepSeek is not a default reviewer",
+    )
     staged.add_argument("--impact-max-output-tokens", type=int, default=12000)
     staged.add_argument("--timeout", type=float, default=240.0)
     staged.add_argument("--max-attempts", type=int, default=3)
+    staged.add_argument(
+        "--claude-code-base-url",
+        help="optional official-client relay node; defaults to .env routing",
+    )
+    staged.add_argument(
+        "--claude-code-max-budget-usd",
+        type=float,
+        default=8.0,
+        help="hard Claude Code budget cap per individual call",
+    )
+    staged.add_argument(
+        "--claude-code-project-skill",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="enable the project scheduling code-review Skill with read-only tools",
+    )
+    staged.add_argument(
+        "--claude-code-skill-name",
+        default="scheduling-code-semantics",
+    )
+    staged.add_argument(
+        "--claude-code-read-budget",
+        type=int,
+        default=18,
+        help="read/search budget stated to the Claude Code project Skill",
+    )
+    staged.add_argument(
+        "--claude-code-read-mode",
+        choices=["harness", "claude"],
+        default="harness",
+        help="single authoritative reread path; harness is the default",
+    )
+    staged.add_argument(
+        "--analyst-reasoning-effort",
+        choices=["low", "medium", "high", "xhigh", "max"],
+        default="high",
+    )
+    staged.add_argument(
+        "--impact-reasoning-effort",
+        choices=["low", "medium", "high", "xhigh", "max"],
+        default="high",
+    )
+    staged.add_argument(
+        "--event-log",
+        help="JSONL path for model/stage/batch/round call tracing",
+    )
     staged.add_argument("--dry-run", action="store_true")
     staged.add_argument("--output")
     staged.set_defaults(func=cmd_compile_semantics_staged)
+
+    impact_replay = subparsers.add_parser("review-constraint-impact")
+    impact_replay.add_argument("--semantic-compilation", required=True)
+    impact_replay.add_argument("--output", required=True)
+    impact_replay.add_argument(
+        "--env-file",
+        default=str(LAB_ROOT / ".env"),
+    )
+    impact_replay.add_argument(
+        "--protocol",
+        choices=["openai", "anthropic", "claude-code"],
+        default="claude-code",
+    )
+    impact_replay.add_argument("--provider-prefix", default="SEED")
+    impact_replay.add_argument(
+        "--knowledge-base",
+        default=str(
+            Path(__file__).resolve().parent
+            / "knowledge"
+            / "scheduling_families.json"
+        ),
+    )
+    impact_replay.add_argument("--max-output-tokens", type=int, default=12000)
+    impact_replay.add_argument(
+        "--reasoning-effort",
+        choices=["low", "medium", "high", "xhigh", "max"],
+        default="high",
+    )
+    impact_replay.add_argument("--timeout", type=float, default=240.0)
+    impact_replay.add_argument("--max-attempts", type=int, default=3)
+    impact_replay.add_argument("--claude-code-base-url")
+    impact_replay.add_argument("--claude-code-max-budget-usd", type=float, default=8.0)
+    impact_replay.add_argument("--event-log")
+    impact_replay.set_defaults(func=cmd_review_constraint_impact)
 
     harness = subparsers.add_parser("run-semantic-harness")
     harness.add_argument("--case", required=True)
@@ -904,6 +1135,13 @@ def build_parser() -> argparse.ArgumentParser:
     memory_status.add_argument("--database", default=default_memory)
     memory_status.add_argument("--output")
     memory_status.set_defaults(func=cmd_memory_status)
+
+    memory_taxonomy = subparsers.add_parser("memory-taxonomy")
+    memory_taxonomy.add_argument("--database", default=default_memory)
+    memory_taxonomy.add_argument("--node", required=True)
+    memory_taxonomy.add_argument("--family")
+    memory_taxonomy.add_argument("--output")
+    memory_taxonomy.set_defaults(func=cmd_memory_taxonomy)
 
     mechanisms = subparsers.add_parser("measure-mechanisms")
     mechanisms.add_argument("--project", required=True)

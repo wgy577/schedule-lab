@@ -1,56 +1,53 @@
 # 文档目录
 
-项目的两个最高优先级维护入口位于仓库根目录：
+> **所属范围**：跨模块文档治理  
+> **归档规则**：每篇文档必须指定一个主模块；跨模块总览进入 `cross_module/`；交叉检索进入 `intersections/`。  
+> **维护触发**：文件新增、改名、职责变化或架构节点变化时同步更新本页。
+
+项目最高优先级维护入口：
 
 - [项目状态与持续路线图](../PROJECT_STATUS_AND_ROADMAP.md)
-- [两层项目模块图](../PROJECT_MODULE_GRAPH.md)
+- [三层项目模块图](../PROJECT_MODULE_GRAPH.md)
 - [可缩放项目模块图](../PROJECT_MODULE_GRAPH_INTERACTIVE.html)
 
-`docs/` 下按职责分为四类：
+## A–H 模块目录
 
-## architecture
+| 模块 | 职责 | 文档入口 |
+|---|---|---|
+| A | 项目输入与证据 | [Module A](modules/module_a_input_evidence/README.md) |
+| B | 语义理解与知识记忆 | [Module B](modules/module_b_semantics_memory/README.md) |
+| C | 统一调度表示与项目适配 | [Module C](modules/module_c_ir_adapters/README.md) |
+| D | 诊断与因果机制 | [Module D](modules/module_d_diagnosis_causality/README.md) |
+| E | Agent 决策与候选生成 | [Module E](modules/module_e_candidate_generation/README.md) |
+| F | 求解与多保真验证 | [Module F](modules/module_f_validation_oracles/README.md) |
+| G | 严格接受与回退 | [Module G](modules/module_g_acceptance_rollback/README.md) |
+| H | 实验记忆与统计 | [Module H](modules/module_h_experiments_statistics/README.md) |
 
-系统结构、平台计划、因果模块、长期记忆、公式状态和需求追踪：
+跨模块文档：
 
-- [系统详细架构](architecture/SYSTEM_ARCHITECTURE.md)
-- [Agent 平台壳计划](architecture/AGENT_PLATFORM_WORKPLAN.md)
-- [因果模块实施计划](architecture/CAUSAL_MODULE_WORKPLAN.md)
-- [长期记忆与因果机制](architecture/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md)
-- [数学公式实现矩阵](architecture/FORMULA_IMPLEMENTATION_MATRIX.md)
-- [原框架追踪矩阵](architecture/TRACEABILITY.md)
-- [框架需求基线](architecture/FRAMEWORK_REQUIREMENTS.md)
+- [第一阶段收口与第二阶段 Agentic 排程优化实施说明](cross_module/STEP1_COMPLETION_AND_AGENTIC_SCHEDULING_STEP2.md)
+- [新窗口交接文档](cross_module/NEXT_WINDOW_HANDOFF.md)
+- [系统详细架构](cross_module/SYSTEM_ARCHITECTURE.md)
+- [数学公式实现矩阵](cross_module/FORMULA_IMPLEMENTATION_MATRIX.md)
+- [原框架追踪矩阵](cross_module/TRACEABILITY.md)
 
-## semantics
+## 按模块交叉关系检索
 
-LLM 项目理解、知识检索、盲测、模型比较与人工核验：
+[跨模块交叉索引](intersections/README.md)按 A × B、A × B × H、B × D、B × H、
+B × D × H、D × E × F × H 和 A–H 全局关系分类。同一正文不复制，只从不同交叉
+入口引用。
 
-- [LLM 语义编译器](semantics/LLM_SEMANTIC_COMPILER.md)
-- [无论文/碎片文档语义学习](semantics/CODE_ONLY_SEMANTIC_LEARNING.md)
-- [LLM 语义盲测 Harness](semantics/LLM_SEMANTIC_HARNESS.md)
-- [L2D 多模型比较](semantics/L2D_MODEL_COMPARISON_REPORT.md)
-- [L2D 论文—代码人工核验](semantics/L2D_PAPER_CODE_HUMAN_VERIFICATION.md)
-- [调度语义知识与影响权重](semantics/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md)
+测试文件的模块、能力、层级和成本标签见
+[`tests/README.md`](../tests/README.md)及唯一注册表
+[`tests/test_registry.json`](../tests/test_registry.json)。
 
-## experiments
+## 强制维护规则
 
-实验设计、数据划分、对照、统计和复现规则：
-
-- [实验协议](experiments/EXPERIMENT_PROTOCOL.md)
-
-已经执行的实验结果仍统一记录在根目录 [EXPERIMENTS.md](../EXPERIMENTS.md)。
-
-## guides
-
-面向使用者和新项目接入的操作说明：
-
-- [项目适配指南](guides/ADAPTER_GUIDE.md)
-
-## 维护约束
-
-1. 当前状态与未来任务优先更新根目录 `PROJECT_STATUS_AND_ROADMAP.md`；
-2. 大模块、内部实现或数据流变化更新根目录 `PROJECT_MODULE_GRAPH.md`；
-3. 专题细节再进入对应一级分类目录；
-4. 已执行实验只写入 `EXPERIMENTS.md`，规划不能冒充结果；
-5. 文件移动或重命名后必须运行项目文档审计和链接检查。
-6. 模块、状态、数据流或实现细节变化时，Markdown 图、交互图和仍在使用的其他
-   项目图片必须在同一轮修改中同步更新。
+1. 新文档必须放入唯一主模块目录，并在标题后标明模块、文档职责和维护触发条件；
+2. 同时覆盖多个模块的总览、公式矩阵和追踪表进入 `cross_module/`；
+3. 涉及两个及以上模块的正文必须声明 `交叉分类`，并加入对应的 `intersections/` 索引；
+4. 状态与未来任务更新根目录 `PROJECT_STATUS_AND_ROADMAP.md`；
+5. 大模块、数据流或实现节点变化同步更新两种项目图；
+6. 已执行实验写入根目录 `EXPERIMENTS.md`，规划不能冒充结果；
+7. 新增测试文件前先检索标签注册表并扩展既有测试；确需新建时必须登记；
+8. 移动文件后必须运行 Markdown 链接检查和完整测试。

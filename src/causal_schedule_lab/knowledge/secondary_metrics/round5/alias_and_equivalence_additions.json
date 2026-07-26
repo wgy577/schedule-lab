@@ -1,0 +1,71 @@
+{
+  "schema_version": "round5.incremental.1",
+  "relations": [
+    {
+      "candidate_id": "batch_formation_wait_time",
+      "relation": "narrower_than",
+      "other_candidate_id": "interoperation_wait_total",
+      "note": "Only the portion attributed to waiting for batch formation."
+    },
+    {
+      "candidate_id": "sublot_merge_wait_time",
+      "relation": "narrower_than",
+      "other_candidate_id": "synchronization_wait_total",
+      "note": "Requires explicit sublot merge or joint-completion gate."
+    },
+    {
+      "candidate_id": "work_in_process_area",
+      "relation": "not_equivalent_to",
+      "other_candidate_id": "buffer_occupancy_area",
+      "note": "WIP includes jobs in processing and queues; buffer occupancy is location/capacity specific."
+    },
+    {
+      "candidate_id": "reentrant_revisit_queue_wait",
+      "relation": "narrower_than",
+      "other_candidate_id": "interoperation_wait_total",
+      "note": "Only repeated-stage visits with visit index > 1."
+    },
+    {
+      "candidate_id": "worker_transfer_delay_total",
+      "relation": "causal_component_of",
+      "other_candidate_id": "auxiliary_resource_wait_total",
+      "note": "Transfer occupies a worker and may cause readiness waiting, but is not identical to task waiting."
+    },
+    {
+      "candidate_id": "worker_workload_cv",
+      "relation": "resource_specific_analogue_of",
+      "other_candidate_id": "machine_workload_cv",
+      "note": "Do not combine without capacity/efficiency normalization."
+    },
+    {
+      "candidate_id": "fixture_loading_unloading_time_total",
+      "relation": "decomposes",
+      "other_candidate_id": "total_setup_time",
+      "note": "Use only where setup is explicitly fixture loading/unloading."
+    },
+    {
+      "candidate_id": "agv_charging_wait_time",
+      "relation": "distinct_component_of",
+      "other_candidate_id": "machine_vehicle_sync_wait",
+      "note": "Charging-attributed task waiting is a cause-specific subset; overlap policy is required."
+    },
+    {
+      "candidate_id": "assembly_component_sync_wait",
+      "relation": "narrower_than",
+      "other_candidate_id": "synchronization_wait_total",
+      "note": "Component-level waiting at an assembly gate."
+    },
+    {
+      "candidate_id": "scenario_infeasibility_rate",
+      "relation": "complements",
+      "other_candidate_id": "makespan_service_level",
+      "note": "Feasibility across scenarios differs from meeting a makespan threshold."
+    },
+    {
+      "candidate_id": "rescheduling_event_count",
+      "relation": "complements",
+      "other_candidate_id": "recovery_duration",
+      "note": "Frequency of revisions and time to recover capture different policy behavior."
+    }
+  ]
+}

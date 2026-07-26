@@ -11,6 +11,11 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..semantic_knowledge import SchedulingKnowledgeBase
+from ..taxonomy import (
+    ResolvedTaxonomyProfile,
+    SchedulingTaxonomy,
+    VariantHeadSelection,
+)
 from .graph_store import EvidenceChunk, GraphEdge, GraphNode, SQLiteGraphStore
 
 
@@ -59,6 +64,7 @@ class HierarchicalMemory:
         mechanism_path: str | Path | None = None,
     ) -> IngestionReport:
         knowledge = SchedulingKnowledgeBase.load(knowledge_path)
+        taxonomy = SchedulingTaxonomy.from_knowledge_base(knowledge)
         mechanisms_source = (
             Path(mechanism_path).expanduser().resolve()
             if mechanism_path
@@ -69,7 +75,25 @@ class HierarchicalMemory:
         mechanisms = json.loads(mechanisms_source.read_text(encoding="utf-8"))
         nodes = edges = evidence = aliases = 0
 
-        source_map = {item.id: item for item in knowledge.document.sources}
+        root = taxonomy.get(SchedulingTaxonomy.ROOT_ID)
+        assert root is not None
+        nodes += self.store.upsert_node(
+            GraphNode(
+                canonical_id=root.id,
+                node_type=root.node_type,
+                name=root.name,
+                summary="Shared inheritance root for shop-scheduling knowledge.",
+                review_status="active",
+                metadata={
+                    "taxonomy_level": root.level,
+                    "local_delta": root.local_delta,
+                },
+            )
+        )
+        for alias in (root.name, *root.aliases):
+            self.store.add_alias(alias, root.id)
+            aliases += 1
+
         for source in knowledge.document.sources:
             source_id = f"source:{source.id}"
             nodes += self.store.upsert_node(
@@ -101,6 +125,8 @@ class HierarchicalMemory:
 
         for family in knowledge.document.families:
             family_id = f"family:{family.family}"
+            taxonomy_family = taxonomy.get(family_id)
+            assert taxonomy_family is not None
             nodes += self.store.upsert_node(
                 GraphNode(
                     canonical_id=family_id,
@@ -110,10 +136,21 @@ class HierarchicalMemory:
                     review_status="active",
                     source_ids=family.source_ids,
                     metadata={
-                        "defining_features": family.defining_features,
-                        "primary_decisions": family.primary_decisions,
-                        "default_assumptions": family.default_assumptions,
+                        "taxonomy_level": taxonomy_family.level,
+                        "local_delta": taxonomy_family.local_delta,
                     },
+                )
+            )
+            edges += self.store.upsert_edge(
+                GraphEdge(
+                    edge_id=_edge_id(
+                        family_id, "inherits_from", SchedulingTaxonomy.ROOT_ID
+                    ),
+                    source_id=family_id,
+                    relation="inherits_from",
+                    target_id=SchedulingTaxonomy.ROOT_ID,
+                    review_status="active",
+                    source_ids=family.source_ids,
                 )
             )
             for alias in (family.family, *family.aliases):
@@ -198,6 +235,8 @@ class HierarchicalMemory:
 
             for variant in family.common_variants:
                 variant_id = f"variant:{variant.id}"
+                taxonomy_variant = taxonomy.get(variant_id)
+                assert taxonomy_variant is not None
                 nodes += self.store.upsert_node(
                     GraphNode(
                         canonical_id=variant_id,
@@ -208,8 +247,8 @@ class HierarchicalMemory:
                         review_status="active",
                         source_ids=family.source_ids,
                         metadata={
-                            "added_features": variant.added_features,
-                            "decision_changes": variant.decision_changes,
+                            "taxonomy_level": taxonomy_variant.level,
+                            "local_delta": taxonomy_variant.local_delta,
                         },
                     )
                 )
@@ -218,6 +257,19 @@ class HierarchicalMemory:
                         edge_id=_edge_id(variant_id, "variant_of", family_id),
                         source_id=variant_id,
                         relation="variant_of",
+                        target_id=family_id,
+                        scope=family.family,
+                        review_status="active",
+                        source_ids=family.source_ids,
+                    )
+                )
+                edges += self.store.upsert_edge(
+                    GraphEdge(
+                        edge_id=_edge_id(
+                            variant_id, "inherits_from", family_id
+                        ),
+                        source_id=variant_id,
+                        relation="inherits_from",
                         target_id=family_id,
                         scope=family.family,
                         review_status="active",
@@ -245,6 +297,50 @@ class HierarchicalMemory:
                         node_ids=(family_id, variant_id),
                     )
                 )
+
+            classic = taxonomy.get(f"variant:{family.family.lower()}_classic")
+            assert classic is not None
+            classic_id = classic.id
+            nodes += self.store.upsert_node(
+                GraphNode(
+                    canonical_id=classic_id,
+                    node_type="Variant",
+                    name=classic.name,
+                    summary="Classical family baseline with no extra variant delta.",
+                    scope=family.family,
+                    review_status="active",
+                    source_ids=family.source_ids,
+                    metadata={
+                        "taxonomy_level": classic.level,
+                        "local_delta": classic.local_delta,
+                    },
+                )
+            )
+            edges += self.store.upsert_edge(
+                GraphEdge(
+                    edge_id=_edge_id(classic_id, "inherits_from", family_id),
+                    source_id=classic_id,
+                    relation="inherits_from",
+                    target_id=family_id,
+                    scope=family.family,
+                    review_status="active",
+                    source_ids=family.source_ids,
+                )
+            )
+            edges += self.store.upsert_edge(
+                GraphEdge(
+                    edge_id=_edge_id(classic_id, "variant_of", family_id),
+                    source_id=classic_id,
+                    relation="variant_of",
+                    target_id=family_id,
+                    scope=family.family,
+                    review_status="active",
+                    source_ids=family.source_ids,
+                )
+            )
+            for alias in (classic.name, *classic.aliases):
+                self.store.add_alias(alias, classic_id, scope=family.family)
+                aliases += 1
 
         for pattern in knowledge.document.engineering_patterns:
             pattern_id = f"pattern:{pattern.id}"
@@ -370,6 +466,113 @@ class HierarchicalMemory:
             changed_edges=edges,
             changed_evidence=evidence,
             aliases_processed=aliases,
+        )
+
+    def resolve_taxonomy(
+        self, node_or_alias: str, *, scope: str | None = None
+    ) -> ResolvedTaxonomyProfile:
+        """Merge only local deltas along the SQL inheritance chain."""
+
+        candidates = (
+            (node_or_alias,)
+            if self.store.get_nodes((node_or_alias,))
+            else self.store.resolve_alias(node_or_alias, scope=scope)
+        )
+        if not candidates:
+            raise KeyError(f"unknown taxonomy node or alias: {node_or_alias}")
+        current_id = candidates[0]
+        lineage: list[GraphNode] = []
+        visited: set[str] = set()
+        while True:
+            if current_id in visited:
+                raise ValueError(f"taxonomy inheritance cycle at {current_id}")
+            visited.add(current_id)
+            rows = self.store.get_nodes((current_id,))
+            if not rows:
+                raise KeyError(f"missing taxonomy node: {current_id}")
+            lineage.append(rows[0])
+            parents = self.store.get_edges(
+                source_ids=(current_id,),
+                relation="inherits_from",
+            )
+            if not parents:
+                break
+            if len(parents) != 1:
+                raise ValueError(
+                    f"taxonomy node {current_id} has {len(parents)} parents"
+                )
+            current_id = parents[0].target_id
+        lineage.reverse()
+        resolved: dict[str, Any] = {}
+        contributions: dict[str, dict[str, Any]] = {}
+        for node in lineage:
+            delta = dict(node.metadata.get("local_delta", {}))
+            contributions[node.canonical_id] = delta
+            for key, value in delta.items():
+                if isinstance(value, list):
+                    prior = list(resolved.get(key, ()))
+                    unique: list[Any] = []
+                    seen: set[str] = set()
+                    for item in (*prior, *value):
+                        marker = json.dumps(
+                            item, ensure_ascii=False, sort_keys=True
+                        )
+                        if marker not in seen:
+                            seen.add(marker)
+                            unique.append(item)
+                    resolved[key] = tuple(unique)
+                elif isinstance(value, dict) and isinstance(
+                    resolved.get(key), dict
+                ):
+                    resolved[key] = {**resolved[key], **value}
+                else:
+                    resolved[key] = value
+        return ResolvedTaxonomyProfile(
+            node_id=lineage[-1].canonical_id,
+            lineage=tuple(item.canonical_id for item in lineage),
+            resolved=resolved,
+            contributions=contributions,
+        )
+
+    def select_taxonomy_variant(
+        self, family: str, text: str
+    ) -> VariantHeadSelection:
+        """Select one L3 child by salient heads, with classic as fallback."""
+
+        family_profile = self.resolve_taxonomy(family)
+        family_id = family_profile.node_id
+        normalized = text.casefold()
+        children = self.store.get_edges(
+            target_ids=(family_id,), relation="inherits_from"
+        )
+        ranked: list[tuple[int, int, str, tuple[str, ...]]] = []
+        for edge in children:
+            rows = self.store.get_nodes((edge.source_id,))
+            if not rows:
+                continue
+            delta = rows[0].metadata.get("local_delta", {})
+            heads = tuple(delta.get("recognition_heads", ()))
+            matched = tuple(head for head in heads if head.casefold() in normalized)
+            if matched:
+                ranked.append(
+                    (len(matched), max(map(len, matched)), edge.source_id, matched)
+                )
+        if ranked:
+            count, _, node_id, matched = max(
+                ranked, key=lambda item: (item[0], item[1], item[2])
+            )
+            return VariantHeadSelection(
+                family=family,
+                selected_node_id=node_id,
+                matched_heads=matched,
+                score=count,
+                fallback_to_classic=False,
+            )
+        return VariantHeadSelection(
+            family=family,
+            selected_node_id=f"variant:{family.lower()}_classic",
+            score=0,
+            fallback_to_classic=True,
         )
 
     def ingest_external_document(

@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "description": "Sparse, salient routing heads. They select one concrete L3 branch; they are not a prompt-time catalogue of every sibling variant.",
+  "heads": {
+    "jsp_release_dates_dynamic": ["dynamic jsp", "release date", "job arrival", "rescheduling", "machine breakdown", "动态作业车间", "释放时间", "到达时间", "重调度"],
+    "jsp_setup": ["sequence-dependent setup", "setup time", "changeover", "换型", "准备时间"],
+    "jsp_transport": ["agv", "transport time", "vehicle routing", "运输时间", "搬运", "路径规划"],
+    "jsp_no_wait_blocking": ["no-wait", "no wait", "blocking", "zero buffer", "无等待", "阻塞"],
+    "jsp_dual_resource": ["dual resource", "worker constraint", "operator", "双资源", "人员约束", "工人"],
+    "jsp_stochastic_robust": ["stochastic processing time", "processing-time uncertainty", "robust scheduling", "fuzzy processing time", "随机加工时间", "不确定加工时间", "鲁棒调度"],
+
+    "pfsp": ["permutation flow shop", "permutation flowshop", "same job sequence on every machine", "pfsp", "置换流水车间", "各机器相同工件顺序"],
+    "npfsp": ["non-permutation flow shop", "non permutation flow shop", "machine-dependent job sequence", "npfsp", "非置换流水车间", "机器独立排序"],
+    "fsp_no_wait_blocking": ["no-wait flow shop", "blocking flow shop", "limited buffer", "无等待流水车间", "阻塞流水车间", "有限缓冲"],
+    "fsp_setup": ["sequence-dependent setup", "setup time", "changeover", "换型", "准备时间"],
+    "distributed_fsp": ["distributed flow shop", "multiple factories", "factory assignment", "dpfsp", "分布式流水车间", "工厂分配"],
+    "reentrant_fsp": ["reentrant flow shop", "re-entrant flow shop", "revisit stage", "重入流水车间", "回流"],
+
+    "hfsp_unrelated_eligibility": ["unrelated parallel machine", "machine eligibility", "eligible machine set", "异构并行机", "机器资格"],
+    "hfsp_blocking_buffer": ["blocking hybrid flow shop", "limited buffer", "finite buffer", "阻塞混合流水车间", "有限缓冲"],
+    "hfsp_setup": ["sequence-dependent setup", "machine-dependent setup", "changeover", "换型", "准备时间"],
+    "hfsp_no_wait": ["no-wait hybrid flow shop", "no wait hybrid flow shop", "无等待混合流水车间"],
+    "hfsp_batch": ["batch processing machine", "batching", "批处理机", "成批加工"],
+    "hfsp_transport": ["agv", "transport time", "vehicle routing", "运输时间", "搬运路径"],
+
+    "partial_total_fjsp": ["partial flexibility", "total flexibility", "flexibility degree", "部分柔性", "完全柔性", "柔性度"],
+    "dynamic_fjsp": ["dynamic fjsp", "new job arrival", "machine breakdown", "dynamic rescheduling", "动态柔性作业车间", "新作业到达", "机器故障", "动态重调度"],
+    "distributed_fjsp": ["distributed fjsp", "distributed flexible job shop", "multiple factories", "factory assignment", "dfjsp", "分布式柔性作业车间", "多工厂"],
+    "fjsp_transport": ["agv", "transport time", "vehicle routing", "collision avoidance", "运输时间", "牵引车", "搬运路径", "避碰"],
+    "fjsp_dual_resource": ["dual resource", "worker constraint", "operator", "tool constraint", "双资源", "人员约束", "工具约束"],
+    "fjsp_setup_maintenance": ["sequence-dependent setup", "preventive maintenance", "machine maintenance", "换型时间", "预防性维护", "机器维护"],
+    "fjsp_energy_multiobjective": ["energy consumption", "carbon emission", "multi-objective fjsp", "能耗", "碳排放", "多目标柔性作业车间"],
+    "fjsp_stochastic_robust": ["stochastic processing time", "processing-time uncertainty", "robust fjsp", "fuzzy processing time", "随机加工时间", "不确定加工时间", "鲁棒柔性作业车间"]
+  }
+}
