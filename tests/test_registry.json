@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "policy": "Reuse or minimally extend a registered test before creating a new test file.",
+  "tests": {
+    "test_claude_code_provider.py": {"modules": ["B"], "capabilities": ["claude_code_provider", "skill_routing"], "level": "unit", "cost": "low"},
+    "test_core_ir_and_solvers.py": {"modules": ["C", "F"], "capabilities": ["canonical_ir", "dispatching", "cp_sat", "hard_constraints"], "level": "integration", "cost": "medium"},
+    "test_end_to_end.py": {"modules": ["C", "E", "F", "G"], "capabilities": ["controller", "end_to_end", "rollback"], "level": "system", "cost": "medium"},
+    "test_learning_and_posterior.py": {"modules": ["E", "H"], "capabilities": ["multitask_learning", "posterior"], "level": "unit", "cost": "medium"},
+    "test_llm_provider.py": {"modules": ["B"], "capabilities": ["llm_provider", "reasoning_protocol", "retry", "cli_model_routing"], "level": "unit", "cost": "low"},
+    "test_llm_semantics.py": {"modules": ["A", "B"], "capabilities": ["evidence_packet", "semantic_schema", "schema_repair"], "level": "integration", "cost": "low"},
+    "test_llm_tracing.py": {"modules": ["B", "H"], "capabilities": ["llm_trace", "token_accounting", "error_audit"], "level": "unit", "cost": "low"},
+    "test_memory_and_mechanisms.py": {"modules": ["B", "D", "H"], "capabilities": ["long_term_memory", "mechanism_metrics", "posterior"], "level": "integration", "cost": "low"},
+    "test_research_pipeline.py": {"modules": ["D", "E", "F", "H"], "capabilities": ["candidate_generation", "action_mask", "statistics"], "level": "integration", "cost": "medium"},
+    "test_semantic_agent.py": {"modules": ["A", "B"], "capabilities": ["navigator", "read_gate", "staged_semantics", "schema_repair"], "level": "integration", "cost": "low"},
+    "test_semantic_compiler.py": {"modules": ["A", "B", "C"], "capabilities": ["semantic_compiler", "evidence_gate"], "level": "unit", "cost": "low"},
+    "test_semantic_graph_and_taxonomy.py": {"modules": ["B", "D"], "capabilities": ["semantic_graph", "taxonomy", "variant_head_router"], "level": "integration", "cost": "low"},
+    "test_semantic_harness.py": {"modules": ["A", "B", "H"], "capabilities": ["blind_harness", "leakage_control", "artifact_filter"], "level": "integration", "cost": "low"},
+    "test_semantic_knowledge_and_impact.py": {"modules": ["B", "D"], "capabilities": ["knowledge_retrieval", "constraint_impact", "secondary_metric_catalog"], "level": "integration", "cost": "low"}
+  }
+}

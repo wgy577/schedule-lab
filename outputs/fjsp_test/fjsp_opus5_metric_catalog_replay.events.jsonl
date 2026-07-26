@@ -1,0 +1,1 @@
+{"timestamp": "2026-07-26T09:54:24.877944+00:00", "status": "started", "call_id": "impact-replay-0001", "provider": "replay-constraint-impact-opus", "model": "claude-opus-5", "task": "constraint_impact_critic", "batch": "-", "round": "-", "repair": 0, "skill": "-"}

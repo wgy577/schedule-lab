@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "status": "pending_human_review",
+  "project_summary": "Static deterministic offline FJSP with makespan minimization. Joint machine assignment and operation sequencing. All jobs release at time zero. The training environment applies a non-delay action mask that restricts scheduling to immediate-start actions, potentially excluding optimal solutions. OR-Tools CP-SAT is used as a reference solver without this restriction.",
+  "impacts": [
+    {
+      "constraint_id": "constraint_1",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "medium",
+      "objective_sensitivity": "medium",
+      "candidate_discrimination": "very_low",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "consider",
+      "diagnosis_attention": "consider",
+      "rationale": "Precedence constraints are fundamental to JSP/FJSP, defining the allowable operation order within each job. Although they do not discriminate among feasible schedules, they shape the critical path and affect how sequencing decisions propagate, thereby indirectly influencing makespan.",
+      "knowledge_refs": [
+        "JSP",
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.5,
+      "objective_sensitivity_score": 0.5,
+      "candidate_discrimination_score": 0.1
+    },
+    {
+      "constraint_id": "constraint_2",
+      "role": "decision_lever",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "high",
+      "objective_sensitivity": "high",
+      "candidate_discrimination": "high",
+      "controllability": "direct",
+      "variation_across_candidates": "decision_dependent",
+      "validation": "required",
+      "optimization_attention": "required",
+      "diagnosis_attention": "consider",
+      "rationale": "Resource eligibility defines the machines each operation can use. Choosing among them is a direct decision with high impact on processing time and workload balance, both critical to makespan. Different solvers may exploit this flexibility differently.",
+      "knowledge_refs": [
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.75,
+      "objective_sensitivity_score": 0.75,
+      "candidate_discrimination_score": 0.75
+    },
+    {
+      "constraint_id": "constraint_3",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "very_low",
+      "objective_sensitivity": "very_low",
+      "candidate_discrimination": "very_low",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "deprioritize",
+      "diagnosis_attention": "deprioritize",
+      "rationale": "Choice binding ensures each operation gets exactly one machine. This is a basic combinatorial requirement satisfied by all feasible schedules and does not offer optimization advantage or candidate differentiation.",
+      "knowledge_refs": [
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.1,
+      "objective_sensitivity_score": 0.1,
+      "candidate_discrimination_score": 0.1
+    },
+    {
+      "constraint_id": "constraint_4",
+      "role": "feasibility_guard",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "critical",
+      "decision_leverage": "high",
+      "objective_sensitivity": "high",
+      "candidate_discrimination": "high",
+      "controllability": "indirect",
+      "variation_across_candidates": "decision_dependent",
+      "validation": "required",
+      "optimization_attention": "consider",
+      "diagnosis_attention": "consider",
+      "rationale": "No-overlap on machines forces the sequencing of operations, making order decisions a key optimization lever. Different sequences lead to different machine idle times and critical path lengths, heavily affecting makespan.",
+      "knowledge_refs": [
+        "JSP",
+        "FJSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 1.0,
+      "decision_leverage_score": 0.75,
+      "objective_sensitivity_score": 0.75,
+      "candidate_discrimination_score": 0.75
+    },
+    {
+      "constraint_id": "constraint_5",
+      "role": "implementation_only",
+      "context_scope": "project_specific",
+      "feasibility_criticality": "very_low",
+      "decision_leverage": "low",
+      "objective_sensitivity": "low",
+      "candidate_discrimination": "low",
+      "controllability": "external",
+      "variation_across_candidates": "decision_dependent",
+      "validation": "not_required",
+      "optimization_attention": "deprioritize",
+      "diagnosis_attention": "consider",
+      "rationale": "The non-delay action mask is an environment-side heuristic that restricts choices to immediate-start actions, approximating non-delay schedules. It is not a problem constraint and may prevent optimal solutions requiring deliberate delays. Its impact on solution quality is limited and solver-dependent.",
+      "knowledge_refs": [],
+      "confidence": "medium",
+      "feasibility_score": 0.1,
+      "decision_leverage_score": 0.25,
+      "objective_sensitivity_score": 0.25,
+      "candidate_discrimination_score": 0.25
+    },
+    {
+      "constraint_id": "constraint_6",
+      "role": "fixed_instance_structure",
+      "context_scope": "classical_family",
+      "feasibility_criticality": "very_low",
+      "decision_leverage": "none",
+      "objective_sensitivity": "none",
+      "candidate_discrimination": "none",
+      "controllability": "fixed",
+      "variation_across_candidates": "constant_across_candidates",
+      "validation": "required",
+      "optimization_attention": "exclude",
+      "diagnosis_attention": "deprioritize",
+      "rationale": "All jobs release at time zero, rendering release time a degenerate constraint. It does not influence makespan or differentiate candidates, but it must be validated as a hard constraint for completeness.",
+      "knowledge_refs": [
+        "JSP"
+      ],
+      "confidence": "high",
+      "feasibility_score": 0.1,
+      "decision_leverage_score": 0.0,
+      "objective_sensitivity_score": 0.0,
+      "candidate_discrimination_score": 0.0
+    }
+  ],
+  "secondary_targets": [
+    {
+      "id": "secondary_1",
+      "kind": "machine_selection_processing_time_increment",
+      "statement": "机器选择加工时间增量",
+      "measurement_definition": "各工序已选机器加工时间减去该工序候选机器最短加工时间，再对全部工序求和。",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "direct",
+      "controllability": "direct",
+      "availability": "needs_adapter",
+      "source_constraint_ids": [
+        "constraint_2"
+      ],
+      "rationale": "This metric sums the extra processing time incurred by machine choices over the fastest possible machine per operation. Minimizing it reduces total work, lowering the makespan lower bound."
+    },
+    {
+      "id": "secondary_2",
+      "kind": "maximum_machine_workload",
+      "statement": "最大机器工作负荷",
+      "measurement_definition": "对每台机器累计分配给它的工序加工时间，再取所有机器中的最大值。",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "direct",
+      "controllability": "indirect",
+      "availability": "computable",
+      "source_constraint_ids": [
+        "constraint_2",
+        "constraint_4"
+      ],
+      "rationale": "Balancing the total processing time assigned to each machine reduces the maximum workload, which is a lower bound for makespan."
+    },
+    {
+      "id": "secondary_3",
+      "kind": "critical_resource_internal_idle_time",
+      "statement": "关键资源内部空闲时间",
+      "measurement_definition": "关键资源上按开始时间排序后，相邻工序之间 max(0, start[i+1]-end[i]) 的总和；不含首工序开始前和末工序结束后的空闲。",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "relation_to_primary_objective": "mediated",
+      "controllability": "indirect",
+      "availability": "needs_adapter",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_4"
+      ],
+      "rationale": "Idle time on the machine that finishes last (critical resource) directly adds to makespan. Good sequencing decisions can reduce this idle time."
+    }
+  ],
+  "diagnostic_targets": [
+    {
+      "id": "diagnostic_1",
+      "kind": "eligibility_integrity",
+      "statement": "All scheduled operations must be assigned to a machine in their eligible set (op_pt != 0).",
+      "check": "For each scheduled operation, verify that the assigned machine's processing time is non-zero in the original instance data.",
+      "source_constraint_ids": [
+        "constraint_2"
+      ],
+      "rationale": "This ensures the schedule respects machine eligibility, a fundamental feasibility requirement."
+    },
+    {
+      "id": "diagnostic_2",
+      "kind": "oracle_reference_validity",
+      "statement": "Verify that OR-Tools solutions satisfy all constraints and the computation time limit, and that the reported makespan is correct.",
+      "check": "Parse OR-Tools output, check that all constraints are met (precedence, eligibility, assignment, no-overlap), that the solver terminated within the time limit, and that the makespan equals the maximum end time.",
+      "source_constraint_ids": [
+        "constraint_1",
+        "constraint_2",
+        "constraint_3",
+        "constraint_4"
+      ],
+      "rationale": "OR-Tools is used as a reference; its correctness is crucial for gap computation and comparison."
+    },
+    {
+      "id": "diagnostic_3",
+      "kind": "objective_lower_bound_fidelity",
+      "statement": "The lower bound used in reward shaping (max(op_ct_lb)) should be a valid lower bound for makespan.",
+      "check": "Compute the max of the minimum processing times per operation (considering eligibility). Compare with the OR-Tools makespan; it must be less than or equal to the optimal makespan.",
+      "source_constraint_ids": [
+        "constraint_2",
+        "constraint_3",
+        "constraint_4"
+      ],
+      "rationale": "The reward shaping relies on a valid lower bound for effective learning; an invalid bound could mislead training."
+    }
+  ],
+  "excluded_non_scheduling_items": [],
+  "unresolved_questions": [
+    "Potential inconsistency between environment processing time normalization and OR-Tools' use of raw times could affect comparability and reward fidelity. Need to verify and align."
+  ],
+  "overall_confidence": "medium",
+  "assessment_kind": "structured_llm_prior",
+  "empirically_validated": false,
+  "provider": "metric-critic-deepseek",
+  "requested_model": "deepseek-v4-pro",
+  "response_model": "deepseek-v4-pro",
+  "usage": {
+    "input_tokens": 9569,
+    "output_tokens": 8633,
+    "total_tokens": 18202
+  },
+  "latency_seconds": 115.96682841599977
+}

@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=E,H; capabilities=multitask_learning,posterior; level=unit; cost=medium
 import torch
 
 from causal_schedule_lab.learning import (

@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=B,D,H; capabilities=long_term_memory,mechanism_metrics,posterior; level=integration; cost=low
 from pathlib import Path
 
 from causal_schedule_lab.benchmarks import example_problems
@@ -76,11 +77,11 @@ def test_mechanism_measurements_are_deterministic_and_do_not_invent_metadata() -
     by_id = {item.mechanism_id: item for item in first}
 
     assert first == second
-    assert by_id["critical_resource_idle_gap"].available
-    assert by_id["critical_path_length"].available
-    assert by_id["critical_operation_waiting"].available
-    assert not by_id["critical_setup_overhead"].available
-    assert not by_id["transport_synchronization_delay"].available
+    assert by_id["critical_resource_internal_idle_time"].available
+    assert by_id["realized_schedule_critical_path_length"].available
+    assert by_id["operation_ready_to_start_waiting_time"].available
+    assert not by_id["total_sequence_dependent_setup_time"].available
+    assert not by_id["transport_induced_waiting_time"].available
 
 
 def test_candidate_variation_and_control_are_hard_eligibility_gates() -> None:
@@ -118,7 +119,7 @@ def test_intervention_memory_and_conservative_posterior(tmp_path: Path) -> None:
             state_hash="state",
             operator_id="swap",
             factor_id="machine_sequence",
-            mechanism_id="critical_resource_idle_gap",
+            mechanism_id="critical_resource_internal_idle_time",
             mechanism_delta=mechanism_delta,
             objective_gain=gain,
             valid=valid,
@@ -136,7 +137,7 @@ def test_intervention_memory_and_conservative_posterior(tmp_path: Path) -> None:
 
     stored = memory.store.intervention_records(
         problem_family="JSP",
-        mechanism_id="critical_resource_idle_gap",
+        mechanism_id="critical_resource_internal_idle_time",
         full_only=True,
     )
     estimate = estimate_effect_posterior(stored, scope_level="instance")

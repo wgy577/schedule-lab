@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=A,B; capabilities=navigator,read_gate,staged_semantics,schema_repair; level=integration; cost=low
 import json
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from causal_schedule_lab.semantic_agent import (
     EvidenceReadRequest,
     ProjectCodeIndex,
     build_navigation_inventory,
+    build_project_navigation_with_llm,
     compile_project_semantics_staged,
 )
 
@@ -194,6 +196,37 @@ def test_navigation_inventory_excludes_papers_and_secrets(tmp_path: Path) -> Non
     assert "SECRET" not in inventory.model_dump_json()
 
 
+def test_navigation_inventory_excludes_logs_and_separates_file_roles(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "train_log").mkdir()
+    (tmp_path / "train_log" / "reward.txt").write_text(
+        "1,2,3\n", encoding="utf-8"
+    )
+    (tmp_path / "model").mkdir()
+    (tmp_path / "model" / "attention.py").write_text(
+        "class Attention:\n    pass\n", encoding="utf-8"
+    )
+    (tmp_path / "fjsp_env.py").write_text(
+        "class Environment:\n    pass\n", encoding="utf-8"
+    )
+    (tmp_path / "train.py").write_text(
+        "def train():\n    pass\n", encoding="utf-8"
+    )
+    (tmp_path / "test_trained_model.py").write_text(
+        "def evaluate():\n    pass\n", encoding="utf-8"
+    )
+    roles = {
+        item.path: item.role_hint.value
+        for item in build_navigation_inventory(tmp_path).files
+    }
+    assert "train_log/reward.txt" not in roles
+    assert roles["fjsp_env.py"] == "environment"
+    assert roles["model/attention.py"] == "model"
+    assert roles["train.py"] == "training"
+    assert roles["test_trained_model.py"] == "evaluation"
+
+
 def test_controlled_reader_approves_related_insufficient_request(
     tmp_path: Path,
 ) -> None:
@@ -273,7 +306,7 @@ def test_staged_pipeline_separates_navigator_and_analyst(tmp_path: Path) -> None
     assert navigator_provider.requests[0].reasoning_effort == "medium"
     assert len(analyst_provider.requests) == 4
     assert all(
-        request.reasoning_effort == "max" for request in analyst_provider.requests
+        request.reasoning_effort == "high" for request in analyst_provider.requests
     )
     assert result.final.evidence_pass_rate == 1.0
     assert result.metadata.approved_reads == 0
@@ -314,3 +347,87 @@ def test_staged_pipeline_reasks_after_an_approved_read(tmp_path: Path) -> None:
     assert result.metadata.approved_reads == 1
     assert len(result.batches[0].rounds) == 2
     assert "def validate" in analyst_provider.requests[1].user
+
+
+def test_navigation_allows_one_schema_repair(tmp_path: Path) -> None:
+    (tmp_path / "main.py").write_text(
+        "def run():\n    return 1\n", encoding="utf-8"
+    )
+    (tmp_path / "validator.py").write_text(
+        "def validate():\n    return True\n", encoding="utf-8"
+    )
+    invalid = navigation()
+    invalid["unexpected"] = "remove me"
+    provider = FakeProvider("cheap", [invalid, navigation()])
+    _, result, responses = build_project_navigation_with_llm(
+        tmp_path,
+        provider=provider,
+        max_schema_repairs=1,
+    )
+    assert result.project_summary
+    assert len(responses) == 2
+    assert provider.requests[-1].metadata["task"] == (
+        "project_navigation_schema_repair"
+    )
+
+
+def test_batch_allows_one_schema_repair(tmp_path: Path) -> None:
+    (tmp_path / "main.py").write_text(
+        "def run():\n    return 1\n", encoding="utf-8"
+    )
+    (tmp_path / "validator.py").write_text(
+        "def validate():\n    return True\n", encoding="utf-8"
+    )
+    invalid = batch("project_and_environment")
+    invalid["unexpected"] = "remove me"
+    navigator_provider = FakeProvider("cheap", [navigation()])
+    analyst_provider = FakeProvider(
+        "strong",
+        [
+            invalid,
+            batch("project_and_environment"),
+            batch("objectives_and_constraints"),
+            batch("decisions_oracles_and_unknowns"),
+            final_analysis(),
+        ],
+    )
+    result = compile_project_semantics_staged(
+        tmp_path,
+        navigator_provider=navigator_provider,
+        analyst_provider=analyst_provider,
+        max_schema_repairs=1,
+    )
+    assert result.batches[0].rounds[0].metadata["schema_repairs"] == 1
+    assert len(analyst_provider.requests) == 5
+
+
+def test_batch_id_mismatch_enters_schema_repair(tmp_path: Path) -> None:
+    (tmp_path / "main.py").write_text(
+        "def run():\n    return 1\n", encoding="utf-8"
+    )
+    (tmp_path / "validator.py").write_text(
+        "def validate():\n    return True\n", encoding="utf-8"
+    )
+    wrong_id = batch("project_and_environment")
+    wrong_id["batch_id"] = "project_and_environment_r0"
+    navigator_provider = FakeProvider("cheap", [navigation()])
+    analyst_provider = FakeProvider(
+        "strong",
+        [
+            wrong_id,
+            batch("project_and_environment"),
+            batch("objectives_and_constraints"),
+            batch("decisions_oracles_and_unknowns"),
+            final_analysis(),
+        ],
+    )
+    result = compile_project_semantics_staged(
+        tmp_path,
+        navigator_provider=navigator_provider,
+        analyst_provider=analyst_provider,
+        max_schema_repairs=1,
+    )
+    assert result.batches[0].rounds[0].analysis.batch_id == (
+        "project_and_environment"
+    )
+    assert result.batches[0].rounds[0].metadata["schema_repairs"] == 1

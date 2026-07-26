@@ -1,0 +1,378 @@
+{
+  "generated_on": "2026-07-26",
+  "scope": "targeted gap-driven journal expansion; additions only",
+  "sources": [
+    {
+      "source_id": "S29",
+      "title": "Scheduling with batching: A review",
+      "authors": "Chris N. Potts; Mikhail Y. Kovalyov",
+      "year": 2000,
+      "publication": "European Journal of Operational Research 120(2), 228–249",
+      "type": "survey",
+      "doi": "10.1016/S0377-2217(99)00153-8",
+      "url": "https://doi.org/10.1016/S0377-2217(99)00153-8",
+      "problem_family": [
+        "FSP",
+        "JSP",
+        "HFSP"
+      ],
+      "variant_heads": [
+        "batch_processing",
+        "setup"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract",
+      "evidence_use": "batching taxonomy: family/setup batching and simultaneous batch processing"
+    },
+    {
+      "source_id": "S30",
+      "title": "Novel model and solution method for flexible job shop scheduling problem with batch processing machines",
+      "authors": "Bin Ji; Shujing Zhang; Samson S. Yu; Xin Xiao; Chen Chen; Guohua Zheng",
+      "year": 2024,
+      "publication": "Computers & Operations Research 161, 106442",
+      "type": "original_model",
+      "doi": "10.1016/j.cor.2023.106442",
+      "url": "https://doi.org/10.1016/j.cor.2023.106442",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "batch_processing"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and bibliographic record",
+      "evidence_use": "FJSP with batch-processing machines; batch assignment, sequencing and repair-based solution context"
+    },
+    {
+      "source_id": "S31",
+      "title": "Flexible job-shop scheduling problem with parallel batch machines based on an enhanced multi-population genetic algorithm",
+      "authors": "Lirui Xue; Shinan Zhao; Amin Mahmoudi; Mohammad Reza Feylizadeh; et al.",
+      "year": 2024,
+      "publication": "Complex & Intelligent Systems 10, 4083–4101",
+      "type": "original_model",
+      "doi": "10.1007/s40747-024-01374-7",
+      "url": "https://doi.org/10.1007/s40747-024-01374-7",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "batch_processing"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Problem description and optimization model; Assumptions 2–3; Eqs. (1)–(11); decoding Steps 1–3",
+      "evidence_use": "parallel batch capacity, common batch start/end, waiting queue and immediate-predecessor batch formation"
+    },
+    {
+      "source_id": "S32",
+      "title": "Modeling and analysis of lot streaming and lot splitting in the flexible job-shop scheduling problem",
+      "authors": "Stéphane Dauzère-Pérès; Liji Shen",
+      "year": 2026,
+      "publication": "European Journal of Operational Research, in press",
+      "type": "original_model_and_classification",
+      "doi": null,
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0377221726005333",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "lot_streaming",
+        "lot_splitting",
+        "setup"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and highlights",
+      "evidence_use": "classification of lot streaming versus lot splitting and their interaction with setup times"
+    },
+    {
+      "source_id": "S33",
+      "title": "IMOEA/D to optimize job release problem for a reentrant hybrid flow shop",
+      "authors": "Xiaoyan Yan; Xiuli Wu",
+      "year": 2022,
+      "publication": "Computers & Industrial Engineering 163, 107800",
+      "type": "original_model",
+      "doi": "10.1016/j.cie.2021.107800",
+      "url": "https://doi.org/10.1016/j.cie.2021.107800",
+      "problem_family": [
+        "HFSP"
+      ],
+      "variant_heads": [
+        "reentrant",
+        "job_release",
+        "dynamic"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and conclusion snippets",
+      "evidence_use": "job release, WIP control and total waiting in reentrant hybrid flow shops"
+    },
+    {
+      "source_id": "S34",
+      "title": "Reentrant hybrid flow shop scheduling with stockers in automated material handling systems using deep reinforcement learning",
+      "authors": "C.-C. Lin; Y.-C. Peng; Y.-S. Chang; C.-H. Chang",
+      "year": 2024,
+      "publication": "Computers & Industrial Engineering 189, 109995",
+      "type": "original_model",
+      "doi": "10.1016/j.cie.2024.109995",
+      "url": "https://doi.org/10.1016/j.cie.2024.109995",
+      "problem_family": [
+        "HFSP"
+      ],
+      "variant_heads": [
+        "reentrant",
+        "limited_buffer",
+        "transport"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and institutional bibliographic record",
+      "evidence_use": "stockers as WIP buffers, reentrant visits and batch-forming/scheduling state"
+    },
+    {
+      "source_id": "S35",
+      "title": "Dual-Resource Constraints in Classical and Flexible Job Shop Problems: A State-of-the-Art Review",
+      "authors": "M. Dhiflaoui; H. Nouri; O. B. Driss",
+      "year": 2018,
+      "publication": "Procedia Computer Science 126, 1507–1515",
+      "type": "survey",
+      "doi": "10.1016/j.procs.2018.08.123",
+      "url": "https://doi.org/10.1016/j.procs.2018.08.123",
+      "problem_family": [
+        "JSP",
+        "FJSP"
+      ],
+      "variant_heads": [
+        "worker",
+        "dual_resource"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract",
+      "evidence_use": "machine assignment, worker assignment and sequencing decomposition for DRCJSP/DRCFJSP"
+    },
+    {
+      "source_id": "S36",
+      "title": "An effective approach for the dual-resource flexible job shop scheduling problem considering loading and unloading",
+      "authors": "Xiuli Wu; Junjian Peng; Xiao Xiao; Shaomin Wu; et al.",
+      "year": 2021,
+      "publication": "Journal of Intelligent Manufacturing 32, 707–728",
+      "type": "original_model",
+      "doi": "10.1007/s10845-020-01697-5",
+      "url": "https://doi.org/10.1007/s10845-020-01697-5",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "tool",
+        "fixture",
+        "setup"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "The model of DRFJSP-LU; Notations; Eqs. (1)–(3)",
+      "evidence_use": "fixture loading/unloading as decomposed setup time with exact variables and objective formula"
+    },
+    {
+      "source_id": "S37",
+      "title": "Acquiring and operationalizing worker flexibility in dual resource constrained job shops with worker transfer delays and learning losses",
+      "authors": "H. V. Kher; M. K. Malhotra",
+      "year": 1994,
+      "publication": "Omega 22(5), 521–533",
+      "type": "original_simulation",
+      "doi": "10.1016/0305-0483(94)90032-9",
+      "url": "https://doi.org/10.1016/0305-0483(94)90032-9",
+      "problem_family": [
+        "JSP"
+      ],
+      "variant_heads": [
+        "worker",
+        "dynamic"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract",
+      "evidence_use": "worker transfer delays, cross-training, learning losses and worker utilization as underlying mechanism"
+    },
+    {
+      "source_id": "S38",
+      "title": "Resource constraint measures in a dual constrained job shop",
+      "authors": "Vidyaranya B. Gargeya",
+      "year": 1994,
+      "publication": "Omega 22(6), 659–668",
+      "type": "original_simulation",
+      "doi": "10.1016/0305-0483(94)90055-8",
+      "url": "https://doi.org/10.1016/0305-0483(94)90055-8",
+      "problem_family": [
+        "JSP"
+      ],
+      "variant_heads": [
+        "worker",
+        "dual_resource"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract",
+      "evidence_use": "indices for identifying which resource constrains a dual-resource shop and resource interaction"
+    },
+    {
+      "source_id": "S39",
+      "title": "A matheuristic method for the automated guided vehicle scheduling problem with flexible charging and job release",
+      "authors": "Shanshan Zhou; Zheng Wang; Yantong Li; Xin Wen",
+      "year": 2025,
+      "publication": "Applied Soft Computing 182, 113531",
+      "type": "original_model",
+      "doi": "10.1016/j.asoc.2025.113531",
+      "url": "https://doi.org/10.1016/j.asoc.2025.113531",
+      "problem_family": [
+        "JSP",
+        "FJSP"
+      ],
+      "variant_heads": [
+        "AGV",
+        "charging",
+        "job_release"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and bibliographic record",
+      "evidence_use": "joint task assignment, sequence, flexible charging and release-time decisions"
+    },
+    {
+      "source_id": "S40",
+      "title": "MILP Modeling and Optimization of Three-Stage Flexible Job Shop Scheduling Problem with Assembly and AGV Transportation",
+      "authors": "Shiming Yang; Leilei Meng; Saif Ullah; Chaoyong Zhang; Hongyan Sang; Biao Zhang; et al.",
+      "year": 2025,
+      "publication": "Chinese Journal of Mechanical Engineering 38, Article 115",
+      "type": "original_model",
+      "doi": "10.1186/s10033-025-01281-z",
+      "url": "https://doi.org/10.1186/s10033-025-01281-z",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "transport",
+        "AGV",
+        "assembly"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Problem description and MILP model for processing–transportation–assembly stages",
+      "evidence_use": "component completion, AGV delivery and downstream assembly synchronization"
+    },
+    {
+      "source_id": "S41",
+      "title": "Robust-stable scheduling in dynamic flow shops based on deep reinforcement learning",
+      "authors": "Felix Grumbach; Anna Müller; Pascal Reusch; Sebastian Trojahn",
+      "year": 2024,
+      "publication": "Journal of Intelligent Manufacturing 35, 667–686",
+      "type": "original_model_and_experiment",
+      "doi": "10.1007/s10845-022-02069-x",
+      "url": "https://doi.org/10.1007/s10845-022-02069-x",
+      "problem_family": [
+        "FSP"
+      ],
+      "variant_heads": [
+        "dynamic",
+        "rescheduling",
+        "robust"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Robustness and stability definitions; Eq. (2); trade-off discussion",
+      "evidence_use": "distinguishes robustness from stability and locates completion-time deviation formula"
+    },
+    {
+      "source_id": "S42",
+      "title": "Benders decomposition for the mixed no-idle permutation flowshop scheduling problem",
+      "authors": "Tolga Bektaş; Alper Hamzadayı; Rubén Ruiz",
+      "year": 2020,
+      "publication": "Journal of Scheduling 23, 513–523",
+      "type": "original_exact_method",
+      "doi": "10.1007/s10951-020-00637-8",
+      "url": "https://doi.org/10.1007/s10951-020-00637-8",
+      "problem_family": [
+        "FSP"
+      ],
+      "variant_heads": [
+        "no_idle"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Introduction/problem definition: machines run continuously from first start to last completion",
+      "evidence_use": "no-idle semantic boundary and mixed no-idle activation"
+    },
+    {
+      "source_id": "S43",
+      "title": "Scheduling of e-commerce packaging machines: blocking machines and their impact on the performance–waste tradeoff",
+      "authors": "Dirk Briskorn; Nils Boysen; Lennart Zey",
+      "year": 2025,
+      "publication": "Journal of Scheduling 28, 101–120",
+      "type": "original_model",
+      "doi": "10.1007/s10951-024-00826-9",
+      "url": "https://doi.org/10.1007/s10951-024-00826-9",
+      "problem_family": [
+        "FSP"
+      ],
+      "variant_heads": [
+        "blocking",
+        "batch_processing"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Problem definition; blocking loss definition; performance metrics discussion",
+      "evidence_use": "blocking loss as unused capacity caused by sequence-dependent blocking"
+    },
+    {
+      "source_id": "S44",
+      "title": "Single-machine and flow-shop scheduling with supporting tasks in a nested structure",
+      "authors": "Renjie Yu; Daniel Oron; Bertrand M. T. Lin",
+      "year": 2026,
+      "publication": "Journal of Scheduling 29, 245–260",
+      "type": "original_model",
+      "doi": "10.1007/s10951-025-00855-y",
+      "url": "https://doi.org/10.1007/s10951-025-00855-y",
+      "problem_family": [
+        "FSP",
+        "JSP"
+      ],
+      "variant_heads": [
+        "supporting_tasks",
+        "auxiliary_resource"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Supporting precedence definition; nested structure; flow-shop extension",
+      "evidence_use": "preparatory/supporting tasks as readiness gates that are not themselves the final objective"
+    },
+    {
+      "source_id": "S45",
+      "title": "Dynamic integrated scheduling of machines and AGVs in flexible job shop considering AGV failures",
+      "authors": "Jia Li; Minghui Li; Guoqiang Li; Xiaoqiu Shi",
+      "year": 2026,
+      "publication": "Computers & Operations Research 193, 107524",
+      "type": "original_model",
+      "doi": "10.1016/j.cor.2026.107524",
+      "url": "https://doi.org/10.1016/j.cor.2026.107524",
+      "problem_family": [
+        "FJSP"
+      ],
+      "variant_heads": [
+        "AGV",
+        "dynamic",
+        "machine_failure",
+        "vehicle_failure"
+      ],
+      "access_status": "abstract_only",
+      "source_locator": "abstract and section snippets",
+      "evidence_use": "integrated machine/AGV decisions under AGV failures and dynamic disruption"
+    },
+    {
+      "source_id": "S46",
+      "title": "Heterogeneous worker multi-functionality and efficiency in dual resource constrained manufacturing lines: an assessment by simulation",
+      "authors": "Federica Costa; Matthias Thürer; Alberto Portioli-Staudacher",
+      "year": 2023,
+      "publication": "Operations Management Research 16, 1476–1489",
+      "type": "original_simulation",
+      "doi": "10.1007/s12063-023-00371-2",
+      "url": "https://doi.org/10.1007/s12063-023-00371-2",
+      "problem_family": [
+        "FSP",
+        "JSP"
+      ],
+      "variant_heads": [
+        "worker",
+        "dual_resource"
+      ],
+      "access_status": "full_text_verified",
+      "source_locator": "Model description; worker multi-functionality and efficiency matrices; simulation outcomes",
+      "evidence_use": "heterogeneous worker eligibility/efficiency and workload effects"
+    }
+  ]
+}

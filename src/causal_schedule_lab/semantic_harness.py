@@ -168,7 +168,7 @@ def _structured_call(
                 max_output_tokens=max_output_tokens,
                 require_json=True,
                 thinking_mode="enabled",
-                reasoning_effort="max",
+                reasoning_effort="high",
             )
         )
         responses.append(response)

@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=A,B; capabilities=evidence_packet,semantic_schema,schema_repair; level=integration; cost=low
 import json
 from pathlib import Path
 

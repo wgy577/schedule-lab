@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=C,F; capabilities=canonical_ir,dispatching,cp_sat,hard_constraints; level=integration; cost=medium
 from causal_schedule_lab.benchmarks import benchmark_suite, example_problems
 from causal_schedule_lab.core_validation import validate_schedule
 from causal_schedule_lab.ir import ConstraintSpec

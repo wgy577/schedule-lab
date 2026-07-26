@@ -1,0 +1,63 @@
+{
+  "schema_version": "round6.incremental.1",
+  "aliases": [
+    {
+      "canonical_id": "interfactory_transfer_wait_time",
+      "terms": [
+        "inter-factory transfer delay",
+        "cross-factory shipment waiting",
+        "transfer-induced waiting"
+      ]
+    },
+    {
+      "canonical_id": "factory_workload_cv",
+      "terms": [
+        "factory workload imbalance",
+        "inter-factory load balance"
+      ]
+    },
+    {
+      "canonical_id": "new_job_response_delay",
+      "terms": [
+        "arrival-to-first-start delay",
+        "new order response time"
+      ]
+    },
+    {
+      "canonical_id": "rescheduling_trigger_latency",
+      "terms": [
+        "event-to-trigger delay",
+        "rescheduling decision latency"
+      ]
+    },
+    {
+      "canonical_id": "disruption_propagation_ratio",
+      "terms": [
+        "affected operation ratio",
+        "schedule impact scope ratio"
+      ]
+    }
+  ],
+  "non_equivalence": [
+    {
+      "a": "interfactory_transfer_wait_time",
+      "b": "loaded_travel_time",
+      "reason": "waiting excludes physical loaded travel duration"
+    },
+    {
+      "a": "factory_workload_cv",
+      "b": "machine_workload_cv",
+      "reason": "different aggregation entities and heterogeneity boundaries"
+    },
+    {
+      "a": "disruption_detection_delay",
+      "b": "rescheduling_trigger_latency",
+      "reason": "detection precedes policy trigger"
+    },
+    {
+      "a": "rescheduling_scope_ratio",
+      "b": "disruption_propagation_ratio",
+      "reason": "optimizer input scope is not the same as the set actually changed"
+    }
+  ]
+}

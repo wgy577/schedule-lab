@@ -1,3 +1,4 @@
+# TEST-TAGS: modules=D,E,F,H; capabilities=candidate_generation,action_mask,statistics; level=integration; cost=medium
 from pathlib import Path
 
 import torch

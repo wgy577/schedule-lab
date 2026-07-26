@@ -92,9 +92,11 @@ The audit checks consistency, not scientific correctness. Tests and experiments 
 
 ## Visual synchronization gate
 
-- `PROJECT_MODULE_GRAPH.md` is the canonical reviewable graph and must not embed PNG
-  snapshots.
+- `PROJECT_MODULE_GRAPH.md` is the canonical reviewable three-layer graph and must not
+  embed PNG snapshots.
 - `PROJECT_MODULE_GRAPH_INTERACTIVE.html` is the canonical zoomable rendering.
 - Architecture-affecting changes must update both in the same change.
+- Current project graphs contain implemented components and actual edges only; future work
+  belongs in the roadmap. Every third-layer node must name its parent second-layer ID.
 - Other screenshots, SVGs, PNGs, videos, or showcase images that claim to show the current
   architecture must be regenerated, marked historical, or removed.

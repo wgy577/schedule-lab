@@ -21,24 +21,44 @@ def audit(root: Path) -> dict[str, object]:
         "PROJECT_MODULE_GRAPH.md",
         "PROJECT_MODULE_GRAPH_INTERACTIVE.html",
         "docs/README.md",
-        "docs/architecture/SYSTEM_ARCHITECTURE.md",
-        "docs/architecture/AGENT_PLATFORM_WORKPLAN.md",
-        "docs/architecture/CAUSAL_MODULE_WORKPLAN.md",
-        "docs/architecture/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md",
-        "docs/architecture/FORMULA_IMPLEMENTATION_MATRIX.md",
-        "docs/architecture/TRACEABILITY.md",
-        "docs/architecture/FRAMEWORK_REQUIREMENTS.md",
-        "docs/semantics/LLM_SEMANTIC_COMPILER.md",
-        "docs/semantics/LLM_SEMANTIC_HARNESS.md",
-        "docs/semantics/L2D_MODEL_COMPARISON_REPORT.md",
-        "docs/semantics/L2D_PAPER_CODE_HUMAN_VERIFICATION.md",
-        "docs/semantics/CODE_ONLY_SEMANTIC_LEARNING.md",
-        "docs/semantics/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md",
-        "docs/experiments/EXPERIMENT_PROTOCOL.md",
-        "docs/guides/ADAPTER_GUIDE.md",
+        "docs/intersections/README.md",
+        "docs/intersections/a_b_evidence_semantics/README.md",
+        "docs/intersections/a_b_h_semantic_evaluation/README.md",
+        "docs/intersections/b_d_semantics_causality/README.md",
+        "docs/intersections/b_h_llm_operations/README.md",
+        "docs/intersections/b_d_h_metric_discovery/README.md",
+        "docs/intersections/d_e_f_h_optimization_loop/README.md",
+        "docs/intersections/a_to_h_global/README.md",
+        "docs/cross_module/SYSTEM_ARCHITECTURE.md",
+        "docs/cross_module/FORMULA_IMPLEMENTATION_MATRIX.md",
+        "docs/cross_module/TRACEABILITY.md",
+        "docs/modules/module_a_input_evidence/README.md",
+        "docs/modules/module_a_input_evidence/FRAMEWORK_REQUIREMENTS.md",
+        "docs/modules/module_a_input_evidence/L2D_PAPER_CODE_HUMAN_VERIFICATION.md",
+        "docs/modules/module_b_semantics_memory/README.md",
+        "docs/modules/module_b_semantics_memory/AGENT_PLATFORM_WORKPLAN.md",
+        "docs/modules/module_b_semantics_memory/LONG_TERM_MEMORY_AND_CAUSAL_MECHANISMS.md",
+        "docs/modules/module_b_semantics_memory/LLM_SEMANTIC_COMPILER.md",
+        "docs/modules/module_b_semantics_memory/LLM_SEMANTIC_HARNESS.md",
+        "docs/modules/module_b_semantics_memory/L2D_MODEL_COMPARISON_REPORT.md",
+        "docs/modules/module_b_semantics_memory/CODE_ONLY_SEMANTIC_LEARNING.md",
+        "docs/modules/module_b_semantics_memory/SCHEDULING_SEMANTIC_KNOWLEDGE_AND_IMPACT.md",
+        "docs/modules/module_c_ir_adapters/README.md",
+        "docs/modules/module_c_ir_adapters/ADAPTER_GUIDE.md",
+        "docs/modules/module_d_diagnosis_causality/README.md",
+        "docs/modules/module_d_diagnosis_causality/CAUSAL_MODULE_WORKPLAN.md",
+        "docs/modules/module_d_diagnosis_causality/SECONDARY_METRIC_AND_DIAGNOSTIC_EXPANSION_PLAN.md",
+        "docs/modules/module_e_candidate_generation/README.md",
+        "docs/modules/module_f_validation_oracles/README.md",
+        "docs/modules/module_g_acceptance_rollback/README.md",
+        "docs/modules/module_h_experiments_statistics/README.md",
+        "docs/modules/module_h_experiments_statistics/EXPERIMENT_PROTOCOL.md",
         ".agents/skills/maintain-causal-schedule-lab/SKILL.md",
         ".agents/skills/maintain-causal-schedule-lab/agents/openai.yaml",
         ".agents/skills/maintain-causal-schedule-lab/references/maintenance-contract.md",
+        "tests/README.md",
+        "tests/test_registry.json",
+        "tests/conftest.py",
     )
     errors: list[str] = []
     warnings: list[str] = []
@@ -46,8 +66,8 @@ def audit(root: Path) -> dict[str, object]:
         if not (root / relative).is_file():
             errors.append(f"missing required document: {relative}")
 
-    architecture_path = root / "docs/architecture/SYSTEM_ARCHITECTURE.md"
-    formula_path = root / "docs/architecture/FORMULA_IMPLEMENTATION_MATRIX.md"
+    architecture_path = root / "docs/cross_module/SYSTEM_ARCHITECTURE.md"
+    formula_path = root / "docs/cross_module/FORMULA_IMPLEMENTATION_MATRIX.md"
     readme_path = root / "README.md"
     architecture = (
         architecture_path.read_text(encoding="utf-8")
@@ -119,10 +139,10 @@ def audit(root: Path) -> dict[str, object]:
         errors.append(f"unexpected formula IDs: {unexpected}")
 
     for link in (
-        "docs/architecture/SYSTEM_ARCHITECTURE.md",
+        "docs/cross_module/SYSTEM_ARCHITECTURE.md",
         "PROJECT_MODULE_GRAPH.md",
         "PROJECT_STATUS_AND_ROADMAP.md",
-        "docs/architecture/FORMULA_IMPLEMENTATION_MATRIX.md",
+        "docs/cross_module/FORMULA_IMPLEMENTATION_MATRIX.md",
         ".agents/skills/maintain-causal-schedule-lab/SKILL.md",
     ):
         if link not in readme:
@@ -133,6 +153,7 @@ def audit(root: Path) -> dict[str, object]:
     for required_graph_text in (
         "第一层：大模块图",
         "第二层：大模块内部实现图",
+        "第三层：第二层组件的真实实现展开",
         "PROJECT_MODULE_GRAPH_INTERACTIVE.html",
     ):
         if required_graph_text not in module_graph:
@@ -142,8 +163,14 @@ def audit(root: Path) -> dict[str, object]:
     for required_interactive_text in (
         "第一层：大模块",
         "第二层：实现细节",
+        "第三层：真实组件映射",
         "SQLite Property Graph",
         "Candidate Variation Gate",
+        "[B16] 85/36 Unified Catalog",
+        "[B17–B18] Recall + High-recall MCQ",
+        "[B24] Open-world Proposal Gate",
+        "[D8] Catalog-selected Secondary Targets",
+        "[D12] Out-of-catalog Proposed Pool",
     ):
         if required_interactive_text not in interactive_graph:
             errors.append(
@@ -160,6 +187,51 @@ def audit(root: Path) -> dict[str, object]:
     for term in status_terms:
         if term not in architecture:
             warnings.append(f"architecture does not use status term: {term}")
+
+    for path in sorted((root / "docs").rglob("*.md")):
+        if path.name == "README.md":
+            continue
+        opening = path.read_text(encoding="utf-8")[:600]
+        if not re.search(r"> \*\*所属(模块|范围)\*\*", opening):
+            errors.append(
+                "document missing A-H module ownership marker: "
+                + path.relative_to(root).as_posix()
+            )
+        if (
+            ("**关联模块**" in opening or "跨模块" in opening or "交叉" in opening)
+            and "**交叉分类**" not in opening
+        ):
+            errors.append(
+                "cross-module document missing intersection classification: "
+                + path.relative_to(root).as_posix()
+            )
+
+    registry_path = root / "tests/test_registry.json"
+    if registry_path.exists():
+        try:
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))["tests"]
+        except (json.JSONDecodeError, KeyError, TypeError) as exc:
+            errors.append(f"invalid tests/test_registry.json: {exc}")
+            registry = {}
+        test_files = {
+            path.name for path in (root / "tests").glob("test_*.py") if path.is_file()
+        }
+        registered = set(registry)
+        for filename in sorted(test_files - registered):
+            errors.append(f"unregistered reusable test asset: tests/{filename}")
+        for filename in sorted(registered - test_files):
+            errors.append(f"stale test registry entry: tests/{filename}")
+        for filename in sorted(test_files & registered):
+            source = (root / "tests" / filename).read_text(encoding="utf-8")
+            first_line = source.splitlines()[0] if source else ""
+            if not first_line.startswith("# TEST-TAGS:"):
+                errors.append(f"test tag must be first line: tests/{filename}")
+            entry = registry[filename]
+            for field in ("modules", "capabilities", "level", "cost"):
+                if not entry.get(field):
+                    errors.append(
+                        f"test registry entry missing {field}: tests/{filename}"
+                    )
 
     return {
         "project_root": str(root),

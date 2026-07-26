@@ -116,7 +116,7 @@ def _hash(value: Any) -> str:
 class SQLiteGraphStore:
     """Authoritative graph plus immutable evidence and intervention history."""
 
-    SCHEMA_VERSION = 1
+    SCHEMA_VERSION = 2
 
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path).expanduser().resolve()
@@ -509,6 +509,53 @@ class SQLiteGraphStore:
                 node_type=row["node_type"],
                 name=row["name"],
                 summary=row["summary"],
+                scope=row["scope"],
+                version=row["version"],
+                review_status=row["review_status"],
+                confidence=row["confidence"],
+                source_ids=tuple(json.loads(row["source_ids_json"])),
+                valid_from=row["valid_from"],
+                valid_to=row["valid_to"],
+                metadata=json.loads(row["metadata_json"]),
+            )
+            for row in rows
+        )
+
+    def get_edges(
+        self,
+        *,
+        source_ids: tuple[str, ...] = (),
+        target_ids: tuple[str, ...] = (),
+        relation: str | None = None,
+        active_only: bool = True,
+    ) -> tuple[GraphEdge, ...]:
+        clauses: list[str] = []
+        parameters: list[Any] = []
+        if source_ids:
+            placeholders = ",".join("?" for _ in source_ids)
+            clauses.append(f"source_id IN ({placeholders})")
+            parameters.extend(source_ids)
+        if target_ids:
+            placeholders = ",".join("?" for _ in target_ids)
+            clauses.append(f"target_id IN ({placeholders})")
+            parameters.extend(target_ids)
+        if relation is not None:
+            clauses.append("relation = ?")
+            parameters.append(relation)
+        if active_only:
+            clauses.append("review_status = 'active'")
+        where = " AND ".join(clauses) if clauses else "1 = 1"
+        with self.connection() as connection:
+            rows = connection.execute(
+                f"SELECT * FROM edges WHERE {where} ORDER BY edge_id",
+                tuple(parameters),
+            ).fetchall()
+        return tuple(
+            GraphEdge(
+                edge_id=row["edge_id"],
+                source_id=row["source_id"],
+                relation=row["relation"],
+                target_id=row["target_id"],
                 scope=row["scope"],
                 version=row["version"],
                 review_status=row["review_status"],

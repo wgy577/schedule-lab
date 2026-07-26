@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scheduling Code Semantics"
+  short_description: "受控导航调度代码，提取可验证的目标、约束、决策与Oracle"
+  default_prompt: "Use $scheduling-code-semantics to inspect this scheduling repository and return evidence-grounded semantics."

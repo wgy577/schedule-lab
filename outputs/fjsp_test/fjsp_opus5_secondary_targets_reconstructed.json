@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.2",
+  "status": "reconstructed_from_existing_cc_output_pending_review",
+  "source_artifact": "fjsp_opus5_staged_semantics.json",
+  "source_sha256": "4ddd11ccc729ef0f8fb43a0ee1a43df67378f6a0d9920c47e285b670c8a2e0f8",
+  "important_note": "The previous Critic schema did not contain secondary_targets. These measurable indicators are reconstructed from its rationales and are not direct fields from that run.",
+  "primary_objective": {"kind": "makespan", "sense": "minimize", "unit": "time"},
+  "decision_dimensions": [
+    {"kind": "machine_assignment", "statement": "为每道工序从候选机器集合中选择机器。"},
+    {"kind": "machine_sequence", "statement": "确定分配到同一机器的工序加工顺序。"}
+  ],
+  "objective_decomposition": [
+    {
+      "kind": "realized_schedule_critical_path_length",
+      "statement": "实现析取图最长路径用于定位关键链；在本项目中通常等于 makespan，因此不重复列作次级指标。",
+      "unit": "time"
+    }
+  ],
+  "secondary_targets": [
+    {
+      "id": "secondary_1",
+      "kind": "machine_selection_processing_time_increment",
+      "statement": "机器选择加工时间增量",
+      "measurement_definition": "各工序在已选机器上的加工时间减去该工序候选机器中的最短加工时间，再求和。",
+      "formula": "sum_o [p(o, selected_m) - min_{m in eligible(o)} p(o,m)]",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_2", "constraint_4"],
+      "caution": "不能单独最小化，否则可能把大量工序分配到同一台快机器。"
+    },
+    {
+      "id": "secondary_2",
+      "kind": "maximum_machine_workload",
+      "statement": "最大机器工作负荷",
+      "measurement_definition": "对每台机器累计已分配工序加工时间，取其中最大值。",
+      "formula": "max_m sum_{o:selected(o)=m} p(o,m)",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_2", "constraint_4"]
+    },
+    {
+      "id": "secondary_3",
+      "kind": "low_flexibility_operation_machine_load",
+      "statement": "低柔性工序机器负荷",
+      "measurement_definition": "按候选机器数量的倒数为工序加权，累计到已选机器后取最大加权负荷。",
+      "formula": "max_m sum_{o:selected(o)=m} p(o,m) / |eligible(o)|",
+      "unit": "weighted_time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_2", "constraint_4"],
+      "caution": "这是待实验校准的项目指标，不是经典 FJSP 的统一目标。"
+    },
+    {
+      "id": "secondary_4",
+      "kind": "critical_resource_internal_idle_time",
+      "statement": "关键资源内部空闲时间",
+      "measurement_definition": "关键资源上按开始时间排序后，相邻工序之间正空闲间隔的总和。",
+      "formula": "sum_i max(0, start[i+1]-end[i])",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_4"]
+    },
+    {
+      "id": "secondary_5",
+      "kind": "operation_ready_to_start_waiting_time",
+      "statement": "工序就绪后等待时间",
+      "measurement_definition": "每道工序实际开始时间减去其释放时间和所有前置工序完工时间中的最大值，再求和。",
+      "formula": "sum_o [start(o)-max(release(o), max_{pred} end(pred))]",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_1", "constraint_4"]
+    },
+    {
+      "id": "secondary_6",
+      "kind": "restricted_decoder_makespan_gap",
+      "statement": "受限解码规则完工期差值",
+      "measurement_definition": "同一实例、同一模型与同一预算下，受限解码器和完整可行插入解码器所得 makespan 的配对差值。",
+      "formula": "Cmax(restricted_decoder)-Cmax(reference_feasible_insertion_decoder)",
+      "unit": "time",
+      "desired_direction": "decrease",
+      "source_constraints": ["constraint_5"]
+    }
+  ],
+  "diagnostic_targets": [
+    {"id": "diagnostic_1", "kind": "eligibility_integrity", "statement": "机器候选集合解释一致", "check": "逐工序比对环境、实例和 Oracle 的候选机器集合，并检查已选机器属于集合。", "source_constraints": ["constraint_2"]},
+    {"id": "diagnostic_2", "kind": "objective_lower_bound_fidelity", "statement": "完工期下界信号可靠", "check": "比较状态下界、最终 makespan 和 matched rollout delta。", "source_constraints": ["constraint_1", "constraint_4"]},
+    {"id": "diagnostic_3", "kind": "oracle_reference_validity", "statement": "CP-SAT 参照结果有效", "check": "记录 solver status、time limit、objective 并进行独立可行性回放。", "source_constraints": []}
+  ],
+  "next_stage": "For each measurable indicator, recursively discover controllable factors and validate them with paired candidate perturbations and Oracle replay."
+}
