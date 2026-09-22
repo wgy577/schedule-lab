@@ -1,12 +1,7 @@
-"""Global processing-load CV auxiliary return; lower CV is more balanced.
-
-All problem resources (including unused ones) are included. No type grouping,
-capacity/speed normalization, maximum-load term or total-processing penalty.
-This experimental proxy is not guaranteed to improve makespan.
-"""
+"""Raw global processing-load standard deviation reward, no reward calibration."""
 import math
 
-LOAD_METRIC='global_processing_load_cv_v1'
+LOAD_METRIC='global_processing_load_std_raw_v1'
 
 def load_cost(problem, schedule):
     modes = problem.mode_map()
@@ -19,12 +14,11 @@ def load_cost(problem, schedule):
     if not values:return 0.0
     mean=math.fsum(values)/len(values)
     if mean<=0:return 0.0
-    return math.sqrt(math.fsum((v-mean)**2 for v in values)/len(values))/mean
+    return math.sqrt(math.fsum((v-mean)**2 for v in values)/len(values))
 
 
 def load_bonus(before, after, root_ms, weight):
-    cap = 0.05 * max(float(root_ms), 1.0)
-    return max(-cap, min(cap, float(weight) * (before - after)))
+    return float(weight) * (before - after)
 
 
 def add_load_credit(tr, problem, root, weight):
@@ -40,7 +34,7 @@ def add_load_credit(tr, problem, root, weight):
     tr['reward'] += bonus
     tr['U2'] += bonus
     tr['net_intervention_reward'] = tr['reward']
-    tr['reward_semantics'] = 'net_makespan_return_plus_bounded_load_change'
+    tr['reward_semantics'] = 'net_makespan_return_plus_raw_std_change'
     value = before
     for step in tr['steps']:
         if weight and step.get('successor_makespan') is not None and 'load_cost_before' not in step:
@@ -57,34 +51,24 @@ def add_load_credit(tr, problem, root, weight):
     return tr
 
 
-def balance_group(trajs, share=0.30):
-    """Match auxiliary L1 share before joint GRPO normalization.
+def balance_group(trajs, share=None):
+    """Compatibility entry point: report observed share, never rescale rewards.
 
-    Each timestep's future credit is calibrated separately. Zero auxiliary
-    remains zero; zero main signal keeps existing nonzero auxiliary (100%).
-    This is group-dependent multi-objective training, not policy-invariant PBRS.
+    The legacy share argument is intentionally ignored. GRPO advantage
+    normalization remains in the trainer and is not modified here.
     """
-    def scale(rows, main_key, aux_key):
-        main=sum(abs(r[main_key]) for r in rows)
-        aux=sum(abs(r[aux_key]) for r in rows)
-        factor=(share/(1-share)*main/aux if main>1e-12 and aux>1e-12 else 1.0)
-        if share==0: factor=0.0
-        for row in rows:
-            row[aux_key+'_raw']=row[aux_key]
-            row[aux_key]*=factor
-        final_aux=sum(abs(r[aux_key]) for r in rows)
-        return dict(scale=factor,actual_share=final_aux/max(main+final_aux,1e-12),
-                    main_abs=main,load_abs=final_aux)
-    result=scale(trajs,'makespan_reward','load_reward')
+    main = sum(abs(t['makespan_reward']) for t in trajs)
+    aux = sum(abs(t['load_reward']) for t in trajs)
+    result = dict(scale=1.0, actual_share=aux/max(main+aux, 1e-12),
+                  main_abs=main, load_abs=aux, calibration=False,
+                  metric=LOAD_METRIC)
     for tr in trajs:
-        tr['reward']=tr['makespan_reward']+tr['load_reward']
-        tr['U2']=tr['net_intervention_reward']=tr['reward']
-        tr['load_balance']=result
-    for idx in range(max((len(t['steps']) for t in trajs),default=0)):
-        rows=[t['steps'][idx] for t in trajs if idx<len(t['steps'])]
-        scale(rows,'makespan_future_reward','load_future_reward')
-        for step in rows:
-            step['m2_future_net_reward']=step['makespan_future_reward']+step['load_future_reward']
-    for tr in trajs:
-        for step in tr['steps']: step['reward_objective']=tr['reward']
+        tr['load_reward_raw'] = tr['load_reward']
+        tr['reward'] = tr['makespan_reward'] + tr['load_reward']
+        tr['U2'] = tr['net_intervention_reward'] = tr['reward']
+        tr['load_balance'] = result
+        for step in tr['steps']:
+            step['load_future_reward_raw'] = step['load_future_reward']
+            step['m2_future_net_reward'] = step['makespan_future_reward'] + step['load_future_reward']
+            step['reward_objective'] = tr['reward']
     return result

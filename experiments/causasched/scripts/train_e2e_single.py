@@ -108,12 +108,14 @@ def collect(task):
     if cfg['initialization'] == 'sft':
         r['policy'].m2.set_progress(version,cfg['cycles'])
         r['policy'].m3.set_progress(version,cfg['cycles'])
+    CACHE.pair_diagnostics = dict(states=0,singles=0,pairs=0,zero_pair_states=0)
     memory = copy.deepcopy(r['memory'])
     for record in root.records:
         memory.add_executed(iid, int(record['written_at_step']), copy.deepcopy(record))
     start = time.perf_counter()
     with torch.no_grad():
-        tr = JG.collect_trajectory_r14(
+        from causal_schedule_lab.m3.step20_training import collect_trajectory
+        tr = collect_trajectory(
             r['policy'], r['scorer'], r['executor'], r['model_b5'], r['single_head'],
             r['direct_head'], problem, root.schedule, root.ms, iid, 900000000,
             memory, cfg['seed']+version*100003+branch*1009,
@@ -121,7 +123,7 @@ def collect(task):
             stop_on_negative=False, action_space='policy_sampled', analyze_cache=CACHE,
             allow_policy_stop=False, feasible_fallback=True, anchor_trajectories=0)
     assert all(not s['is_anchor'] for s in tr['steps'])
-    from causal_schedule_lab.m3.load_reward import add_load_credit
+    from causal_schedule_lab.m3.one_step_credit import add_load_credit
     add_load_credit(tr, problem, root.schedule, cfg.get('load_weight', 0.0))
     # Bytes travel via the process pipe, not torch shared-memory handles or disk.
     payload=zlib.compress(pickle.dumps(tr,protocol=pickle.HIGHEST_PROTOCOL),level=1)
@@ -137,6 +139,7 @@ def collect(task):
             relative_change=None if before is None or after is None else (after-before)/max(before,1),
             execution_reason=step.get('execution_reason')))
     return dict(iid=iid, branch=branch, payload=payload, reward=tr['reward'],
+                pair_diagnostics=dict(CACHE.pair_diagnostics),
                 action_outcomes=outcomes, load_reward=tr['load_reward'],
                 makespan_reward=tr['makespan_reward'],load_metric=tr['load_metric'],
                 load_cv_start=tr['load_cost_start'],load_cv_best=tr['load_cost_best'],
@@ -288,6 +291,12 @@ def main():
     p.add_argument('--reset-episode-on-resume',action='store_true',
                    help='Keep learned weights/optimizer, restart the episode from rule schedules')
     a=p.parse_args()
+    a.perturb_after=0  # Disable stagnation schedule restarts; episode resets unchanged.
+    from causal_schedule_lab.m3.step20_training import candidate_count
+    a.step_candidates=candidate_count()
+    print(f"[candidate-set] TRAIN branches={a.branches} workers={a.workers} "
+          f"candidates/step={a.step_candidates}; joint ordered-draw likelihood; "
+          "reward unchanged; best archive retained",flush=True)
     if min(a.workers,a.roots_per_cycle,a.horizon,a.cycles,a.epochs)<1 or a.branches<2:
         p.error('Positive budgets and >=2 trajectories required')
     if a.episode_steps < a.horizon or a.episode_steps % a.horizon:
@@ -556,7 +565,12 @@ def main():
                     for iid in selected:
                         trs=[pickle.loads(zlib.decompress(x.pop('payload')))
                              for x in sorted(paths[iid],key=lambda x:x['branch'])]
+                        from causal_schedule_lab.m3.step20_training import report as report_pair_selection
+                        report_pair_selection(trs,iid,cycle,a.output)
                         root=starts[iid]
+                        ds=[x['pair_diagnostics'] for x in paths[iid]]
+                        ns=sum(d['states'] for d in ds)
+                        print(f'[pair-candidates] {iid} states={ns} single_mean={sum(d["singles"] for d in ds)/max(ns,1):.1f} pair_mean={sum(d["pairs"] for d in ds)/max(ns,1):.1f} zero_pair_states={sum(d["zero_pair_states"] for d in ds)} selected_pairs={sum(x["pair_actions"] for x in paths[iid])}',flush=True)
                         from causal_schedule_lab.m3.load_reward import balance_group
                         load_diag=balance_group(trs,a.load_share)
                         print(f'[reward-mix] {iid} load_share={load_diag["actual_share"]:.1%} '
@@ -568,7 +582,8 @@ def main():
                                     load_cv_start=t['load_cost_start'],load_cv_best=t['load_cost_best'],
                                     load_cv_terminal=t['load_cost_terminal']) for t in trs]))+'\n')
                             f.flush();os.fsync(f.fileno())
-                        JG._finish_group_r14(trs,iid,root.state_hash,root.ms,r['memory'],
+                        from causal_schedule_lab.m3.one_step_credit import finish_group as finish_one_step_group
+                        finish_one_step_group(trs,iid,root.state_hash,root.ms,r['memory'],
                                              time.perf_counter()-started,a.workers)
                         groups.append(trs)
                         state=arena[iid]; incumbent=state['current']; candidates=[incumbent]
@@ -663,3 +678,5 @@ def main():
 
 if __name__=='__main__':
     main()
+
+# V22 ordered candidate-set training

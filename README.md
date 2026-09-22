@@ -1,95 +1,71 @@
 # CausaSched 使用说明
 
-## 1. 安装
+## 安装
 
 ```bash
 git clone https://github.com/wgy577/schedule-lab.git
 cd schedule-lab/experiments/causasched
-
-# 先安装与服务器CUDA匹配的PyTorch，再安装其余依赖
+# 先安装与CUDA匹配的PyTorch
 pip install -r requirements_e2e.txt
 ```
 
-将基础运行时放到 `inference_assets/runtime.pt`。该文件不在Git中，可从完整运行包复制；使用完整包时直接进入解压目录即可。
+将完整运行包的 `runtime.pt` 放到 `inference_assets/runtime.pt`。运行时、模型权重和个人实验结果不在Git中，仅克隆仓库不能直接启动训练。
 
-## 2. 开始训练
+## 训练
 
-默认使用固定128个训练实例，每次更新全部实例。每张图每个大回合200步预算，完成后恢复各自固定的初始规则解；网络和优化器持续学习。小段通常10步，停滞时统一增加到20步；提前结束仍计入分配预算。
+当前代码使用多轨迹候选比较：每图16条轨迹，每步按策略无放回抽取最多40个不同候选，执行其中工期最小的可行动作；候选不足时全部比较。允许暂时恶化，单、双算子均可参与。M3更新使用整组有序抽样的联合对数概率，不使用获胜动作的单次采样概率。
 
-默认16个worker、每图16条轨迹、GPU微批次16、每次更新1个epoch、回溯深度L=6，启用单算子和双算子。V14整体负载均衡指标为所有机器加工负载的变异系数（总体标准差÷均值），包含空闲机器，不分类。指标下降给正奖励，上升给负奖励；比例缩放后更均衡但总加工量变大也可能给正奖励，这是本试验的取舍。
+每个大回合200步，结束后回到固定初始规则解；小段通常10步，停滞时可增加到20步。停滞换状态已关闭，根因和算子选择探索保留。每次更新1个epoch，网络端到端训练，不使用SFT参考KL。
 
-辅助奖励组内绝对幅值目标占比为30%，不是有符号奖励的30%，也不是梯度占比。没有负载变化时为0；工期主项全零而负载项非零时占100%。轨迹奖励仍比较起点与末端，最好点负载额外记录用于诊断。最好解只按工期保存。
+即时工期奖励为正改善减去0.2倍恶化量；辅助项默认是0.5倍整体机器加工负载标准差的下降量，不做奖励占比缩放。不可行执行另受惩罚；组相对优势仍标准化。
+
+仓库保留原有128个训练实例；服务器26实例训练需要原完整包中的实例bank和检查点，未额外上传数据。
 
 ```bash
-export WORKERS=16
-export BRANCHES=16
-export DECISION_BATCH=16
-export EPOCHS=1
-
-export OUTPUT="/root/autodl-tmp/causasched_runs/train128_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$(dirname "$OUTPUT")"
-
+# 仓库128实例训练入口
+export WORKERS=16 BRANCHES=16 EPOCHS=1 DECISION_BATCH=16
+export E2E_STEP_CANDIDATES=40
+export OUTPUT="outputs/train40_$(date +%Y%m%d_%H%M%S)"
+mkdir -p outputs
+python scripts/test_step20_training.py
 nohup bash run_e2e_single.sh --cycles 5000 > "${OUTPUT}.log" 2>&1 &
 echo $! | tee "${OUTPUT}.pid"
 tail -f "${OUTPUT}.log"
 ```
 
-`--cycles 5000`表示5000次采集更新，不是5000个大回合。非AutoDL环境请自行修改输出路径；显存不足时可降低 `DECISION_BATCH`。
+`--cycles` 是采集更新次数，不是大回合数。`test_step20_training.py` 沿用旧文件名，测试候选组概率和执行逻辑，不限定运行时只能比较20个。
 
-## 3. 当前128实例版本普通续训
-
-不加重置回合参数，继续已保存的回合进度。
+已有26实例运行包，使用明确的检查点续训：
 
 ```bash
-RESUME="/path/to/train128/latest.pt"
-export OUTPUT="/root/autodl-tmp/causasched_runs/train128_continue_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$(dirname "$OUTPUT")"
-
-nohup bash run_e2e_single.sh \
-  --resume "$RESUME" --additional-cycles 5000 \
-  --allow-reward-change --load-share 0.30 \
-  > "${OUTPUT}.log" 2>&1 &
-echo $! | tee "${OUTPUT}.pid"
-tail -f "${OUTPUT}.log"
+python scripts/start_step40_training.py \
+  --resume /path/to/current/latest.pt \
+  --output outputs/continue40 \
+  --additional-cycles 5000
 ```
 
-## 4. 查看日志与停止训练
+该入口要求原检查点为26实例、16轨迹、200步回合，保留其奖励系数、权重、优化器和当前状态；固定16个worker、每步最多40候选。启动打印实例ID与问题指纹，并写入 `resumed_cohort.json`。请勿将训练实例用作独立测试证据。
 
-终端默认只输出阶段与批次总结；启动时追加 `--verbose` 可恢复详细输出。重新打开终端后，请用实际路径替换下列路径。
+## 日志与停止
 
 ```bash
 tail -f /path/to/run.log
 tensorboard --logdir /path/to/run/tensorboard --host 0.0.0.0 --port 6007
-
-# 停止当前项目的训练进程，不删除结果
 python scripts/stop_project_training.py
 ```
 
-输出目录包含：
+`[candidate-set]` 的 `trials/decisions` 是每步实际比较数量；`trial_pairs` 是试过的双算子数量，`executed_pairs` 是最终选中的数量。`[timing]` 区分采集、准备与更新耗时。`latest.pt` 保存续训状态，诊断日志逐批写入。停止脚本不删除结果。
 
-- `latest.pt`：训练续训检查点。
-- `detail.log`：详细父进程日志。
-- `rollout_metrics.jsonl`：轨迹、工期和提前结束原因。
-- `reward_components.jsonl`：最终工期奖励与负载奖励分量。
-- `audit_*.json`、`tensorboard/`：每次更新的统计。
-- `config.json`、`initial_manifest.json`：实际配置及初始实例信息。
-
-## 5. 导出并运行推理
-
-训练检查点不能直接作为推理的 `--runtime`；先导出一次：
+## 推理
 
 ```bash
 python scripts/export_e2e_runtime.py \
   --checkpoint /path/to/latest.pt \
   --output inference_assets/trained_runtime.pt
-
 python scripts/run_fast_parallel.py \
   --runtime inference_assets/trained_runtime.pt \
-  --bank data/train128 \
-  --output outputs/inference_run_01 \
+  --bank data/train128 --output outputs/inference_check \
   --workers 16 --branches 16 --batches 50 --horizon 10
 ```
 
-导出文件及推理输出目录使用新路径，避免覆盖已有结果。推理冻结参数，从指定bank内的调度开始搜索；默认启用单、双算子，追加 `--single-only` 可只用单算子。快速推理入口使用CPU，每个worker只加载一次运行时。
-
-上述命令在128个训练实例上做功能检查，不能作为未见测试结果。正式测试请通过 `--bank` 指定外部独立实例集。仓库仅保留这128个实例及其加载清单。
+上述快速推理入口仍是每步采样一个动作，不是40候选比较训练入口。它冻结参数、每个worker只加载一次运行时。上述bank仅用于训练集功能检查；正式测试请指定独立实例bank。

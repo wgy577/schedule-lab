@@ -12,6 +12,10 @@ htmlcov/
 build/
 dist/
 runtime_shims/
+backups/
+inference_assets/
+*.pt
+*.pth
 outputs/*.json
 outputs/*.jsonl
 outputs/memory/

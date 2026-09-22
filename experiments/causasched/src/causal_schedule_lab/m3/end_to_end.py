@@ -210,7 +210,8 @@ def recompute(r, rec, device):
         pair_mask=rec['pair_mask'].to(device))[:rec['M']]
     if 'm3_exploration_bias' in rec:
         logits=logits+rec['m3_exploration_bias'].to(device)
-    lp3 = mixture_logp(logits, rec['a'], C.TO1_R13_TEMP, C.TO1_R13_MIX_EPS)
+    from .step20_training import logp_from_logits
+    lp3 = logp_from_logits(logits, rec, C.TO1_R13_TEMP, C.TO1_R13_MIX_EPS)
     return lp2, lp3, old2, dict(F=F, base=norm, logits=logits,
                                draws=draws)
 
@@ -218,3 +219,5 @@ def recompute(r, rec, device):
 def clipped_loss(lp, old, advantage, clip=.2):
     ratio = (lp-float(old)).clamp(-20,20).exp()
     return -torch.minimum(ratio*advantage, ratio.clamp(1-clip,1+clip)*advantage)
+
+# V22 ordered candidate-set training

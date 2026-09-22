@@ -68,7 +68,8 @@ def replay_batch(r, records, device):
     probs3=torch.softmax(logits/float(C.TO1_R13_TEMP),1)
     probs3=(1-eps)*probs3+eps*valid3/probs3.new_tensor(lengths)[:,None]
     actions=torch.tensor([s['a'] for s in records],device=device)
-    lp3=probs3.gather(1,actions[:,None]).squeeze(1).clamp_min(1e-12).log()
+    from .step20_training import batch_logp
+    lp3=batch_logp(probs3,records)
     return dict(lp2=lp2,lp3=lp3,draw_lp=draw_lp,draw_owner=owners,
                 draw_old=draw_lp.new_tensor([q[2] for q in queries]),features=fs)
 
@@ -82,3 +83,5 @@ def loss_batch(out, records):
     ratio3=(out['lp3']-ratio.new_tensor([s['logp_old'] for s in records])).clamp(-20,20).exp()
     loss3=-torch.minimum(ratio3*adv3,ratio3.clamp(.8,1.2)*adv3)
     return (loss2*w2[out['draw_owner']]).sum()+(loss3*ratio.new_tensor([s['_w3'] for s in records])).sum()
+
+# V22 ordered candidate-set training
