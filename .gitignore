@@ -18,3 +18,22 @@ outputs/memory/
 checkpoints/*.pt
 checkpoints/*.pth
 external_cases/
+
+# Keep documentation limited to current usage READMEs; retain only TRAIN128 data.
+*.md
+!/README.md
+!/experiments/causasched/README.md
+*.json
+*.jsonl
+*.csv
+*.tsv
+*.yaml
+*.yml
+*.html
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+*.mp4
+!experiments/causasched/data/train128/*.json

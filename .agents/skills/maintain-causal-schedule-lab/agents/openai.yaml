@@ -1,4 +1,0 @@
-interface:
-  display_name: "Causal Schedule Lab Maintainer"
-  short_description: "持续核对代码、数学公式、架构文档、实验状态与证据的一致性"
-  default_prompt: "Use $maintain-causal-schedule-lab to audit the current framework and update every affected architecture document."

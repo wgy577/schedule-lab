@@ -82,11 +82,11 @@ python scripts/export_e2e_runtime.py \
 
 python scripts/run_fast_parallel.py \
   --runtime inference_assets/trained_runtime.pt \
-  --bank data/drl_public41/daniel_sample100 \
+  --bank data/train128 \
   --output outputs/inference_run_01 \
   --workers 16 --branches 16 --batches 50 --horizon 10
 ```
 
 导出文件及推理输出目录使用新路径，避免覆盖已有结果。推理冻结参数，从指定bank内的调度开始搜索；默认启用单、双算子，追加 `--single-only` 可只用单算子。快速推理入口使用CPU，每个worker只加载一次运行时。
 
-训练实例不能作为未见测试集；上面的公开bank与训练集有重叠，仅可直接用于功能检查。正式测试请通过 `--bank` 指定独立实例集。
+上述命令在128个训练实例上做功能检查，不能作为未见测试结果。正式测试请通过 `--bank` 指定外部独立实例集。仓库仅保留这128个实例及其加载清单。

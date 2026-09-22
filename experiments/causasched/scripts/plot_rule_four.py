@@ -21,9 +21,11 @@ plt.rcParams.update({'font.family':'DejaVu Sans', 'font.size':10,
                      'axes.spines.top':False, 'axes.spines.right':False})
 fig, axes = plt.subplots(2, 2, figsize=(19, 15))
 summary=[]
+bank=ROOT/'data/train128'
+files={row['instance_id']:row['file'] for row in json.loads((bank/'protocol.json').read_text())['entries']}
 for ax, number in zip(axes.flat, range(4,8)):
     iid=f'Behnke{number}'
-    data=json.loads((ROOT/f'data/drl_public41/daniel_sample100/{iid}.json').read_text())
+    data=json.loads((bank/files[iid]).read_text())
     problem=Problem.model_validate(data['problem'])
     schedule=solve_dispatching(problem, rule='earliest_finish')
     assert validate_schedule(problem, schedule).feasible

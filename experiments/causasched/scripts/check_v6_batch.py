@@ -21,8 +21,10 @@ def main():
     a=p.parse_args(); torch.manual_seed(9162026)
     t.worker_init(ROOT/'inference_assets/runtime.pt',6,0.,'sft',9162026)
     r=t.base.RUNTIME; records=[]
+    bank=ROOT/'data/train128'
+    files={row['instance_id']:row['file'] for row in json.loads((bank/'protocol.json').read_text())['entries']}
     for i,iid in enumerate(('Behnke4','Behnke7','BrandimarteMk6')):
-        x=json.loads((ROOT/f'data/drl_public41/daniel_sample100/{iid}.json').read_text())
+        x=json.loads((bank/files[iid]).read_text())
         problem=t.Problem.model_validate(x['problem']); schedule=t.solve_dispatching(problem,rule='earliest_finish')
         cache=t.FastAnalyzeCache(r['model_b5'],r['single_head'],r['direct_head'],max_entries=3)
         ast=cache.ast(problem,schedule,iid)

@@ -17,10 +17,12 @@ def fingerprint(p):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--archive',type=Path,required=True)
+    p.add_argument('--source-bank',type=Path,required=True,help='External original DRL bank')
+    p.add_argument('--source-runtime-meta',type=Path,required=True,help='External original 26-ID runtime metadata')
     p.add_argument('--output',type=Path,default=ROOT/'data/train128');a=p.parse_args()
     if a.output.exists():raise FileExistsError(a.output)
-    bank=ROOT/'data/drl_public41/daniel_sample100'
-    ids=set(json.loads((ROOT/'inference_assets/runtime.json').read_text())['train_ids'])
+    bank=a.source_bank
+    ids=set(json.loads(a.source_runtime_meta.read_text())['train_ids'])
     entries=json.loads((bank/'protocol.json').read_text())['entries']
     chosen=[];seen=set()
     for row in entries:

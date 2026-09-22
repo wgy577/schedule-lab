@@ -1,9 +1,0 @@
-{
-  "schema_version": "1.0",
-  "project_id": "generic-scheduling-project",
-  "adapter": "builtin-example",
-  "semantics": "../../configs/base_semantics.json",
-  "adapter_options": {"family": "jsp", "baseline_rule": "lpt"},
-  "generator": "generic-cp-sat",
-  "generator_options": {"seed": 0, "deterministic_time": 0.2}
-}

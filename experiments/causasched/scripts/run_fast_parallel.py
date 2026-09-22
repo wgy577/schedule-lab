@@ -125,7 +125,7 @@ def choose_root(state, batch, branch):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--runtime', type=Path, default=ROOT/'inference_assets/runtime.pt')
-    p.add_argument('--bank', type=Path, default=ROOT/'data/drl_public41/daniel_sample100')
+    p.add_argument('--bank', type=Path, default=ROOT/'data/train128')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--instances', nargs='*')
     p.add_argument('--workers', type=int, default=12)
