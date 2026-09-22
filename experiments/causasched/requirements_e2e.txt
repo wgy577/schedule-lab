@@ -1,0 +1,7 @@
+numpy
+pydantic>=2
+scipy
+tensorboard
+ortools>=9.12,<10
+networkx
+# Install the CUDA-compatible torch build provided by your server image.

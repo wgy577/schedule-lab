@@ -1,0 +1,517 @@
+{
+  "family": "FJSP",
+  "generator": "public_fjs_files",
+  "cohort_role": "public_benchmark_subset",
+  "seed": 9162026,
+  "instances": 41,
+  "initializer": "DANIEL",
+  "mode": "sample",
+  "samples": 100,
+  "weights_sha256": "09a823ad599d72679b0c186a650682261ad87cb13571670b2f0a59b326942a78",
+  "source_sha256": {
+    "params.py": "b51858859f7de5c720a57890e1660f2bc31d2321ba0280e189e7a8f0076ddccb",
+    "model/main_model.py": "3922cb49ead09098eb16264e3ed37b31721f6b167412c7d4dfb08065b8e66cff",
+    "model/attention_layer.py": "a6fec1a17592dcb064ca9d60cfe2e90a5da7b0d4891a8fd5cd37d341b6ce98c7",
+    "model/sub_layers.py": "da05748f0054a9c5657ac16fe5d114956bcbef3e151f2f48812586db5e7051f3",
+    "fjsp_env_same_op_nums.py": "8e68073798f6688a54afe6198e8b774b67b84635bc01e1aa2a65b05e95df40bf",
+    "common_utils.py": "e132030e69206614158febe77386fa2a5336fe57b7ffcd7999c7cf23ebcd3516"
+  },
+  "model_load_seconds": 0.2601053826510906,
+  "complete": true,
+  "benchmark_files": [
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk6.fjs",
+      "sha256": "0fd700e99e50b21be527e64ca81518f6e46a5fdf077a7e50bc87044cba7a08dd"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk8.fjs",
+      "sha256": "5c897caaa9069d4e15175d113de73040e0f7cc70c5e308c6665343ed3e888ddf"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk9.fjs",
+      "sha256": "55b5970c34cc345391da995cf611767dfb78e8d2cd274256224997b9cc734859"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk10.fjs",
+      "sha256": "af2f1b273a881f03b20a45f67e5a1ef4a574bd018f20841f6b468700b50895f1"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk14.fjs",
+      "sha256": "b1934c54748f6d9faba4b9a90ca019ecd2d4b71be663b83d6b528169b8ced80f"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/brandimarte/BrandimarteMk15.fjs",
+      "sha256": "337b7fd0b4ce90e1d6d0a5df148e012b80193764d23c95268c12ec19ca0788ef"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata19.fjs",
+      "sha256": "5211dc3361f7ce6b6d2a5308320e930cb11e780a03ee92912604baddffa3cc00"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata20.fjs",
+      "sha256": "50a77e50910fa5a088ad4542a5c59bc3f576e8d74daa468a2320f058d326d3b8"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata21.fjs",
+      "sha256": "d613565dbad2d5a23774aa1f9311f573a17b0c0a1f41219a1b0ebb3f8375e9f4"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata22.fjs",
+      "sha256": "6496751c900350f53a26c2360a18205961b08f9de157b183545afab3956d1da3"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata23.fjs",
+      "sha256": "774a30e892b8b99cd1c0739426deeae35002c2a07f5d633add64ef15d890e760"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata24.fjs",
+      "sha256": "51672f9e1a163b1e58ec7226ae64fe9d224ba7d2a1540c885e0a8f6efcb5f17c"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata25.fjs",
+      "sha256": "980798af6cd55906ced26316902ce5f0385d9418789a00b8a78babd61c449d0d"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata26.fjs",
+      "sha256": "6b1347fbd1cb45d73f10a60be6aa2c5345964f6ecccaacb4f13cbd85d5e890ab"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata27.fjs",
+      "sha256": "b8f1aa77bb98d4cd23f00432ce7188269b8399ea62110f1abe84705a84a8a4d9"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata28.fjs",
+      "sha256": "b4378d0942767c3d18bda5b25383fb0caaab22c5d8978f484a6f11ff4dad5840"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata29.fjs",
+      "sha256": "9d907acf5c8fd4b5873ea64b3159bc960d49e46adb546d38194f4de2b5b42733"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata30.fjs",
+      "sha256": "5959b71e913ed9d65cc0abc30b0b65bcb2f531ec219caf7b1cf077a4d0a518ee"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata31.fjs",
+      "sha256": "e8eb060f8b559fa65d74ce560ddb16362d0a0cce3f6722249d2f0af659447034"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata32.fjs",
+      "sha256": "cab03038886ed5e0c6458469039dd6ab781a76b7e289a80adc187fb63cc070cf"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata33.fjs",
+      "sha256": "94f9bb2dc70967ac3dd13202786740d6908ca4bcc3734bd33043d97ea005c66d"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata34.fjs",
+      "sha256": "72f7d460fb59d9f1551697d1c504f408deb81012d233822ccedeb3476871165e"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata35.fjs",
+      "sha256": "d5e84c136cd6777b7ddb01fb0a0721da90a22eee47332cbbaadefc1d91e6fc47"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata36.fjs",
+      "sha256": "09b6d83a58de6ba3cc6ca90db9b738a1a4fbf0ed4f7cfc4b5a8b5c1e522f3993"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata37.fjs",
+      "sha256": "3de2100779cac4c6f8b60f99ba33971f94a0d8bb41c3c01254d6f381eb657711"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata38.fjs",
+      "sha256": "7cbe1a7bfa4db61c173583b4417d39323f10451783aa291177e57cf8b92d6e54"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke1.fjs",
+      "sha256": "31e225fdb91346f99c61f76db83de2104ec872102b31937227215fa4375cdc19"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke2.fjs",
+      "sha256": "a6aea6a2f85b9073434c441a2f89650eaa243bf5187414af47e20ddfc170a375"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke3.fjs",
+      "sha256": "412620d9f71000bb3ab3400c23374d53d0299d7c97c4949b6a1c3495a7cff92c"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke4.fjs",
+      "sha256": "ad5214b73ff0e0283a037e7d6bbadc04fe84226817c1f1f43495a2e1e1be7b39"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke5.fjs",
+      "sha256": "bb929cb058d7a53e2a7fec1616729cc166f2c45966f1bd06a70faf85157b3eab"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke6.fjs",
+      "sha256": "eb54ef435c474a1cf43a214743347eceb701a8b58ddecb0fdda830b1db3e3294"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke7.fjs",
+      "sha256": "53354f641f9f9e9831bffcb38ad06ef20274ad879f49ade6ac92501233a69b46"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke8.fjs",
+      "sha256": "7e3866644d5fdaf0c9bf6c492db6c7603f858bbf7735450603175df79af7a191"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke9.fjs",
+      "sha256": "565762ac9a4fe79219ca8300927c7d5f0031048667dd8684ae8f923c4905ee05"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke10.fjs",
+      "sha256": "5fd6c5ca5e94b3e992e666edcefbb9773b7977b60d5bf7323a4cb3beccbf8d8e"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke11.fjs",
+      "sha256": "e8d37171c0361e96f7774ab73540dd99c2db3ac55cf1574eed438fe1fb473ed8"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke12.fjs",
+      "sha256": "c4c676a4761ee8d08333a54bed6852f00d817ed34baed826bd22cdf52d9ecde2"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke13.fjs",
+      "sha256": "d34a0618db44aee5ee747b890ba7ebe67bc229fc30f57585515e860f6f93e193"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke14.fjs",
+      "sha256": "c615f86e886d8e80eb8b537dc79a8d106a7631666638d711b7aabc772871097e"
+    },
+    {
+      "path": "/root/t2m_paper_tables_probe10/instances/behnke_gehring/Behnke15.fjs",
+      "sha256": "0b54e1c3f3a18c59ba0bebdd76aa7c5c28553635400a13144f4316cfe9107038"
+    }
+  ],
+  "entries": [
+    {
+      "instance_id": "BrandimarteMk6",
+      "file": "BrandimarteMk6.json",
+      "sha256": "b9d0cadca752f5af8800d9552739148ea9596b5e1e361ba849ecf6855521600f",
+      "samples_file": "BrandimarteMk6.samples.json.gz",
+      "samples_sha256": "0c9f17115d84bd9793183002f8faf525fcc635c42c633c6be7bd502dc52ad199",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "BrandimarteMk8",
+      "file": "BrandimarteMk8.json",
+      "sha256": "ac554c5debbdea7dde2c0cb9124efc3a54c036499861dd2ccca79bc3c52ca51d",
+      "samples_file": "BrandimarteMk8.samples.json.gz",
+      "samples_sha256": "90c53c7a273f01d28abca16945ada737a03b90aba82177decaaad6a46b35b351",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "BrandimarteMk9",
+      "file": "BrandimarteMk9.json",
+      "sha256": "05a29b719a37f0aa987831182a8e1a506aea681d54915661ad206ef46c10a398",
+      "samples_file": "BrandimarteMk9.samples.json.gz",
+      "samples_sha256": "f6a727be16b33aeb541fab786ba0f2de9aa747310100467a4e2720d91f716c73",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "BrandimarteMk10",
+      "file": "BrandimarteMk10.json",
+      "sha256": "085c9deedf022c64482421b37deb757c5a347444020189e3efeb4ff9af87f32f",
+      "samples_file": "BrandimarteMk10.samples.json.gz",
+      "samples_sha256": "c86870cf7774376d5360cade8d16cc7a54a6d384b75f520b222330eb5266305e",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "BrandimarteMk14",
+      "file": "BrandimarteMk14.json",
+      "sha256": "63f25ae221d9cce3b848140afdfe148353d5e6d20d8cbc90b28504265abeb074",
+      "samples_file": "BrandimarteMk14.samples.json.gz",
+      "samples_sha256": "36f5aff84e8ce053bea6c16080f99e82b381bf4f029b3774ed61a55eb55fdc0e",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "BrandimarteMk15",
+      "file": "BrandimarteMk15.json",
+      "sha256": "e65dcbc9cbab909d86f743e2ea85b128756e3874ece3973ad7e35cd0d7707036",
+      "samples_file": "BrandimarteMk15.samples.json.gz",
+      "samples_sha256": "e1a9b3260f5747c067f2a9c82abf668575c17a0808680df78cdf36288816cb2e",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata19",
+      "file": "HurinkRdata19.json",
+      "sha256": "4ce1b1dc395c3e4912f5dc65928f0b8b5a2ce75ad49641ea5e2177ea717c4ab5",
+      "samples_file": "HurinkRdata19.samples.json.gz",
+      "samples_sha256": "4c13ccb76e77baec3b0185aaa41f068095ab44ab96756488cb909271e5e8ed2a",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata20",
+      "file": "HurinkRdata20.json",
+      "sha256": "ad1c67687fc1f1a08beeebea5198f1dbd9c3a5080ffeaa2ee65ee84861f5b09f",
+      "samples_file": "HurinkRdata20.samples.json.gz",
+      "samples_sha256": "93b6cef50cf5dce9493a7ebb050a5b12a3a0c339077fe3b05ad4c8af6eeeff8e",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata21",
+      "file": "HurinkRdata21.json",
+      "sha256": "83190b852175c6d585c5f759be8c883cd2fcfc20f77878177c50b1bb2d18de92",
+      "samples_file": "HurinkRdata21.samples.json.gz",
+      "samples_sha256": "c900152048e2fe61a36234d3918ee14387d2272b46151ff732f421f850fb3cf7",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata22",
+      "file": "HurinkRdata22.json",
+      "sha256": "07ee9a93e3633e91d9be2393577280b66e25403f4af285c8e5309e8b43019651",
+      "samples_file": "HurinkRdata22.samples.json.gz",
+      "samples_sha256": "f97bfccc19368e174c5504185bd313c49fe4275c5028d314cdafbd17a7b98296",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata23",
+      "file": "HurinkRdata23.json",
+      "sha256": "fb0ee0bfe7abfcc0c9b910b76bfcef02c8e356d7584bf53cc43693cd7ae44b00",
+      "samples_file": "HurinkRdata23.samples.json.gz",
+      "samples_sha256": "14ae080b31f1b19f5267fc125fee5df35e92a4420afb1acd383278f73c2cf189",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata24",
+      "file": "HurinkRdata24.json",
+      "sha256": "4d63d8439e6cf20e90cbf22090d43d4695b0a62c4837f5ffc21e8c05597e73f4",
+      "samples_file": "HurinkRdata24.samples.json.gz",
+      "samples_sha256": "62c1d4a5d7fcfb4b7896c5f9f1ade09325ad355e02494b06d125bda688910b33",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata25",
+      "file": "HurinkRdata25.json",
+      "sha256": "e575c7345094b6b5ebb35ce0fa27e1ff6388bbf2b56f6c1edf08cbd73b25c4ed",
+      "samples_file": "HurinkRdata25.samples.json.gz",
+      "samples_sha256": "b2249b675bea0c895e21d0218c03080f7c9bb0edb1a4f6d9926fa5f8d8727a82",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata26",
+      "file": "HurinkRdata26.json",
+      "sha256": "aca452bbecea5f1883e30f9099803a349eebdadb5c55bec49c6296e5a43f5cda",
+      "samples_file": "HurinkRdata26.samples.json.gz",
+      "samples_sha256": "f90ba0d83c8491ef610d3390c06ac35af8df2ee1fae286411c86aff16563f50b",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata27",
+      "file": "HurinkRdata27.json",
+      "sha256": "d235cd5afba3e2ff5b5af9bb7f4f050e6ad1d879c732599f1e5adbac80a2491d",
+      "samples_file": "HurinkRdata27.samples.json.gz",
+      "samples_sha256": "1076d954b997f011356307dd1c35a5d5a734ec10ab8f08fd96043e81ef8950bd",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata28",
+      "file": "HurinkRdata28.json",
+      "sha256": "10980ba385eb522866a6f55c72ae56e5fe7ff0c335a109a345cf21621243aeda",
+      "samples_file": "HurinkRdata28.samples.json.gz",
+      "samples_sha256": "8270a61a0a2b18cffe410273e8e9eca72fe2c8697ecc3de3a57dafa3a9d2d3bd",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata29",
+      "file": "HurinkRdata29.json",
+      "sha256": "122c3d6ce59ef8351a568df38cd342de7f19426c93cddbe1028e6cec2bdd1a54",
+      "samples_file": "HurinkRdata29.samples.json.gz",
+      "samples_sha256": "8f3dc4086bdb67b01ea76c97e020cec22756ea03e1073db05bdd932f4304f41c",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata30",
+      "file": "HurinkRdata30.json",
+      "sha256": "c21f299333c4427d90e1e103486eb56003dc7565b100804f44aa3c05b038e43e",
+      "samples_file": "HurinkRdata30.samples.json.gz",
+      "samples_sha256": "5cdee09fbe592a07320bd4e6a2b70092c097db01a606145cf98655c7174bf707",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata31",
+      "file": "HurinkRdata31.json",
+      "sha256": "a165b1cedd1ec67fa51ef73d62092a468c5d015a4aee561bc2629a03a162e052",
+      "samples_file": "HurinkRdata31.samples.json.gz",
+      "samples_sha256": "3d9ff901357fe417e01c4d18ed7ef72e9b65a17904d81a951ae367a704a09a2b",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata32",
+      "file": "HurinkRdata32.json",
+      "sha256": "2aa09159a8a5087a6fdf176559a42a6c34be4be5826c79612ef40120e36843a4",
+      "samples_file": "HurinkRdata32.samples.json.gz",
+      "samples_sha256": "cf2c31682ccd0d349696481082dfec64fd03329e71e0b2e5610b415667a13cb2",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata33",
+      "file": "HurinkRdata33.json",
+      "sha256": "86ea6f927c60dfbbf26c0e38070ac665d6cfbc574f77850324cc0ec031f84fe3",
+      "samples_file": "HurinkRdata33.samples.json.gz",
+      "samples_sha256": "4b66f93171cddb30eebfcf853b42a4999b89890a624fad03a7b9fae23e7ce8c5",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata34",
+      "file": "HurinkRdata34.json",
+      "sha256": "e4e202e52144488874c45af172400ca37ffe8bc3fe83245a789e3b113c0bf45f",
+      "samples_file": "HurinkRdata34.samples.json.gz",
+      "samples_sha256": "98e1cf73765d58674e353f431cb0eb71b2dc624f3e3a4d4c66f23100e0612576",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata35",
+      "file": "HurinkRdata35.json",
+      "sha256": "47ea50ce2d34a9220444bab9349961021f2f5e3610940f476be73365a26df8bd",
+      "samples_file": "HurinkRdata35.samples.json.gz",
+      "samples_sha256": "1426e8e01aaf6b5827606cd030669c8ad669e12bbdf02e5a14fab246ae28f210",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata36",
+      "file": "HurinkRdata36.json",
+      "sha256": "47bda46febf06d8db018048c250ac8e27b39456353c96234de476c5e66b066eb",
+      "samples_file": "HurinkRdata36.samples.json.gz",
+      "samples_sha256": "d9b103abb8b98aa8ecbcca787e114c7b9668e0409ed0a919dc7fd739f12b11e5",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata37",
+      "file": "HurinkRdata37.json",
+      "sha256": "888851fb37fd91099066619c1ebcf6a3763b122b46e29905f3019f564f18826f",
+      "samples_file": "HurinkRdata37.samples.json.gz",
+      "samples_sha256": "12e4b7537313ad994e6d01762c88ffa1b04fc473f655d9118eec2c891b174194",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "HurinkRdata38",
+      "file": "HurinkRdata38.json",
+      "sha256": "3246b13a6db9f30a55662dde92cfef57968dc83d415244c5f4cb2a6e78d2b868",
+      "samples_file": "HurinkRdata38.samples.json.gz",
+      "samples_sha256": "db86a5a93d4042fdb4909343493df0c26cc248e82f18d5a31f022e1412f0e315",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke1",
+      "file": "Behnke1.json",
+      "sha256": "221b64b3686cd1090abb01dd641fd6eafb85c3ea1cba4c636db82e0424215d05",
+      "samples_file": "Behnke1.samples.json.gz",
+      "samples_sha256": "67965104a9c6bf6f7c70f6174ea55efa2ee460911cb9ff6e71dba81154ef2eb2",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke2",
+      "file": "Behnke2.json",
+      "sha256": "d549994683e743f022271db6600f0ff0cec0305339a1b7b9e4213862677d5d6a",
+      "samples_file": "Behnke2.samples.json.gz",
+      "samples_sha256": "35e1d596d595b42bbbbf043641b95cf2a16231e076ac22d2bff5177557b9eef4",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke3",
+      "file": "Behnke3.json",
+      "sha256": "9b60330e871898201103f8478df340c57846cd3d544d3012d40d85312cbc928f",
+      "samples_file": "Behnke3.samples.json.gz",
+      "samples_sha256": "72979d09ac71db0e1712442baacb581d312731b692214042daa269178fe753f7",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke4",
+      "file": "Behnke4.json",
+      "sha256": "f7fc9ad61be520856250d792bf74ca0e9cd46e0ffa8e84574bfd4b2bd39f0f59",
+      "samples_file": "Behnke4.samples.json.gz",
+      "samples_sha256": "3bfe5bcc3899c0aacb3f9e836004002d8ac0d3977f3e6d06f463b3fc85019445",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke5",
+      "file": "Behnke5.json",
+      "sha256": "de0fa5672d6fe4eaaf83b3ed7329e517f386605090966be1c9aa65c62cb7c0fd",
+      "samples_file": "Behnke5.samples.json.gz",
+      "samples_sha256": "1168e192b6df503e865e417908b12f362ec1b983bfaf5c39a1dfb2b1b6160589",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke6",
+      "file": "Behnke6.json",
+      "sha256": "c81e8d639a1a05cb1be0646f505c8c395d08bf4f6114c7380b89722070fede93",
+      "samples_file": "Behnke6.samples.json.gz",
+      "samples_sha256": "69d2cf106e379a8c9a5ddcac5f34a3b5912cd17f76e8e9429f6026a2c09bde7d",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke7",
+      "file": "Behnke7.json",
+      "sha256": "5c8755093e16be687fa9d15f8e7022247054e3cabbc01bd3ff70d6d63e721229",
+      "samples_file": "Behnke7.samples.json.gz",
+      "samples_sha256": "0cd9307e0809af73fbaa3febd5d46b021772a9e55e65336f7f5e2883f5997a36",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke8",
+      "file": "Behnke8.json",
+      "sha256": "f357e231e2ed8658700826af9d52e6e32d724e23b31d68b726946c526856c6a7",
+      "samples_file": "Behnke8.samples.json.gz",
+      "samples_sha256": "f8cf244329968bb2137706202b157e0fd897681eb165731ffbd7cb0fa84c8e68",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke9",
+      "file": "Behnke9.json",
+      "sha256": "5cf7cb16401aae4de5f88cc4d4baf6bfd69f731cd34cbaf5c196479c5d9ca9e5",
+      "samples_file": "Behnke9.samples.json.gz",
+      "samples_sha256": "d37acf84075804c3dd0f40e64dac073219db2551628bf1f8c70238a118d05786",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke10",
+      "file": "Behnke10.json",
+      "sha256": "e5a57e788eba44a580679f6c6c65be5ae625bd66ae728b34da46ea4db83a6c36",
+      "samples_file": "Behnke10.samples.json.gz",
+      "samples_sha256": "f291085a12773566ade3edd8bd6f92dadc010a20cb280633083501a65573aa55",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke11",
+      "file": "Behnke11.json",
+      "sha256": "13778d877252486eb4806b31a7fa79f256087f5620ebc312d11c8e9984c56d38",
+      "samples_file": "Behnke11.samples.json.gz",
+      "samples_sha256": "62a59b7a116abb7688f50cfa1750b8a06d84ba17ba77bdc9242b2f96dcc8202b",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke12",
+      "file": "Behnke12.json",
+      "sha256": "f7b7657c18831f78bea4a8eca345dc07f4d387d71ca82a62c7161b5857aaf5f9",
+      "samples_file": "Behnke12.samples.json.gz",
+      "samples_sha256": "8bb8129f0cbeafb06f27db6e7b636bcbe8a8fa62dd05e21c126d8029fd9e3fe6",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke13",
+      "file": "Behnke13.json",
+      "sha256": "7a167083dc628eabb8b873f19f132d210035b76ee4893fea4d8772f3da064df6",
+      "samples_file": "Behnke13.samples.json.gz",
+      "samples_sha256": "e27d2c47b434bd5c04e0dc2dae15878ccc189a0edea4472a19578a444b758b57",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke14",
+      "file": "Behnke14.json",
+      "sha256": "59e2237e9d63ee3c16a97338c28c7b5a8be0d73da29d40e4f28ff9c6757c81fe",
+      "samples_file": "Behnke14.samples.json.gz",
+      "samples_sha256": "19570d62cbce47d65e957493c512069b138dcfc87863e080f8f22b5c7a6d1beb",
+      "exported_samples": 100
+    },
+    {
+      "instance_id": "Behnke15",
+      "file": "Behnke15.json",
+      "sha256": "9e8db07ee0c3f976784c2704e6f50525d696a66c3472c645390a7a107b98bcd7",
+      "samples_file": "Behnke15.samples.json.gz",
+      "samples_sha256": "029e8d2d287126846b322248fb8ca46cca760b48580ccf4d1edb1843bd78855e",
+      "exported_samples": 100
+    }
+  ]
+}

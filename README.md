@@ -1,5 +1,11 @@
 # Causal Schedule Lab
 
+## CausaSched 训练与推理（V13）
+
+最新独立实验代码位于 [experiments/causasched](experiments/causasched/README.md)：
+固定128实例、每回合200步预算、全实例同步更新、简洁总结日志，以及训练模型导出与推理入口。
+原通用工程保留在仓库根目录。模型权重和训练产物不入库；运行时依赖及验证边界见子目录说明。
+
 面向 JSP、FSP、FJSP、HFSP 与项目约束调度的“项目条件化因果核心点发现 +
 Agentic 局部改进”研究平台。
 

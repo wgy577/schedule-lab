@@ -1,0 +1,12 @@
+outputs/
+__pycache__/
+*.pyc
+*.pt
+*.pth
+*.pkl
+*.log
+*.pid
+*.tar
+*.tar.gz
+.env
+.DS_Store

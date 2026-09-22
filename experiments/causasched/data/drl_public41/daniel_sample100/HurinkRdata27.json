@@ -1,0 +1,7363 @@
+{
+  "instance_id": "HurinkRdata27",
+  "family": "FJSP",
+  "jobs": 15,
+  "operations": 150,
+  "machines": 10,
+  "policy_seed": 9162026,
+  "source_file": "/root/t2m_paper_tables_probe10/instances/hurink_rdata/HurinkRdata27.fjs",
+  "source_sha256": "b8f1aa77bb98d4cd23f00432ce7188269b8399ea62110f1abe84705a84a8a4d9",
+  "initializer": "DANIEL",
+  "initialization_seconds": 2.474661011248827,
+  "makespan": 908,
+  "selected_sample": 18,
+  "all_sample_makespans": [
+    1060,
+    990,
+    1042,
+    1114,
+    1043,
+    1005,
+    1011,
+    959,
+    1060,
+    1030,
+    1017,
+    990,
+    1045,
+    995,
+    1010,
+    970,
+    995,
+    1008,
+    908,
+    997,
+    929,
+    953,
+    1078,
+    973,
+    1060,
+    948,
+    999,
+    987,
+    995,
+    937,
+    976,
+    965,
+    916,
+    1076,
+    1055,
+    1064,
+    937,
+    1061,
+    1090,
+    1025,
+    973,
+    1120,
+    988,
+    927,
+    987,
+    1013,
+    1005,
+    995,
+    952,
+    1007,
+    998,
+    980,
+    980,
+    1014,
+    1030,
+    1039,
+    1106,
+    997,
+    996,
+    1072,
+    984,
+    973,
+    993,
+    935,
+    1037,
+    1075,
+    1021,
+    964,
+    1042,
+    969,
+    1105,
+    1011,
+    956,
+    976,
+    941,
+    1019,
+    994,
+    1006,
+    1005,
+    938,
+    1040,
+    1043,
+    1057,
+    990,
+    974,
+    958,
+    982,
+    1034,
+    924,
+    934,
+    953,
+    1082,
+    1003,
+    1013,
+    1001,
+    1021,
+    1107,
+    1144,
+    1063,
+    1114
+  ],
+  "problem": {
+    "id": "HurinkRdata27",
+    "kind": "FJSP",
+    "jobs": [
+      {
+        "id": "J1",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J2",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J3",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J4",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J5",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J6",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J7",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J8",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J9",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J10",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J11",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J12",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J13",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J14",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      },
+      {
+        "id": "J15",
+        "release": 0,
+        "due": null,
+        "weight": 1.0,
+        "metadata": {}
+      }
+    ],
+    "environment": "static",
+    "factories": [],
+    "resources": [
+      {
+        "id": "M1",
+        "name": "M1",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M10",
+        "name": "M10",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M2",
+        "name": "M2",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M3",
+        "name": "M3",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M4",
+        "name": "M4",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M5",
+        "name": "M5",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M6",
+        "name": "M6",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M7",
+        "name": "M7",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M8",
+        "name": "M8",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      },
+      {
+        "id": "M9",
+        "name": "M9",
+        "capacity": 1,
+        "family": "machine",
+        "calendar": [],
+        "location": null,
+        "factory_id": null,
+        "tags": []
+      }
+    ],
+    "operations": [
+      {
+        "id": "J1.O1",
+        "job_id": "J1",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O1@M8",
+            "duration": 8,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O2",
+        "job_id": "J1",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O2@M10",
+            "duration": 75,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O3",
+        "job_id": "J1",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O3@M1",
+            "duration": 72,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O3@M3",
+            "duration": 72,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O4",
+        "job_id": "J1",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O4@M6",
+            "duration": 74,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O4@M7",
+            "duration": 74,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O5",
+        "job_id": "J1",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O5@M5",
+            "duration": 30,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O6",
+        "job_id": "J1",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O6@M8",
+            "duration": 43,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O6@M9",
+            "duration": 43,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O7",
+        "job_id": "J1",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O7@M3",
+            "duration": 38,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O7@M8",
+            "duration": 38,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O8",
+        "job_id": "J1",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O8@M6",
+            "duration": 98,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O8@M7",
+            "duration": 98,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O8@M10",
+            "duration": 98,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O9",
+        "job_id": "J1",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O9@M2",
+            "duration": 26,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O9@M4",
+            "duration": 26,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O9@M10",
+            "duration": 26,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J1.O10",
+        "job_id": "J1",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J1.O10@M1",
+            "duration": 19,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J1.O10@M4",
+            "duration": 19,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J1.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O1",
+        "job_id": "J2",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O1@M3",
+            "duration": 19,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O1@M7",
+            "duration": 19,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O1@M10",
+            "duration": 19,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O2",
+        "job_id": "J2",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O2@M5",
+            "duration": 73,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O2@M9",
+            "duration": 73,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O3",
+        "job_id": "J2",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O3@M2",
+            "duration": 43,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O3@M4",
+            "duration": 43,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O4",
+        "job_id": "J2",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O4@M1",
+            "duration": 23,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O4@M6",
+            "duration": 23,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O5",
+        "job_id": "J2",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O5@M1",
+            "duration": 85,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O5@M2",
+            "duration": 85,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O5@M4",
+            "duration": 85,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O6",
+        "job_id": "J2",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O6@M5",
+            "duration": 39,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O7",
+        "job_id": "J2",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O7@M6",
+            "duration": 13,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O7@M9",
+            "duration": 13,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O8",
+        "job_id": "J2",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O8@M10",
+            "duration": 26,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O9",
+        "job_id": "J2",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O9@M3",
+            "duration": 67,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J2.O10",
+        "job_id": "J2",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J2.O10@M1",
+            "duration": 9,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O10@M8",
+            "duration": 9,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J2.O10@M9",
+            "duration": 9,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J2.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O1",
+        "job_id": "J3",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O1@M2",
+            "duration": 50,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O1@M9",
+            "duration": 50,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O2",
+        "job_id": "J3",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O2@M4",
+            "duration": 93,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O2@M8",
+            "duration": 93,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O2@M10",
+            "duration": 93,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O3",
+        "job_id": "J3",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O3@M4",
+            "duration": 80,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O3@M6",
+            "duration": 80,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O3@M10",
+            "duration": 80,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O4",
+        "job_id": "J3",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O4@M5",
+            "duration": 7,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O5",
+        "job_id": "J3",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O5@M1",
+            "duration": 55,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O5@M6",
+            "duration": 55,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O6",
+        "job_id": "J3",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O6@M3",
+            "duration": 61,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O7",
+        "job_id": "J3",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O7@M7",
+            "duration": 57,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O8",
+        "job_id": "J3",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O8@M2",
+            "duration": 72,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O8@M3",
+            "duration": 72,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O8@M9",
+            "duration": 72,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O9",
+        "job_id": "J3",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O9@M10",
+            "duration": 42,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J3.O10",
+        "job_id": "J3",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J3.O10@M8",
+            "duration": 46,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J3.O10@M10",
+            "duration": 46,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J3.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O1",
+        "job_id": "J4",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O1@M2",
+            "duration": 68,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O1@M4",
+            "duration": 68,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O1@M10",
+            "duration": 68,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O2",
+        "job_id": "J4",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O2@M2",
+            "duration": 43,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O2@M8",
+            "duration": 43,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O2@M10",
+            "duration": 43,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O3",
+        "job_id": "J4",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O3@M5",
+            "duration": 99,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O4",
+        "job_id": "J4",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O4@M2",
+            "duration": 60,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O4@M3",
+            "duration": 60,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O4@M7",
+            "duration": 60,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O5",
+        "job_id": "J4",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O5@M3",
+            "duration": 68,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O5@M6",
+            "duration": 68,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O6",
+        "job_id": "J4",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O6@M1",
+            "duration": 91,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O7",
+        "job_id": "J4",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O7@M2",
+            "duration": 11,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O7@M4",
+            "duration": 11,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O7@M9",
+            "duration": 11,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O8",
+        "job_id": "J4",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O8@M3",
+            "duration": 96,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O8@M4",
+            "duration": 96,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J4.O8@M5",
+            "duration": 96,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O9",
+        "job_id": "J4",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O9@M10",
+            "duration": 11,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J4.O10",
+        "job_id": "J4",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J4.O10@M3",
+            "duration": 72,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J4.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O1",
+        "job_id": "J5",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O1@M1",
+            "duration": 84,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O1@M8",
+            "duration": 84,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O2",
+        "job_id": "J5",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O2@M1",
+            "duration": 34,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O2@M3",
+            "duration": 34,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O3",
+        "job_id": "J5",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O3@M9",
+            "duration": 40,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O3@M10",
+            "duration": 40,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O4",
+        "job_id": "J5",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O4@M1",
+            "duration": 7,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O4@M6",
+            "duration": 7,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O5",
+        "job_id": "J5",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O5@M2",
+            "duration": 70,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O5@M4",
+            "duration": 70,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O6",
+        "job_id": "J5",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O6@M1",
+            "duration": 74,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O6@M7",
+            "duration": 74,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O7",
+        "job_id": "J5",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O7@M4",
+            "duration": 12,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O8",
+        "job_id": "J5",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O8@M1",
+            "duration": 43,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O9",
+        "job_id": "J5",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O9@M2",
+            "duration": 69,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O9@M10",
+            "duration": 69,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J5.O10",
+        "job_id": "J5",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J5.O10@M3",
+            "duration": 30,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J5.O10@M5",
+            "duration": 30,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J5.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O1",
+        "job_id": "J6",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O1@M6",
+            "duration": 60,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O1@M9",
+            "duration": 60,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O2",
+        "job_id": "J6",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O2@M1",
+            "duration": 49,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O2@M2",
+            "duration": 49,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O3",
+        "job_id": "J6",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O3@M5",
+            "duration": 59,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O3@M6",
+            "duration": 59,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O3@M9",
+            "duration": 59,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O4",
+        "job_id": "J6",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O4@M5",
+            "duration": 72,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O4@M6",
+            "duration": 72,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O4@M8",
+            "duration": 72,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O5",
+        "job_id": "J6",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O5@M7",
+            "duration": 63,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O5@M10",
+            "duration": 63,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O6",
+        "job_id": "J6",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O6@M2",
+            "duration": 69,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O7",
+        "job_id": "J6",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O7@M8",
+            "duration": 99,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O8",
+        "job_id": "J6",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O8@M7",
+            "duration": 45,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O9",
+        "job_id": "J6",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O9@M4",
+            "duration": 27,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J6.O9@M5",
+            "duration": 27,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J6.O10",
+        "job_id": "J6",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J6.O10@M3",
+            "duration": 9,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J6.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O1",
+        "job_id": "J7",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O1@M6",
+            "duration": 71,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O1@M7",
+            "duration": 71,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O2",
+        "job_id": "J7",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O2@M3",
+            "duration": 91,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O2@M7",
+            "duration": 91,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O2@M10",
+            "duration": 91,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O3",
+        "job_id": "J7",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O3@M9",
+            "duration": 65,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O4",
+        "job_id": "J7",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O4@M2",
+            "duration": 90,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O4@M3",
+            "duration": 90,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O5",
+        "job_id": "J7",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O5@M6",
+            "duration": 98,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O5@M8",
+            "duration": 98,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O5@M10",
+            "duration": 98,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O6",
+        "job_id": "J7",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O6@M2",
+            "duration": 8,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O6@M5",
+            "duration": 8,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O7",
+        "job_id": "J7",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O7@M7",
+            "duration": 50,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O7@M8",
+            "duration": 50,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O8",
+        "job_id": "J7",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O8@M1",
+            "duration": 75,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O9",
+        "job_id": "J7",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O9@M6",
+            "duration": 37,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O9@M9",
+            "duration": 37,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J7.O10",
+        "job_id": "J7",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J7.O10@M2",
+            "duration": 17,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O10@M4",
+            "duration": 17,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J7.O10@M9",
+            "duration": 17,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J7.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O1",
+        "job_id": "J8",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O1@M1",
+            "duration": 62,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O1@M9",
+            "duration": 62,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O2",
+        "job_id": "J8",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O2@M8",
+            "duration": 90,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O3",
+        "job_id": "J8",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O3@M6",
+            "duration": 98,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O4",
+        "job_id": "J8",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O4@M3",
+            "duration": 31,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O4@M4",
+            "duration": 31,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O4@M8",
+            "duration": 31,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O5",
+        "job_id": "J8",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O5@M3",
+            "duration": 91,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O6",
+        "job_id": "J8",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O6@M1",
+            "duration": 38,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O6@M5",
+            "duration": 38,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O7",
+        "job_id": "J8",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O7@M10",
+            "duration": 72,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O8",
+        "job_id": "J8",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O8@M2",
+            "duration": 9,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O8@M7",
+            "duration": 9,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O9",
+        "job_id": "J8",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O9@M1",
+            "duration": 72,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O9@M3",
+            "duration": 72,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O9@M10",
+            "duration": 72,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J8.O10",
+        "job_id": "J8",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J8.O10@M2",
+            "duration": 49,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J8.O10@M7",
+            "duration": 49,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J8.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O1",
+        "job_id": "J9",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O1@M5",
+            "duration": 35,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O1@M8",
+            "duration": 35,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O2",
+        "job_id": "J9",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O2@M1",
+            "duration": 39,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O3",
+        "job_id": "J9",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O3@M10",
+            "duration": 74,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O4",
+        "job_id": "J9",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O4@M2",
+            "duration": 25,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O4@M5",
+            "duration": 25,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O4@M6",
+            "duration": 25,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O5",
+        "job_id": "J9",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O5@M5",
+            "duration": 47,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O5@M8",
+            "duration": 47,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O5@M10",
+            "duration": 47,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O6",
+        "job_id": "J9",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O6@M4",
+            "duration": 52,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O6@M9",
+            "duration": 52,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O7",
+        "job_id": "J9",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O7@M3",
+            "duration": 63,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O8",
+        "job_id": "J9",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O8@M5",
+            "duration": 21,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O8@M9",
+            "duration": 21,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O8@M10",
+            "duration": 21,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O9",
+        "job_id": "J9",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O9@M1",
+            "duration": 35,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O9@M7",
+            "duration": 35,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J9.O10",
+        "job_id": "J9",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J9.O10@M1",
+            "duration": 80,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O10@M2",
+            "duration": 80,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J9.O10@M9",
+            "duration": 80,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J9.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O1",
+        "job_id": "J10",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O1@M9",
+            "duration": 58,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O1@M10",
+            "duration": 58,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O2",
+        "job_id": "J10",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O2@M1",
+            "duration": 5,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O2@M2",
+            "duration": 5,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O2@M3",
+            "duration": 5,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O3",
+        "job_id": "J10",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O3@M4",
+            "duration": 50,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O4",
+        "job_id": "J10",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O4@M9",
+            "duration": 52,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O5",
+        "job_id": "J10",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O5@M1",
+            "duration": 88,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O5@M2",
+            "duration": 88,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O5@M8",
+            "duration": 88,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O6",
+        "job_id": "J10",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O6@M1",
+            "duration": 20,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O6@M5",
+            "duration": 20,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O6@M7",
+            "duration": 20,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O7",
+        "job_id": "J10",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O7@M3",
+            "duration": 68,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O8",
+        "job_id": "J10",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O8@M1",
+            "duration": 24,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O8@M6",
+            "duration": 24,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O8@M10",
+            "duration": 24,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O9",
+        "job_id": "J10",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O9@M5",
+            "duration": 53,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J10.O10",
+        "job_id": "J10",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J10.O10@M4",
+            "duration": 57,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J10.O10@M8",
+            "duration": 57,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J10.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O1",
+        "job_id": "J11",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O1@M3",
+            "duration": 99,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O1@M6",
+            "duration": 99,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O1@M8",
+            "duration": 99,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O2",
+        "job_id": "J11",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O2@M4",
+            "duration": 91,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O3",
+        "job_id": "J11",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O3@M5",
+            "duration": 33,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O4",
+        "job_id": "J11",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O4@M6",
+            "duration": 19,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O5",
+        "job_id": "J11",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O5@M3",
+            "duration": 18,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O5@M4",
+            "duration": 18,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O5@M7",
+            "duration": 18,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O6",
+        "job_id": "J11",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O6@M3",
+            "duration": 38,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O6@M4",
+            "duration": 38,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O6@M7",
+            "duration": 38,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O7",
+        "job_id": "J11",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O7@M1",
+            "duration": 24,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O8",
+        "job_id": "J11",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O8@M6",
+            "duration": 35,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O8@M7",
+            "duration": 35,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J11.O8@M10",
+            "duration": 35,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O9",
+        "job_id": "J11",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O9@M2",
+            "duration": 49,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J11.O10",
+        "job_id": "J11",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J11.O10@M9",
+            "duration": 9,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J11.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O1",
+        "job_id": "J12",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O1@M1",
+            "duration": 68,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O2",
+        "job_id": "J12",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O2@M4",
+            "duration": 60,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O2@M8",
+            "duration": 60,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O3",
+        "job_id": "J12",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O3@M3",
+            "duration": 77,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O3@M5",
+            "duration": 77,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O4",
+        "job_id": "J12",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O4@M5",
+            "duration": 10,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O4@M8",
+            "duration": 10,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O5",
+        "job_id": "J12",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O5@M2",
+            "duration": 60,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O5@M3",
+            "duration": 60,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O5@M9",
+            "duration": 60,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O6",
+        "job_id": "J12",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O6@M6",
+            "duration": 15,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O6@M9",
+            "duration": 15,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O6@M10",
+            "duration": 15,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O7",
+        "job_id": "J12",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O7@M4",
+            "duration": 72,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O7@M10",
+            "duration": 72,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O8",
+        "job_id": "J12",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O8@M2",
+            "duration": 18,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O9",
+        "job_id": "J12",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O9@M6",
+            "duration": 90,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O9@M7",
+            "duration": 90,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O9@M8",
+            "duration": 90,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J12.O10",
+        "job_id": "J12",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J12.O10@M5",
+            "duration": 18,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J12.O10@M9",
+            "duration": 18,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J12.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O1",
+        "job_id": "J13",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O1@M6",
+            "duration": 79,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O1@M10",
+            "duration": 79,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O2",
+        "job_id": "J13",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O2@M2",
+            "duration": 60,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O3",
+        "job_id": "J13",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O3@M4",
+            "duration": 56,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O3@M6",
+            "duration": 56,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O3@M10",
+            "duration": 56,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O4",
+        "job_id": "J13",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O4@M3",
+            "duration": 91,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O4@M5",
+            "duration": 91,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O4@M7",
+            "duration": 91,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O5",
+        "job_id": "J13",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O5@M3",
+            "duration": 40,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O5@M9",
+            "duration": 40,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O6",
+        "job_id": "J13",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O6@M4",
+            "duration": 86,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O6@M9",
+            "duration": 86,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O7",
+        "job_id": "J13",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O7@M8",
+            "duration": 72,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O8",
+        "job_id": "J13",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O8@M1",
+            "duration": 80,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O9",
+        "job_id": "J13",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O9@M3",
+            "duration": 89,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J13.O9@M6",
+            "duration": 89,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J13.O10",
+        "job_id": "J13",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J13.O10@M5",
+            "duration": 51,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J13.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O1",
+        "job_id": "J14",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O1@M5",
+            "duration": 10,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O2",
+        "job_id": "J14",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O2@M3",
+            "duration": 92,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O3",
+        "job_id": "J14",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O3@M3",
+            "duration": 23,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O3@M5",
+            "duration": 23,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O3@M6",
+            "duration": 23,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O4",
+        "job_id": "J14",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O4@M1",
+            "duration": 46,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O4@M5",
+            "duration": 46,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O4@M7",
+            "duration": 46,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O5",
+        "job_id": "J14",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O5@M2",
+            "duration": 40,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O5@M9",
+            "duration": 40,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O6",
+        "job_id": "J14",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O6@M8",
+            "duration": 72,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O6@M9",
+            "duration": 72,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O7",
+        "job_id": "J14",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O7@M2",
+            "duration": 6,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O7@M4",
+            "duration": 6,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O8",
+        "job_id": "J14",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O8@M2",
+            "duration": 23,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O8@M7",
+            "duration": 23,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O9",
+        "job_id": "J14",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O9@M1",
+            "duration": 95,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O9@M2",
+            "duration": 95,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J14.O10",
+        "job_id": "J14",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J14.O10@M4",
+            "duration": 34,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O10@M5",
+            "duration": 34,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J14.O10@M10",
+            "duration": 34,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J14.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O1",
+        "job_id": "J15",
+        "index": 0,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O1@M3",
+            "duration": 24,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O1@M5",
+            "duration": 24,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O1@M8",
+            "duration": 24,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O2",
+        "job_id": "J15",
+        "index": 1,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O2@M6",
+            "duration": 29,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O2@M8",
+            "duration": 29,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O2@M10",
+            "duration": 29,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O1"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O3",
+        "job_id": "J15",
+        "index": 2,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O3@M10",
+            "duration": 49,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O2"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O4",
+        "job_id": "J15",
+        "index": 3,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O4@M5",
+            "duration": 55,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O4@M9",
+            "duration": 55,
+            "resources": [
+              "M9"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O4@M10",
+            "duration": 55,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O3"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O5",
+        "job_id": "J15",
+        "index": 4,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O5@M1",
+            "duration": 47,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O5@M8",
+            "duration": 47,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O4"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O6",
+        "job_id": "J15",
+        "index": 5,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O6@M1",
+            "duration": 77,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O6@M7",
+            "duration": 77,
+            "resources": [
+              "M7"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O6@M10",
+            "duration": 77,
+            "resources": [
+              "M10"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O5"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O7",
+        "job_id": "J15",
+        "index": 6,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O7@M3",
+            "duration": 77,
+            "resources": [
+              "M3"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O7@M4",
+            "duration": 77,
+            "resources": [
+              "M4"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O7@M8",
+            "duration": 77,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O6"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O8",
+        "job_id": "J15",
+        "index": 7,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O8@M1",
+            "duration": 8,
+            "resources": [
+              "M1"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O8@M8",
+            "duration": 8,
+            "resources": [
+              "M8"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O7"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O9",
+        "job_id": "J15",
+        "index": 8,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O9@M2",
+            "duration": 28,
+            "resources": [
+              "M2"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O9@M5",
+            "duration": 28,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          },
+          {
+            "id": "J15.O9@M6",
+            "duration": 28,
+            "resources": [
+              "M6"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O8"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      },
+      {
+        "id": "J15.O10",
+        "job_id": "J15",
+        "index": 9,
+        "stage_id": null,
+        "modes": [
+          {
+            "id": "J15.O10@M5",
+            "duration": 48,
+            "resources": [
+              "M5"
+            ],
+            "setup_family": null,
+            "route_id": null,
+            "cost": 0.0,
+            "energy": 0.0,
+            "metadata": {}
+          }
+        ],
+        "predecessors": [
+          "J15.O9"
+        ],
+        "release": 0,
+        "due": null,
+        "metadata": {}
+      }
+    ],
+    "choice_links": [],
+    "constraints": [],
+    "events": [],
+    "objective": [
+      {
+        "name": "makespan",
+        "sense": "minimize",
+        "tolerance": 0.0,
+        "weight": 1.0
+      },
+      {
+        "name": "total_tardiness",
+        "sense": "minimize",
+        "tolerance": 0.0,
+        "weight": 1.0
+      },
+      {
+        "name": "total_flow_time",
+        "sense": "minimize",
+        "tolerance": 0.0,
+        "weight": 1.0
+      },
+      {
+        "name": "change_cost",
+        "sense": "minimize",
+        "tolerance": 0.0,
+        "weight": 1.0
+      }
+    ],
+    "time_scale": 1,
+    "metadata": {}
+  },
+  "schedule": {
+    "problem_id": "HurinkRdata27",
+    "assignments": [
+      {
+        "operation_id": "J14.O1",
+        "mode_id": "J14.O1@M5",
+        "start": 0,
+        "end": 10,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O1",
+        "mode_id": "J1.O1@M8",
+        "start": 0,
+        "end": 8,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O1",
+        "mode_id": "J2.O1@M3",
+        "start": 0,
+        "end": 19,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O1",
+        "mode_id": "J8.O1@M9",
+        "start": 0,
+        "end": 62,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O1",
+        "mode_id": "J12.O1@M1",
+        "start": 0,
+        "end": 68,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O1",
+        "mode_id": "J13.O1@M10",
+        "start": 0,
+        "end": 79,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O1",
+        "mode_id": "J11.O1@M6",
+        "start": 0,
+        "end": 99,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O1",
+        "mode_id": "J7.O1@M7",
+        "start": 0,
+        "end": 71,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O1",
+        "mode_id": "J3.O1@M2",
+        "start": 0,
+        "end": 50,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O1",
+        "mode_id": "J4.O1@M4",
+        "start": 0,
+        "end": 68,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O1",
+        "mode_id": "J15.O1@M8",
+        "start": 8,
+        "end": 32,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O1",
+        "mode_id": "J9.O1@M5",
+        "start": 10,
+        "end": 45,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O2",
+        "mode_id": "J14.O2@M3",
+        "start": 19,
+        "end": 111,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O2",
+        "mode_id": "J15.O2@M8",
+        "start": 32,
+        "end": 61,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O2",
+        "mode_id": "J2.O2@M5",
+        "start": 45,
+        "end": 118,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O1",
+        "mode_id": "J5.O1@M8",
+        "start": 61,
+        "end": 145,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O1",
+        "mode_id": "J10.O1@M9",
+        "start": 62,
+        "end": 120,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O2",
+        "mode_id": "J9.O2@M1",
+        "start": 68,
+        "end": 107,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O2",
+        "mode_id": "J4.O2@M2",
+        "start": 68,
+        "end": 111,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O2",
+        "mode_id": "J12.O2@M4",
+        "start": 68,
+        "end": 128,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O2",
+        "mode_id": "J7.O2@M7",
+        "start": 71,
+        "end": 162,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O3",
+        "mode_id": "J15.O3@M10",
+        "start": 79,
+        "end": 128,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O1",
+        "mode_id": "J6.O1@M6",
+        "start": 99,
+        "end": 159,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O3",
+        "mode_id": "J14.O3@M3",
+        "start": 111,
+        "end": 134,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O2",
+        "mode_id": "J13.O2@M2",
+        "start": 111,
+        "end": 171,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O3",
+        "mode_id": "J4.O3@M5",
+        "start": 118,
+        "end": 217,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O2",
+        "mode_id": "J10.O2@M1",
+        "start": 120,
+        "end": 125,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O2",
+        "mode_id": "J1.O2@M10",
+        "start": 128,
+        "end": 203,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O3",
+        "mode_id": "J10.O3@M4",
+        "start": 128,
+        "end": 178,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O4",
+        "mode_id": "J15.O4@M9",
+        "start": 128,
+        "end": 183,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O4",
+        "mode_id": "J14.O4@M1",
+        "start": 134,
+        "end": 180,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O3",
+        "mode_id": "J12.O3@M3",
+        "start": 134,
+        "end": 211,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O2",
+        "mode_id": "J8.O2@M8",
+        "start": 145,
+        "end": 235,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O3",
+        "mode_id": "J2.O3@M2",
+        "start": 171,
+        "end": 214,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O3",
+        "mode_id": "J13.O3@M6",
+        "start": 171,
+        "end": 227,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O2",
+        "mode_id": "J11.O2@M4",
+        "start": 178,
+        "end": 269,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O2",
+        "mode_id": "J5.O2@M1",
+        "start": 180,
+        "end": 214,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O5",
+        "mode_id": "J14.O5@M9",
+        "start": 183,
+        "end": 223,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O3",
+        "mode_id": "J9.O3@M10",
+        "start": 203,
+        "end": 277,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O3",
+        "mode_id": "J1.O3@M3",
+        "start": 211,
+        "end": 283,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O4",
+        "mode_id": "J2.O4@M1",
+        "start": 214,
+        "end": 237,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O2",
+        "mode_id": "J6.O2@M2",
+        "start": 214,
+        "end": 263,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O4",
+        "mode_id": "J12.O4@M5",
+        "start": 217,
+        "end": 227,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O4",
+        "mode_id": "J4.O4@M7",
+        "start": 217,
+        "end": 277,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O4",
+        "mode_id": "J10.O4@M9",
+        "start": 223,
+        "end": 275,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O4",
+        "mode_id": "J13.O4@M5",
+        "start": 227,
+        "end": 318,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O6",
+        "mode_id": "J14.O6@M8",
+        "start": 235,
+        "end": 307,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O3",
+        "mode_id": "J8.O3@M6",
+        "start": 235,
+        "end": 333,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O5",
+        "mode_id": "J15.O5@M1",
+        "start": 237,
+        "end": 284,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O5",
+        "mode_id": "J12.O5@M2",
+        "start": 263,
+        "end": 323,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O2",
+        "mode_id": "J3.O2@M4",
+        "start": 269,
+        "end": 362,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O3",
+        "mode_id": "J7.O3@M9",
+        "start": 275,
+        "end": 340,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O3",
+        "mode_id": "J5.O3@M10",
+        "start": 277,
+        "end": 317,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O5",
+        "mode_id": "J4.O5@M3",
+        "start": 283,
+        "end": 351,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O4",
+        "mode_id": "J1.O4@M7",
+        "start": 283,
+        "end": 357,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O5",
+        "mode_id": "J10.O5@M1",
+        "start": 284,
+        "end": 372,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O6",
+        "mode_id": "J15.O6@M10",
+        "start": 317,
+        "end": 394,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O3",
+        "mode_id": "J11.O3@M5",
+        "start": 318,
+        "end": 351,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O7",
+        "mode_id": "J14.O7@M2",
+        "start": 323,
+        "end": 329,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O8",
+        "mode_id": "J14.O8@M2",
+        "start": 329,
+        "end": 352,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O4",
+        "mode_id": "J5.O4@M6",
+        "start": 333,
+        "end": 340,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O4",
+        "mode_id": "J8.O4@M8",
+        "start": 333,
+        "end": 364,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O6",
+        "mode_id": "J12.O6@M9",
+        "start": 340,
+        "end": 355,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O4",
+        "mode_id": "J9.O4@M6",
+        "start": 340,
+        "end": 365,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O4",
+        "mode_id": "J7.O4@M3",
+        "start": 351,
+        "end": 441,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O3",
+        "mode_id": "J6.O3@M5",
+        "start": 351,
+        "end": 410,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O5",
+        "mode_id": "J5.O5@M2",
+        "start": 352,
+        "end": 422,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O5",
+        "mode_id": "J13.O5@M9",
+        "start": 355,
+        "end": 395,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O7",
+        "mode_id": "J12.O7@M4",
+        "start": 362,
+        "end": 434,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O4",
+        "mode_id": "J11.O4@M6",
+        "start": 365,
+        "end": 384,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O5",
+        "mode_id": "J9.O5@M8",
+        "start": 365,
+        "end": 412,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O6",
+        "mode_id": "J10.O6@M1",
+        "start": 372,
+        "end": 392,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O5",
+        "mode_id": "J11.O5@M7",
+        "start": 384,
+        "end": 402,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O3",
+        "mode_id": "J3.O3@M6",
+        "start": 384,
+        "end": 464,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O6",
+        "mode_id": "J4.O6@M1",
+        "start": 392,
+        "end": 483,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O6",
+        "mode_id": "J13.O6@M9",
+        "start": 395,
+        "end": 481,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O6",
+        "mode_id": "J11.O6@M7",
+        "start": 402,
+        "end": 440,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O5",
+        "mode_id": "J1.O5@M5",
+        "start": 410,
+        "end": 440,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O4",
+        "mode_id": "J6.O4@M8",
+        "start": 412,
+        "end": 484,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O9",
+        "mode_id": "J14.O9@M2",
+        "start": 422,
+        "end": 517,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O6",
+        "mode_id": "J9.O6@M4",
+        "start": 434,
+        "end": 486,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O6",
+        "mode_id": "J5.O6@M7",
+        "start": 440,
+        "end": 514,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O5",
+        "mode_id": "J8.O5@M3",
+        "start": 441,
+        "end": 532,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O5",
+        "mode_id": "J7.O5@M10",
+        "start": 441,
+        "end": 539,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O4",
+        "mode_id": "J3.O4@M5",
+        "start": 464,
+        "end": 471,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O5",
+        "mode_id": "J3.O5@M6",
+        "start": 471,
+        "end": 526,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O6",
+        "mode_id": "J1.O6@M9",
+        "start": 481,
+        "end": 524,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O7",
+        "mode_id": "J11.O7@M1",
+        "start": 483,
+        "end": 507,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O7",
+        "mode_id": "J13.O7@M8",
+        "start": 484,
+        "end": 556,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O7",
+        "mode_id": "J4.O7@M4",
+        "start": 486,
+        "end": 497,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O5",
+        "mode_id": "J2.O5@M4",
+        "start": 497,
+        "end": 582,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O8",
+        "mode_id": "J4.O8@M5",
+        "start": 497,
+        "end": 593,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O8",
+        "mode_id": "J11.O8@M7",
+        "start": 514,
+        "end": 549,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O8",
+        "mode_id": "J12.O8@M2",
+        "start": 517,
+        "end": 535,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O6",
+        "mode_id": "J3.O6@M3",
+        "start": 532,
+        "end": 593,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O6",
+        "mode_id": "J8.O6@M1",
+        "start": 532,
+        "end": 570,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O9",
+        "mode_id": "J12.O9@M6",
+        "start": 535,
+        "end": 625,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O6",
+        "mode_id": "J7.O6@M2",
+        "start": 539,
+        "end": 547,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O5",
+        "mode_id": "J6.O5@M10",
+        "start": 539,
+        "end": 602,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O9",
+        "mode_id": "J11.O9@M2",
+        "start": 549,
+        "end": 598,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O7",
+        "mode_id": "J7.O7@M7",
+        "start": 549,
+        "end": 599,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O7",
+        "mode_id": "J1.O7@M8",
+        "start": 556,
+        "end": 594,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O8",
+        "mode_id": "J13.O8@M1",
+        "start": 570,
+        "end": 650,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O7",
+        "mode_id": "J5.O7@M4",
+        "start": 582,
+        "end": 594,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O7",
+        "mode_id": "J10.O7@M3",
+        "start": 593,
+        "end": 661,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O6",
+        "mode_id": "J2.O6@M5",
+        "start": 593,
+        "end": 632,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O7",
+        "mode_id": "J15.O7@M4",
+        "start": 594,
+        "end": 671,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J11.O10",
+        "mode_id": "J11.O10@M9",
+        "start": 598,
+        "end": 607,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O7",
+        "mode_id": "J3.O7@M7",
+        "start": 599,
+        "end": 656,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O9",
+        "mode_id": "J4.O9@M10",
+        "start": 602,
+        "end": 613,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O6",
+        "mode_id": "J6.O6@M2",
+        "start": 602,
+        "end": 671,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O7",
+        "mode_id": "J8.O7@M10",
+        "start": 613,
+        "end": 685,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J12.O10",
+        "mode_id": "J12.O10@M9",
+        "start": 625,
+        "end": 643,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O8",
+        "mode_id": "J1.O8@M6",
+        "start": 625,
+        "end": 723,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J14.O10",
+        "mode_id": "J14.O10@M5",
+        "start": 632,
+        "end": 666,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O7",
+        "mode_id": "J2.O7@M9",
+        "start": 643,
+        "end": 656,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O8",
+        "mode_id": "J5.O8@M1",
+        "start": 650,
+        "end": 693,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O8",
+        "mode_id": "J3.O8@M9",
+        "start": 656,
+        "end": 728,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O7",
+        "mode_id": "J9.O7@M3",
+        "start": 661,
+        "end": 724,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O7",
+        "mode_id": "J6.O7@M8",
+        "start": 671,
+        "end": 770,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O8",
+        "mode_id": "J8.O8@M7",
+        "start": 685,
+        "end": 694,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O8",
+        "mode_id": "J2.O8@M10",
+        "start": 685,
+        "end": 711,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O8",
+        "mode_id": "J15.O8@M1",
+        "start": 693,
+        "end": 701,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O9",
+        "mode_id": "J5.O9@M2",
+        "start": 693,
+        "end": 762,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O8",
+        "mode_id": "J7.O8@M1",
+        "start": 701,
+        "end": 776,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O9",
+        "mode_id": "J15.O9@M5",
+        "start": 701,
+        "end": 729,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O8",
+        "mode_id": "J10.O8@M10",
+        "start": 711,
+        "end": 735,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O9",
+        "mode_id": "J1.O9@M4",
+        "start": 723,
+        "end": 749,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O9",
+        "mode_id": "J13.O9@M6",
+        "start": 723,
+        "end": 812,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J4.O10",
+        "mode_id": "J4.O10@M3",
+        "start": 724,
+        "end": 796,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O8",
+        "mode_id": "J9.O8@M9",
+        "start": 728,
+        "end": 749,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J15.O10",
+        "mode_id": "J15.O10@M5",
+        "start": 729,
+        "end": 777,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O9",
+        "mode_id": "J3.O9@M10",
+        "start": 735,
+        "end": 777,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J1.O10",
+        "mode_id": "J1.O10@M4",
+        "start": 749,
+        "end": 768,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O9",
+        "mode_id": "J9.O9@M7",
+        "start": 749,
+        "end": 784,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O9",
+        "mode_id": "J7.O9@M9",
+        "start": 776,
+        "end": 813,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O9",
+        "mode_id": "J8.O9@M1",
+        "start": 776,
+        "end": 848,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O9",
+        "mode_id": "J10.O9@M5",
+        "start": 777,
+        "end": 830,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J3.O10",
+        "mode_id": "J3.O10@M8",
+        "start": 777,
+        "end": 823,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J9.O10",
+        "mode_id": "J9.O10@M2",
+        "start": 784,
+        "end": 864,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O8",
+        "mode_id": "J6.O8@M7",
+        "start": 784,
+        "end": 829,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O9",
+        "mode_id": "J2.O9@M3",
+        "start": 796,
+        "end": 863,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J7.O10",
+        "mode_id": "J7.O10@M4",
+        "start": 813,
+        "end": 830,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O9",
+        "mode_id": "J6.O9@M5",
+        "start": 830,
+        "end": 857,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J10.O10",
+        "mode_id": "J10.O10@M8",
+        "start": 830,
+        "end": 887,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J8.O10",
+        "mode_id": "J8.O10@M7",
+        "start": 848,
+        "end": 897,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J13.O10",
+        "mode_id": "J13.O10@M5",
+        "start": 857,
+        "end": 908,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J6.O10",
+        "mode_id": "J6.O10@M3",
+        "start": 863,
+        "end": 872,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J2.O10",
+        "mode_id": "J2.O10@M1",
+        "start": 863,
+        "end": 872,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      },
+      {
+        "operation_id": "J5.O10",
+        "mode_id": "J5.O10@M3",
+        "start": 872,
+        "end": 902,
+        "route_id": null,
+        "provenance": "DANIEL",
+        "metadata": {}
+      }
+    ],
+    "metadata": {}
+  },
+  "validation": {
+    "feasible": true,
+    "errors": [],
+    "warnings": [],
+    "details": {
+      "oracleRequiredConstraints": [],
+      "solverCertifiedConstraints": []
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "round4.0",
+  "checks": {
+    "canonical_metric_count_is_55": true,
+    "diagnostic_count_is_25": true,
+    "membership_input_output_count_is_623": true,
+    "membership_pairs_unique": true,
+    "all_membership_candidate_ids_valid": true,
+    "all_44_gaps_assigned": true,
+    "all_55_candidates_have_computability_rows": true,
+    "group_candidate_references_valid": true,
+    "group_diagnostic_references_valid": true,
+    "reference_case_ids_valid": true,
+    "no_status_promotion": true
+  },
+  "all_checks_passed": true,
+  "counts": {
+    "canonical_candidates": 55,
+    "diagnostics": 25,
+    "membership_recommendations": 623,
+    "unique_condition_profiles": 129,
+    "coverage_gaps": 44,
+    "capability_groups": 9,
+    "computability_rows": 55,
+    "reference_cases": 21
+  },
+  "invalid_references": {
+    "group_candidates": [],
+    "group_diagnostics": [],
+    "reference_cases": []
+  }
+}
