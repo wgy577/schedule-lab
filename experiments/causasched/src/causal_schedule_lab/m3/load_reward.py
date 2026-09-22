@@ -1,9 +1,13 @@
-"""Bounded load-change auxiliary return; not an optimal-policy guarantee.
+"""Global processing-load CV auxiliary return; lower CV is more balanced.
 
-Cost = maximum resource processing load + 0.1 * total resource processing.
-This targets bottleneck load, not arbitrary equality of heterogeneous machines.
-Sequence-only moves get zero signal; makespan remains the selection criterion.
+All problem resources (including unused ones) are included. No type grouping,
+capacity/speed normalization, maximum-load term or total-processing penalty.
+This experimental proxy is not guaranteed to improve makespan.
 """
+import math
+
+LOAD_METRIC='global_processing_load_cv_v1'
+
 def load_cost(problem, schedule):
     modes = problem.mode_map()
     loads = {r.id: 0.0 for r in problem.resources}
@@ -11,7 +15,11 @@ def load_cost(problem, schedule):
         mode = modes[a.mode_id][1]
         for rid in mode.resources:
             loads[rid] += a.end - a.start
-    return max(loads.values(), default=0.0) + 0.1 * sum(loads.values())
+    values=list(loads.values())
+    if not values:return 0.0
+    mean=math.fsum(values)/len(values)
+    if mean<=0:return 0.0
+    return math.sqrt(math.fsum((v-mean)**2 for v in values)/len(values))/mean
 
 
 def load_bonus(before, after, root_ms, weight):
@@ -27,6 +35,8 @@ def add_load_credit(tr, problem, root, weight):
     tr['load_reward'] = bonus
     tr['load_cost_start'] = before
     tr['load_cost_terminal'] = terminal
+    tr['load_cost_best'] = load_cost(problem,tr['best_schedule']) if 'best_schedule' in tr else None
+    tr['load_metric'] = LOAD_METRIC
     tr['reward'] += bonus
     tr['U2'] += bonus
     tr['net_intervention_reward'] = tr['reward']
@@ -47,7 +57,7 @@ def add_load_credit(tr, problem, root, weight):
     return tr
 
 
-def balance_group(trajs, share=0.35):
+def balance_group(trajs, share=0.30):
     """Match auxiliary L1 share before joint GRPO normalization.
 
     Each timestep's future credit is calibrated separately. Zero auxiliary

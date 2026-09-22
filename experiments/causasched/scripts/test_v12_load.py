@@ -24,19 +24,26 @@ class Tests(unittest.TestCase):
         def sched(x,y,offset=0):
             return NS(assignments=[NS(mode_id='a',start=offset,end=offset+x),
                                    NS(mode_id='b',start=0,end=y)])
-        self.assertEqual(load_cost(p,sched(100,20)),112)
-        self.assertGreater(load_bonus(112,load_cost(p,sched(70,50)),120,.2),0)
-        self.assertLess(load_bonus(112,load_cost(p,sched(100,100)),120,.2),0)
-        self.assertEqual(load_cost(p,sched(100,20,50)),112)
+        self.assertAlmostEqual(load_cost(p,sched(100,20)),2/3)
+        self.assertGreater(load_bonus(2/3,load_cost(p,sched(70,50)),120,.2),0)
+        self.assertGreater(load_bonus(2/3,load_cost(p,sched(100,100)),120,.2),0)
+        self.assertAlmostEqual(load_cost(p,sched(100,20,50)),2/3)
+        self.assertAlmostEqual(load_cost(p,sched(200,40)),2/3)
+        self.assertEqual(load_cost(p,sched(100,0)),1)
         self.assertEqual(load_bonus(10000,0,100,.2),5)
         self.assertEqual(load_bonus(0,10000,100,.2),-5)
         self.assertEqual(load_bonus(112,80,100,0),0)
         tr=dict(root_ms=120,terminal_schedule=sched(70,50),reward=0.,U2=0.,
-                steps=[dict(load_cost_before=112,load_cost_after=82,m2_future_net_reward=0)])
+                steps=[dict(load_cost_before=2/3,load_cost_after=1/6,m2_future_net_reward=0)])
         add_load_credit(tr,p,sched(100,20),.2)
-        self.assertEqual(tr['reward'],6)
-        self.assertEqual(tr['steps'][0]['m2_future_net_reward'],6)
+        self.assertAlmostEqual(tr['reward'],.1)
+        self.assertAlmostEqual(tr['steps'][0]['m2_future_net_reward'],.1)
         self.assertEqual(tr['makespan_reward'],0)
+
+    def test_default_share30(self):
+        rows=[dict(makespan_reward=7.,load_reward=.1,steps=[])]
+        self.assertAlmostEqual(balance_group(rows)['actual_share'],.30)
+        self.assertAlmostEqual(rows[0]['load_reward'],3.)
 
     def test_all26_every_episode(self):
         ids=[str(i) for i in range(26)]; clock=dict(episode=0,updates=0,budgets={})

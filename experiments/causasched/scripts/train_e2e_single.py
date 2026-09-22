@@ -138,7 +138,9 @@ def collect(task):
             execution_reason=step.get('execution_reason')))
     return dict(iid=iid, branch=branch, payload=payload, reward=tr['reward'],
                 action_outcomes=outcomes, load_reward=tr['load_reward'],
-                makespan_reward=tr['makespan_reward'],
+                makespan_reward=tr['makespan_reward'],load_metric=tr['load_metric'],
+                load_cv_start=tr['load_cost_start'],load_cv_best=tr['load_cost_best'],
+                load_cv_terminal=tr['load_cost_terminal'],
                 terminal_regression=max(0,tr['final_ms']-tr['best_ms']),
                 start=root.ms, best=tr['best_ms'], gain=root.ms-tr['best_ms'], best_step=tr['best_step'],
                 pair_actions=sum(bool(s['selected_is_pair']) for s in tr['steps']),
@@ -253,7 +255,7 @@ def main():
     p.add_argument('--branches',type=int,default=16)
     p.add_argument('--roots-per-cycle',type=int,default=26)
     p.add_argument('--load-weight',type=float,default=0.2)
-    p.add_argument('--load-share',type=float,default=0.35)
+    p.add_argument('--load-share',type=float,default=0.30)
     p.add_argument('--decision-batch',type=int,default=16)
     p.add_argument('--trace-hops',type=int,choices=(4,6),default=6)
     p.add_argument('--root-top-k',type=int,default=6)
@@ -370,6 +372,14 @@ def main():
     ck=None
     if a.resume:
         ck=torch.load(a.resume,map_location='cpu',weights_only=False)
+        from causal_schedule_lab.m3.load_reward import LOAD_METRIC
+        if ck['config'].get('load_metric')!=LOAD_METRIC:
+            if not a.allow_reward_change:
+                raise ValueError('Load metric changed to global CV: pass --allow-reward-change')
+            base.write_json(a.output/'load_metric_migration.json',dict(
+                old=ck['config'].get('load_metric',ck['config'].get('load_cost')),
+                new=LOAD_METRIC,share=a.load_share,checkpoint=str(a.resume)))
+            print(f'[reward migration] global load CV; target share={a.load_share:.0%}; fresh rollouts only',flush=True)
         if ck['config'].get('load_weight',0.0) != a.load_weight and not a.allow_reward_change:
             raise ValueError('Load reward changed: pass --allow-reward-change')
         if ck['config'].get('load_share',0.0) != a.load_share and not a.allow_reward_change:
@@ -438,12 +448,13 @@ def main():
                                  ('SFT initialization; fresh RL actors and optimizer' if a.initialization=='sft'
                                   else 'u356 warm start; fresh optimizer')),
                   reward='start-best - lambda*(terminal-best) - infeasible_penalty + group_calibrated_load_change',
-                  load_cost='max(resource_load)+0.1*sum(resource_load)',raw_load_reward_cap_fraction=0.05,
+                  load_cost='population_std(all_resource_processing_loads)/mean(all_resource_processing_loads)',
+                  load_metric='global_processing_load_cv_v1',raw_load_reward_cap_fraction=0.05,
                   episode_cohort='all-instances-synchronized',
                   memory='prepared TRAIN retrieval bank; branch-local writes',
                   inactive='STOP output; unused legacy auxiliary heads',
                   candidate_support='fixed during PPO epochs; recomputed for new rollouts',
-                  dropout=False,kl_reference=False,training_variant='e2e-dispatch-v13-train128-200steps',
+                  dropout=False,kl_reference=False,training_variant='e2e-dispatch-v14-global-load30',
                   restart_policy='incumbent-origin-pool-only; no chained restarts',
                   budget_semantics='per-instance allocated rollout steps; early termination consumes allotted budget',
                   pair_matching='bounded-relation-count-v1; not counterfactually validated',
@@ -553,7 +564,9 @@ def main():
                         with (a.output/'reward_components.jsonl').open('a') as f:
                             f.write(json.dumps(dict(cycle=cycle,iid=iid,**load_diag,
                                 trajectories=[dict(branch=t['traj_id'],main=t['makespan_reward'],
-                                    load=t['load_reward'],total=t['reward']) for t in trs]))+'\n')
+                                    load=t['load_reward'],total=t['reward'],
+                                    load_cv_start=t['load_cost_start'],load_cv_best=t['load_cost_best'],
+                                    load_cv_terminal=t['load_cost_terminal']) for t in trs]))+'\n')
                             f.flush();os.fsync(f.fileno())
                         JG._finish_group_r14(trs,iid,root.state_hash,root.ms,r['memory'],
                                              time.perf_counter()-started,a.workers)
