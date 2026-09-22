@@ -34,28 +34,7 @@ tail -f "${OUTPUT}.log"
 
 `--cycles 5000`表示5000次采集更新，不是5000个大回合。非AutoDL环境请自行修改输出路径；显存不足时可降低 `DECISION_BATCH`。
 
-## 3. 从旧26实例版本升级续训
-
-将下面的检查点路径替换为实际路径。保留已学权重、优化器和已有最好解，扩充实例后重新开始一个200步大回合。
-
-```bash
-RESUME="/path/to/previous/latest.pt"
-export OUTPUT="/root/autodl-tmp/causasched_runs/train128_resume_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$(dirname "$OUTPUT")"
-
-nohup bash run_e2e_single.sh \
-  --resume "$RESUME" \
-  --expand-training-cohort \
-  --reset-episode-on-resume \
-  --allow-reward-change \
-  --additional-cycles 5000 \
-  > "${OUTPUT}.log" 2>&1 &
-
-echo $! | tee "${OUTPUT}.pid"
-tail -f "${OUTPUT}.log"
-```
-
-## 4. 当前128实例版本普通续训
+## 3. 当前128实例版本普通续训
 
 不加重置回合参数，继续已保存的回合进度。
 
@@ -71,7 +50,7 @@ echo $! | tee "${OUTPUT}.pid"
 tail -f "${OUTPUT}.log"
 ```
 
-## 5. 查看日志与停止训练
+## 4. 查看日志与停止训练
 
 终端默认只输出阶段与批次总结；启动时追加 `--verbose` 可恢复详细输出。重新打开终端后，请用实际路径替换下列路径。
 
@@ -92,7 +71,7 @@ python scripts/stop_project_training.py
 - `audit_*.json`、`tensorboard/`：每次更新的统计。
 - `config.json`、`initial_manifest.json`：实际配置及初始实例信息。
 
-## 6. 导出并运行推理
+## 5. 导出并运行推理
 
 训练检查点不能直接作为推理的 `--runtime`；先导出一次：
 
